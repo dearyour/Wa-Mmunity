@@ -35,9 +35,9 @@ img {
 .btn {
   width: 130px;
   padding: 10px;
-  border: 2px solid #590805;
+  border: 2px solid #333;
   border-radius: 4px;
-  color: #590805;
+  color: #333;
   font-size: 16px;
   font-weight: 700;
   text-align: center;
@@ -49,19 +49,20 @@ img {
   /* color:#F7F3F0 */
   /* color:#EAE0DA */
   /* color:#F7DCD8 */
+  /* color:#590805 */
   /* color:#333 */
 }
 .btn:hover {
-  background-color: #590805;
+  background-color: #333;
   color: #fff;
 }
 .btn.btn--reverse {
-  background-color: #590805;
+  background-color: #333;
   color: #fff;
 }
 .btn.btn--reverse:hover {
   background-color: transparent;
-  color: #590805;
+  color: #333;
 }
 .btn.btn--brown {
   color: #592b18;
