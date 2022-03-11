@@ -44,6 +44,10 @@ img {
   font-weight: 700;
   text-align: center;
   cursor: pointer;
+  box-sizing: border-box;
+  display: block;
+  transition: 0.4s;
+
   /* color:#F7F3F0 */
   /* color:#EAE0DA */
   /* color:#F7DCD8 */
