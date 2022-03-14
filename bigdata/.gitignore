@@ -3,6 +3,8 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=venv,python
 
 ### Python ###
+venv/
+.idea/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
