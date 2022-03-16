@@ -3,10 +3,10 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 // import AppLayout from '../components/layout/AppLayout'
-import Header from "../components/layout/Header";
-
+import AppLayout from "../components/layout/AppLayout";
+import Main from "./winemain";
 const Home: NextPage = () => {
-  return <Header></Header>;
+  return <Main></Main>;
 };
 
 export default Home;
