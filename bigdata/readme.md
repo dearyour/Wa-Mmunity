@@ -96,3 +96,13 @@ if __name__ == '__main__':
 # $ curl http://localhost:5000/todo1
 # {"todo1": "Remember the milk"}
 ```
+
+
+폴더구조
+```
+bigdata
+ ㄴ data
+    ㄴ input
+    ㄴ output
+ ㄴ models
+```
