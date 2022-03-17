@@ -1,8 +1,7 @@
-package com.web.wam.model.entity;
+package com.web.wam.model.entity.resellboard;
 
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -16,27 +15,24 @@ import java.time.Instant;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "member")
-public class Member {
+@Table(name = "resell_article_comment")
+public class ResellArticleComment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "member_id", nullable = false)
+    @Column(name = "comment_id", nullable = false)
     private Integer id;
 
-    @Column(name = "nickname", nullable = false)
-    private String nickname;
+    @Column(name = "article_id", nullable = false)
+    private Integer articleId;
 
-    @Column(name = "email", nullable = false)
-    private String email;
+    @Column(name = "member_id", nullable = false)
+    private Integer memberId;
 
-    @Column(name = "password", nullable = false)
-    private String password;
-
-    @Column(name = "is_adult", nullable = false)
-    private Integer isAdult;
+    @Lob
+    @Column(name = "content", nullable = false)
+    private String content;
 
     @CreationTimestamp
     @Column(name = "regtime", nullable = false)
     private Instant regtime;
-
 }

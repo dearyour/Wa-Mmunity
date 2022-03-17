@@ -12,23 +12,16 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "notice")
-public class Notice {
+@Table(name = "wine_wishlist")
+public class WineWishlist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "notice_id", nullable = false)
+    @Column(name = "wish_id", nullable = false)
     private Integer id;
 
     @Column(name = "member_id", nullable = false)
     private Integer memberId;
 
-    @Column(name = "board_id")
-    private Integer boardId;
-
-    @Column(name = "article_id")
-    private Integer articleId;
-
-    @Lob
-    @Column(name = "content")
-    private String content;
+    @Column(name = "wine_id", nullable = false)
+    private Integer wineId;
 }
