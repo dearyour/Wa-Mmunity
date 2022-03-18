@@ -13,13 +13,13 @@ import lombok.Setter;
 @Setter
 @ApiModel("FreeboardGetResponse")
 public class FreeboardGetResponse extends BaseResponse {
-	List<FreeBoard> articles = null;
+	List<FreeBoard> articleList = null;
 	
-	public static FreeboardGetResponse of(Integer statusCode, String message, List<FreeBoard> articles) {
+	public static FreeboardGetResponse of(Integer statusCode, String message, List<FreeBoard> articleList) {
 		FreeboardGetResponse res = new FreeboardGetResponse();
 		res.setStatusCode(statusCode);
 		res.setMessage(message);
-		res.setArticles(articles);
+		res.setArticleList(articleList);
 		return res;
 	}
 }

@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.web.wam.model.dto.BaseResponse;
 import com.web.wam.model.dto.freeboard.FreeBoardArticleGetResponse;
+import com.web.wam.model.dto.freeboard.FreeboardCmtGetResponse;
+import com.web.wam.model.dto.freeboard.FreeboardCmtPostRequest;
+import com.web.wam.model.dto.freeboard.FreeboardCmtPutRequest;
 import com.web.wam.model.dto.freeboard.FreeboardGetResponse;
 import com.web.wam.model.dto.freeboard.FreeboardPostRequest;
 import com.web.wam.model.dto.freeboard.FreeboardPutRequest;
@@ -97,4 +100,63 @@ public class FreeBoardController {
 		return ResponseEntity.status(200).body(FreeBoardArticleGetResponse.of(200, "Success", article,comments));
 	}
 	
+	@GetMapping("/myarticle/{memberId}")
+	@ApiOperation(value ="내가 작성한 글 리스트", notes = "자유게시판 내가 작성한 글 목록 보기")
+	@ApiResponses({ @ApiResponse(code = 200, message = "성공", response = BaseResponse.class),
+			@ApiResponse(code = 401, message = "인증 실패", response = BaseResponse.class),
+			@ApiResponse(code = 404, message = "게시글 없음", response = BaseResponse.class),
+			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponse.class) })
+
+	public ResponseEntity<? extends BaseResponse> getArticleByMemberId( @ApiParam(value = "멤버 아이디 정보", required = true) @PathVariable("memberId") int memberId){
+		List<FreeBoard> articles = freeBoardService.getArticleByMemberId(memberId); 
+		return ResponseEntity.status(200).body(FreeboardGetResponse.of(200, "Success", articles));
+	}
+	
+	@GetMapping("/mycomment/{memberId}")
+	@ApiOperation(value ="내가 작성한 댓글 리스트", notes = "자유게시판 내가 작성한 댓글 목록 보기")
+	@ApiResponses({ @ApiResponse(code = 200, message = "성공", response = BaseResponse.class),
+			@ApiResponse(code = 401, message = "인증 실패", response = BaseResponse.class),
+			@ApiResponse(code = 404, message = "게시글 없음", response = BaseResponse.class),
+			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponse.class) })
+
+	public ResponseEntity<? extends BaseResponse> getCommentByMemberId( @ApiParam(value = "멤버 아이디 정보", required = true) @PathVariable("memberId") int memberId){
+		List<FreeArticleComment> comments = freeBoardService.getCommentByMemberId(memberId); 
+		return ResponseEntity.status(200).body(FreeboardCmtGetResponse.of(200, "Success", comments));
+	}
+	
+	@PostMapping("/comment")
+	@ApiOperation(value = "댓글 작성", notes = "자유게시판 댓글 작성")
+	@ApiResponses({ @ApiResponse(code = 200, message = "성공", response = BaseResponse.class),
+			@ApiResponse(code = 401, message = "인증 실패", response = BaseResponse.class),
+			@ApiResponse(code = 404, message = "게시글 없음", response = BaseResponse.class),
+			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponse.class) })
+
+	public ResponseEntity<? extends BaseResponse> createComment(@RequestBody @ApiParam(value = "댓글 생성 정보", required = true) FreeboardCmtPostRequest commentCreateInfo){
+		freeBoardService.createComment(commentCreateInfo);
+		return ResponseEntity.status(200).body(BaseResponse.of(200, "Success"));
+	}
+	
+	@PutMapping("/comment")
+	@ApiOperation(value = "댓글 수정", notes = "자유게시판 댓글 수정")
+	@ApiResponses({ @ApiResponse(code = 200, message = "성공", response = BaseResponse.class),
+			@ApiResponse(code = 401, message = "인증 실패", response = BaseResponse.class),
+			@ApiResponse(code = 404, message = "게시글 없음", response = BaseResponse.class),
+			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponse.class) })
+
+	public ResponseEntity<? extends BaseResponse> updateComment(@RequestBody @ApiParam(value = "댓글 수정 정보", required = true) FreeboardCmtPutRequest commentUpdateInfo){
+		freeBoardService.updateComment(commentUpdateInfo);
+		return ResponseEntity.status(200).body(BaseResponse.of(200, "Success"));
+	}
+	
+	@DeleteMapping("/comment/{commentId}")
+	@ApiOperation(value = "댓글 삭제", notes = "자유게시판 댓글 삭제")
+	@ApiResponses({ @ApiResponse(code = 200, message = "성공", response = BaseResponse.class),
+			@ApiResponse(code = 401, message = "인증 실패", response = BaseResponse.class),
+			@ApiResponse(code = 404, message = "게시글 없음", response = BaseResponse.class),
+			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponse.class) })
+
+	public ResponseEntity<? extends BaseResponse> deleteComment( @ApiParam(value = "댓글 삭제 정보", required = true) @PathVariable("commentId") int commentId){
+		freeBoardService.deleteComment(commentId); 
+		return ResponseEntity.status(200).body(BaseResponse.of(200, "Success"));
+	}
 }

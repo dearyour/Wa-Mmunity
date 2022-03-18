@@ -7,6 +7,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.web.wam.model.dto.freeboard.FreeboardCmtPostRequest;
+import com.web.wam.model.dto.freeboard.FreeboardCmtPutRequest;
 import com.web.wam.model.dto.freeboard.FreeboardPostRequest;
 import com.web.wam.model.dto.freeboard.FreeboardPutRequest;
 import com.web.wam.model.entity.freeboard.FreeArticleComment;
@@ -21,6 +23,10 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 	
 	@Autowired
 	FreeBoardRepository freeBoardRepository;
+	@Autowired
+	FreeBoardRepositorySupport freeBoardRepositorySupport;
+	@Autowired
+	FreeArticleCommentRepository freeArticleCommentRepository;
 	@Autowired
 	FreeArticleCommentRepositorySupport freeArticleCommentRepositorySupport;
 	
@@ -78,7 +84,52 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 	@Override
 	public List<FreeArticleComment> getCommentsById(int articleId) {
 		List<FreeArticleComment> comments = freeArticleCommentRepositorySupport.findByArticleId(articleId);
-		return null;
+		return comments;
+	}
+
+
+	@Override
+	public List<FreeBoard> getArticleByMemberId(int memberId) {
+		List<FreeBoard> articles = freeBoardRepositorySupport.findByMemberId(memberId);
+		return articles;
+	}
+
+
+	@Override
+	public List<FreeArticleComment> getCommentByMemberId(int memberId) {
+		List<FreeArticleComment> comments = freeArticleCommentRepositorySupport.findByMemberId(memberId);
+		return comments;
+	}
+
+
+	@Override
+	public void createComment(FreeboardCmtPostRequest commentCreateInfo) {
+		FreeArticleComment comment = new FreeArticleComment();
+		comment.setArticleId(commentCreateInfo.getAtricleId());
+		comment.setMemberId(commentCreateInfo.getMemberId());
+		comment.setContent(commentCreateInfo.getContent());
+		comment.setRegtime(LocalDateTime.now());
+		freeArticleCommentRepository.save(comment);
+	}
+
+
+	@Override
+	public void updateComment(FreeboardCmtPutRequest commentUpdateInfo) {
+		Optional<FreeArticleComment> comment = freeArticleCommentRepository.findById(commentUpdateInfo.getCommentId());
+		comment.ifPresent(selectComment->{
+			selectComment.setContent(commentUpdateInfo.getContent());
+			selectComment.setRegtime(LocalDateTime.now());
+			freeArticleCommentRepository.save(selectComment);
+		});
+	}
+
+
+	@Override
+	public void deleteComment(int commentId) {
+		Optional<FreeArticleComment> comment = freeArticleCommentRepository.findById(commentId);
+		comment.ifPresent(selectComment->{
+			freeArticleCommentRepository.delete(selectComment);
+		});
 	}
 
 }
