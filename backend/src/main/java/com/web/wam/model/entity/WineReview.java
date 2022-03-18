@@ -1,12 +1,10 @@
 package com.web.wam.model.entity;
 
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
-@EntityListeners(AuditingEntityListener.class)
 @ToString
 @Getter
 @Setter
@@ -34,6 +32,6 @@ public class WineReview {
     private String content;
 
     @Column(name = "regtime")
-    private String regtime;
+    private LocalDateTime regtime;
 
 }

@@ -1,6 +1,10 @@
 package com.web.wam.model.entity;
 
 import lombok.*;
+<<<<<<< HEAD
+
+=======
+>>>>>>> b4b9e52929aeeff9195938f468e3e051f65fff79
 import javax.persistence.*;
 
 @ToString

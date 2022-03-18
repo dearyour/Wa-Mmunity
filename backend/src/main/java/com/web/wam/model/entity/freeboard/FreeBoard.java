@@ -1,15 +1,20 @@
 package com.web.wam.model.entity.freeboard;
 
 import lombok.*;
+<<<<<<< HEAD
+=======
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+>>>>>>> b4b9e52929aeeff9195938f468e3e051f65fff79
 
 
 import javax.persistence.*;
+<<<<<<< HEAD
+=======
 
+>>>>>>> b4b9e52929aeeff9195938f468e3e051f65fff79
 import java.time.LocalDateTime;
 
-@EntityListeners(AuditingEntityListener.class)
 @ToString
 @Getter
 @Setter

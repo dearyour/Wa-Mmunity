@@ -1,14 +1,14 @@
 package com.web.wam.model.entity.resellboard;
 
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+<<<<<<< HEAD
+=======
 import java.time.Instant;
+>>>>>>> b4b9e52929aeeff9195938f468e3e051f65fff79
 import java.time.LocalDateTime;
 
-@EntityListeners(AuditingEntityListener.class)
 @ToString
 @Getter
 @Setter
