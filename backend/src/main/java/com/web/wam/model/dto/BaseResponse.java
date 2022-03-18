@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 서버 요청에 대한 기본 응답값(바디) 정
+ * 서버 요청에 대한 기본 응답값(바디) 정의
  */
 @Getter
 @Setter
