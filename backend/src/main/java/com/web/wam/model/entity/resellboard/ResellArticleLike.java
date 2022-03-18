@@ -1,7 +1,6 @@
 package com.web.wam.model.entity.resellboard;
 
 import lombok.*;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 

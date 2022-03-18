@@ -1,14 +1,10 @@
 package com.web.wam.model.entity.resellboard;
 
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.time.Instant;
+import java.time.LocalDateTime;
 
-@EntityListeners(AuditingEntityListener.class)
 @ToString
 @Getter
 @Setter
@@ -44,8 +40,7 @@ public class ResellBoard {
     @Column(name = "price", nullable = false)
     private Integer price;
 
-    @CreationTimestamp
     @Column(name = "regtime", nullable = false)
-    private Instant regtime;
+    private LocalDateTime regtime;
 
 }
