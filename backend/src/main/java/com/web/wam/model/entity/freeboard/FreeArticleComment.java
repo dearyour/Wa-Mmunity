@@ -6,6 +6,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 @EntityListeners(AuditingEntityListener.class)
 @ToString
@@ -32,7 +33,6 @@ public class FreeArticleComment {
     @Column(name = "content", nullable = false)
     private String content;
 
-    @CreationTimestamp
     @Column(name = "regtime", nullable = false)
-    private Instant regtime;
+    private LocalDateTime regtime;
 }

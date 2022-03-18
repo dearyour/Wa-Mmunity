@@ -33,7 +33,6 @@ public class WineReview {
     @Column(name = "content")
     private String content;
 
-    @CreationTimestamp
     @Column(name = "regtime")
     private String regtime;
 
