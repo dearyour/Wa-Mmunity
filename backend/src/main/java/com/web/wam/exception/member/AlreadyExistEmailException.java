@@ -1,4 +1,4 @@
-package com.web.wam.exception;
+package com.web.wam.exception.member;
 
 public class AlreadyExistEmailException extends RuntimeException{
 
