@@ -46,4 +46,18 @@ public class MemberRepositoryTest {
         Assertions.assertThat(member.getPassword()).isSameAs(savedMember.getPassword());
         Assertions.assertThat(member.getIsAdult()).isSameAs(savedMember.getIsAdult());
     }
+
+    @Test
+    @DisplayName("ExistsByEmail")
+    void exsitsByEmail() {
+        //given
+        Member member = new SignupRequest("nickname", "email@gmail.com", "wammunity123456", 1).toEntity();
+        //when
+        memberRepository.save(member);
+        boolean isExists1 = memberRepository.existsByEmail(member.getEmail());
+        boolean isExists2 = memberRepository.existsByEmail(member.getNickname());
+        //then
+        Assertions.assertThat(isExists1).isSameAs(true);
+        Assertions.assertThat(isExists2).isSameAs(false);
+    }
 }
