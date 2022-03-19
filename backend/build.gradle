@@ -41,6 +41,7 @@ dependencies {
 	
 	//Hibernate
 	//runtimeOnly 'com.h2database:h2'
+	implementation group: 'com.h2database', name: 'h2'
 	
 	//Lombok
 	compileOnly 'org.projectlombok:lombok'
