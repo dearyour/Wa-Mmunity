@@ -11,6 +11,6 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void signup(SignupRequest signupRequest) {
-        
+
     }
 }
