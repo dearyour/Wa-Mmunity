@@ -52,12 +52,26 @@ public class MemberRepositoryTest {
     void exsitsByEmail() {
         //given
         Member member = new SignupRequest("nickname", "email@gmail.com", "wammunity123456", 1).toEntity();
-        //when
         memberRepository.save(member);
+        //when
         boolean isExists1 = memberRepository.existsByEmail(member.getEmail());
         boolean isExists2 = memberRepository.existsByEmail(member.getNickname());
         //then
         Assertions.assertThat(isExists1).isSameAs(true);
         Assertions.assertThat(isExists2).isSameAs(false);
+    }
+
+    @Test
+    @DisplayName("ExistsByNickname")
+    void exsitsByNickname() {
+        //given
+        Member member = new SignupRequest("nickname", "email@gmail.com", "wammunity123456", 1).toEntity();
+        memberRepository.save(member);
+        //when
+        boolean isExists1 = memberRepository.existsByNickname(member.getEmail());
+        boolean isExists2 = memberRepository.existsByNickname(member.getNickname());
+        //then
+        Assertions.assertThat(isExists1).isSameAs(false);
+        Assertions.assertThat(isExists2).isSameAs(true);
     }
 }
