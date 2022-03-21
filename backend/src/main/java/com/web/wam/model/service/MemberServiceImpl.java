@@ -1,7 +1,9 @@
 package com.web.wam.model.service;
 
+import com.web.wam.config.security.JwtTokenProvider;
 import com.web.wam.exception.member.AlreadyExistEmailException;
 import com.web.wam.exception.member.AlreadyExistNicknameException;
+import com.web.wam.model.dto.member.SigninRequest;
 import com.web.wam.model.dto.member.SignupRequest;
 import com.web.wam.model.entity.Member;
 import com.web.wam.model.repository.MemberRepository;
@@ -18,6 +20,9 @@ public class MemberServiceImpl implements MemberService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    JwtTokenProvider jwtTokenProvider;
+
     @Override
     public void signup(SignupRequest signupRequest) {
         if(memberRepository.existsByEmail(signupRequest.getEmail())) {
@@ -29,5 +34,10 @@ public class MemberServiceImpl implements MemberService {
             member.setPassword(passwordEncoder.encode(signupRequest.getPassword()));
             memberRepository.save(member);
         }
+    }
+
+    @Override
+    public String signin(SigninRequest request) {
+        return jwtTokenProvider.createToken();
     }
 }
