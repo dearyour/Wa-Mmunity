@@ -31,7 +31,7 @@ public class Member {
     @Column(name = "is_adult", nullable = false)
     private Integer isAdult;
 
-    @Column(name = "regtime", nullable = false)
+    @Column(name = "regtime", nullable = true)
     private LocalDateTime regtime;
 
 }
