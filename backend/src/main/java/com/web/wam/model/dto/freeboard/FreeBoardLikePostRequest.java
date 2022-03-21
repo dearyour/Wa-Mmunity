@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @ApiModel("FreeboardLikePostRequest")
-public class FreeboardLikePostRequest {
+public class FreeBoardLikePostRequest {
 	@ApiModelProperty(name = "게시글", example = "0")
 	int atricleId;
 	

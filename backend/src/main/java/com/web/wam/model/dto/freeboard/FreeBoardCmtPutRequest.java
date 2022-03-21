@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @ApiModel("FreeboardCmtPutRequest")
-public class FreeboardCmtPutRequest {
+public class FreeBoardCmtPutRequest {
 	@ApiModelProperty(name = "댓글Id", example = "0")
 	int commentId;
 	
