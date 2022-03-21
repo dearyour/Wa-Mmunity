@@ -1,7 +1,10 @@
 package com.web.wam.model.service;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,11 +41,17 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 	@Autowired
 	FreeArticleLikeRepositorySupport freeArticleLikeRepositorySupport;
 	
-
+	
 	@Override
-	public List<FreeBoard> getAllArticle() {
+	public Map<FreeBoard, Long> getAllArticle() {
+		
+		Map<FreeBoard, Long> allArticle = new HashMap<FreeBoard, Long>();
 		List<FreeBoard> articles = freeBoardRepository.findAll();
-		return articles;
+		for (FreeBoard article : articles) {
+			long like = getLikeCountById(article.getArticleId());
+			allArticle.put(article, like);
+		}
+		return allArticle;
 	}
 
 
@@ -102,8 +111,8 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 	}
 
 	@Override
-	public List<FreeBoard> getArticleByMemberId(int memberId) {
-		List<FreeBoard> articles = freeBoardRepositorySupport.findByMemberId(memberId);
+	public Map<FreeBoard,Long> getArticleByMemberId(int memberId) {
+		Map<FreeBoard,Long> articles = freeBoardRepositorySupport.findByMemberId(memberId);
 		return articles;
 	}
 
@@ -157,6 +166,13 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 	@Override
 	public void cancelLike(FreeboardLikePostRequest likeCancelInfo) {
 		freeArticleLikeRepositorySupport.cancelLike(likeCancelInfo);
+	}
+
+
+	@Override
+	public Map<FreeBoard, Long> getArticleByKeyword(String keyword) {
+		Map<FreeBoard, Long> articles = freeBoardRepositorySupport.getArticleByKeyword(keyword);
+		return articles;
 	}
 
 

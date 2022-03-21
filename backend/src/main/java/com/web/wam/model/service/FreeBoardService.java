@@ -1,6 +1,7 @@
 package com.web.wam.model.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import com.web.wam.model.dto.freeboard.FreeboardCmtPostRequest;
@@ -13,7 +14,7 @@ import com.web.wam.model.entity.freeboard.FreeBoard;
 
 public interface FreeBoardService {
 
-	List<FreeBoard> getAllArticle();
+	Map<FreeBoard, Long> getAllArticle();
 
 	void createArticle(FreeboardPostRequest articleCreateInfo);
 
@@ -25,7 +26,7 @@ public interface FreeBoardService {
 
 	List<FreeArticleComment> getCommentsById(int articleId);
 
-	List<FreeBoard> getArticleByMemberId(int memberId);
+	Map<FreeBoard, Long> getArticleByMemberId(int memberId);
 
 	List<FreeArticleComment> getCommentByMemberId(int memberId);
 
@@ -40,5 +41,7 @@ public interface FreeBoardService {
 	void cancelLike(FreeboardLikePostRequest likeCancelInfo);
 
 	long getLikeCountById(int articleId);
+
+	Map<FreeBoard, Long> getArticleByKeyword(String keyword);
 
 }

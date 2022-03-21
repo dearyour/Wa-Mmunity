@@ -12,7 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "free_article_like")
-public class FreeArticleLike {
+public class FreeArticleLike{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "free_like_id", nullable = false)

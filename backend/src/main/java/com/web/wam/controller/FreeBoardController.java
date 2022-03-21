@@ -1,6 +1,7 @@
 package com.web.wam.controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +49,7 @@ public class FreeBoardController {
 			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponse.class) })
 
 	public ResponseEntity<? extends BaseResponse> getAllArticle(){
-		List<FreeBoard> articles= freeBoardService.getAllArticle();
+		Map<FreeBoard,Long> articles= freeBoardService.getAllArticle();
 		return ResponseEntity.status(200).body(FreeboardGetResponse.of(200, "Success", articles));
 	}
 	
@@ -110,7 +111,7 @@ public class FreeBoardController {
 			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponse.class) })
 
 	public ResponseEntity<? extends BaseResponse> getArticleByMemberId( @ApiParam(value = "멤버 아이디 정보", required = true) @PathVariable("memberId") int memberId){
-		List<FreeBoard> articles = freeBoardService.getArticleByMemberId(memberId); 
+		Map<FreeBoard,Long> articles = freeBoardService.getArticleByMemberId(memberId); 
 		return ResponseEntity.status(200).body(FreeboardGetResponse.of(200, "Success", articles));
 	}
 	
@@ -184,5 +185,17 @@ public class FreeBoardController {
 	public ResponseEntity<? extends BaseResponse> cancelLike(@RequestBody @ApiParam(value = "추천 삭제 정보", required = true) FreeboardLikePostRequest likeCancelInfo){
 		freeBoardService.cancelLike(likeCancelInfo); 
 		return ResponseEntity.status(200).body(BaseResponse.of(200, "Success"));
+	}
+	
+	@GetMapping("/search/{keyword}")
+	@ApiOperation(value ="게시글 검색", notes = "자유게시판 게시글 검색(제목으로만)")
+	@ApiResponses({ @ApiResponse(code = 200, message = "성공", response = BaseResponse.class),
+			@ApiResponse(code = 401, message = "인증 실패", response = BaseResponse.class),
+			@ApiResponse(code = 404, message = "게시글 없음", response = BaseResponse.class),
+			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponse.class) })
+
+	public ResponseEntity<? extends BaseResponse> getArticleByKeyword( @ApiParam(value = "검색 내용 정보", required = true) @PathVariable("keyword") String keyword){
+		Map<FreeBoard,Long> articles = freeBoardService.getArticleByKeyword(keyword); 
+		return ResponseEntity.status(200).body(FreeboardGetResponse.of(200, "Success", articles));
 	}
 }
