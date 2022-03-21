@@ -21,6 +21,7 @@ import com.web.wam.model.dto.freeboard.FreeboardCmtGetResponse;
 import com.web.wam.model.dto.freeboard.FreeboardCmtPostRequest;
 import com.web.wam.model.dto.freeboard.FreeboardCmtPutRequest;
 import com.web.wam.model.dto.freeboard.FreeboardGetResponse;
+import com.web.wam.model.dto.freeboard.FreeboardLikePostRequest;
 import com.web.wam.model.dto.freeboard.FreeboardPostRequest;
 import com.web.wam.model.dto.freeboard.FreeboardPutRequest;
 import com.web.wam.model.entity.freeboard.FreeArticleComment;
@@ -97,7 +98,8 @@ public class FreeBoardController {
 	public ResponseEntity<? extends BaseResponse> getArticleById( @ApiParam(value = "선택한 게시글 정보", required = true) @PathVariable("articleId") int articleId){
 		Optional<FreeBoard> article = freeBoardService.getArticleById(articleId); 
 		List<FreeArticleComment> comments = freeBoardService.getCommentsById(articleId);
-		return ResponseEntity.status(200).body(FreeBoardArticleGetResponse.of(200, "Success", article,comments));
+		long likeCnt = freeBoardService.getLikeCountById(articleId);
+		return ResponseEntity.status(200).body(FreeBoardArticleGetResponse.of(200, "Success", article,comments,likeCnt));
 	}
 	
 	@GetMapping("/myarticle/{memberId}")
@@ -157,6 +159,30 @@ public class FreeBoardController {
 
 	public ResponseEntity<? extends BaseResponse> deleteComment( @ApiParam(value = "댓글 삭제 정보", required = true) @PathVariable("commentId") int commentId){
 		freeBoardService.deleteComment(commentId); 
+		return ResponseEntity.status(200).body(BaseResponse.of(200, "Success"));
+	}
+	
+	@PostMapping("/like")
+	@ApiOperation(value = "추천 누르기", notes = "자유게시판 게시글 추천")
+	@ApiResponses({ @ApiResponse(code = 200, message = "성공", response = BaseResponse.class),
+			@ApiResponse(code = 401, message = "인증 실패", response = BaseResponse.class),
+			@ApiResponse(code = 404, message = "게시글 없음", response = BaseResponse.class),
+			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponse.class) })
+
+	public ResponseEntity<? extends BaseResponse> addLike(@RequestBody @ApiParam(value ="추천 생성 정보", required = true) FreeboardLikePostRequest likeAddInfo){
+		freeBoardService.addLike(likeAddInfo);
+		return ResponseEntity.status(200).body(BaseResponse.of(200, "Success"));
+	}
+	
+	@DeleteMapping("/like")
+	@ApiOperation(value = "추천 취소하기", notes = "자유게시판 게시글 추천 취소하기")
+	@ApiResponses({ @ApiResponse(code = 200, message = "성공", response = BaseResponse.class),
+			@ApiResponse(code = 401, message = "인증 실패", response = BaseResponse.class),
+			@ApiResponse(code = 404, message = "게시글 없음", response = BaseResponse.class),
+			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponse.class) })
+
+	public ResponseEntity<? extends BaseResponse> cancelLike(@RequestBody @ApiParam(value = "추천 삭제 정보", required = true) FreeboardLikePostRequest likeCancelInfo){
+		freeBoardService.cancelLike(likeCancelInfo); 
 		return ResponseEntity.status(200).body(BaseResponse.of(200, "Success"));
 	}
 }

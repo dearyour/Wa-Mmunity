@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import com.web.wam.model.dto.freeboard.FreeboardCmtPostRequest;
 import com.web.wam.model.dto.freeboard.FreeboardCmtPutRequest;
+import com.web.wam.model.dto.freeboard.FreeboardLikePostRequest;
 import com.web.wam.model.dto.freeboard.FreeboardPostRequest;
 import com.web.wam.model.dto.freeboard.FreeboardPutRequest;
 import com.web.wam.model.entity.freeboard.FreeArticleComment;
@@ -33,5 +34,11 @@ public interface FreeBoardService {
 	void updateComment(FreeboardCmtPutRequest commentUpdateInfo);
 
 	void deleteComment(int commentId);
+
+	void addLike(FreeboardLikePostRequest likeAddInfo);
+
+	void cancelLike(FreeboardLikePostRequest likeCancelInfo);
+
+	long getLikeCountById(int articleId);
 
 }

@@ -18,13 +18,15 @@ import lombok.Setter;
 public class FreeBoardArticleGetResponse extends BaseResponse {
 	Optional<FreeBoard> article = null;
 	List<FreeArticleComment> comments = null;
+	long likeCnt;
 	
-	public static FreeBoardArticleGetResponse of(Integer statusCode, String message, Optional<FreeBoard> article, List<FreeArticleComment> comments) {
+	public static FreeBoardArticleGetResponse of(Integer statusCode, String message, Optional<FreeBoard> article, List<FreeArticleComment> comments, long likeCnt) {
 		FreeBoardArticleGetResponse res = new FreeBoardArticleGetResponse();
 		res.setStatusCode(statusCode);
 		res.setMessage(message);
 		res.setArticle(article);
 		res.setComments(comments);
+		res.setLikeCnt(likeCnt);
 		return res;
 	}
 }

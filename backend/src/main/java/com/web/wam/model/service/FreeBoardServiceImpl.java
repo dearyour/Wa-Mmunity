@@ -9,12 +9,16 @@ import org.springframework.stereotype.Service;
 
 import com.web.wam.model.dto.freeboard.FreeboardCmtPostRequest;
 import com.web.wam.model.dto.freeboard.FreeboardCmtPutRequest;
+import com.web.wam.model.dto.freeboard.FreeboardLikePostRequest;
 import com.web.wam.model.dto.freeboard.FreeboardPostRequest;
 import com.web.wam.model.dto.freeboard.FreeboardPutRequest;
 import com.web.wam.model.entity.freeboard.FreeArticleComment;
+import com.web.wam.model.entity.freeboard.FreeArticleLike;
 import com.web.wam.model.entity.freeboard.FreeBoard;
 import com.web.wam.model.repository.freeboard.FreeArticleCommentRepository;
 import com.web.wam.model.repository.freeboard.FreeArticleCommentRepositorySupport;
+import com.web.wam.model.repository.freeboard.FreeArticleLikeRepository;
+import com.web.wam.model.repository.freeboard.FreeArticleLikeRepositorySupport;
 import com.web.wam.model.repository.freeboard.FreeBoardRepository;
 import com.web.wam.model.repository.freeboard.FreeBoardRepositorySupport;
 
@@ -29,6 +33,10 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 	FreeArticleCommentRepository freeArticleCommentRepository;
 	@Autowired
 	FreeArticleCommentRepositorySupport freeArticleCommentRepositorySupport;
+	@Autowired
+	FreeArticleLikeRepository freeArticleLikeRepository;
+	@Autowired
+	FreeArticleLikeRepositorySupport freeArticleLikeRepositorySupport;
 	
 
 	@Override
@@ -86,7 +94,12 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 		List<FreeArticleComment> comments = freeArticleCommentRepositorySupport.findByArticleId(articleId);
 		return comments;
 	}
-
+	
+	@Override
+	public long getLikeCountById(int articleId) {
+		long likeCnt = freeArticleLikeRepositorySupport.countByArticleId(articleId);
+		return likeCnt;
+	}
 
 	@Override
 	public List<FreeBoard> getArticleByMemberId(int memberId) {
@@ -131,5 +144,21 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 			freeArticleCommentRepository.delete(selectComment);
 		});
 	}
+
+
+	@Override
+	public void addLike(FreeboardLikePostRequest likeAddInfo) {
+		FreeArticleLike like = new FreeArticleLike();
+		like.setArticleId(likeAddInfo.getAtricleId());
+		like.setMemberId(likeAddInfo.getMemberId());
+		freeArticleLikeRepository.save(like);
+	}
+
+	@Override
+	public void cancelLike(FreeboardLikePostRequest likeCancelInfo) {
+		freeArticleLikeRepositorySupport.cancelLike(likeCancelInfo);
+	}
+
+
 
 }
