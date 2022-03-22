@@ -17,8 +17,8 @@ public class FreeboardGetResponse extends BaseResponse {
 	
 	public static FreeboardGetResponse of(Integer statusCode, String message, List<FreeBoard> articles) {
 		FreeboardGetResponse res = new FreeboardGetResponse();
-		res.setStatusCode(statusCode);
-		res.setMessage(message);
+		res.setStatus(statusCode);
+		res.setObject(message);
 		res.setArticles(articles);
 		return res;
 	}

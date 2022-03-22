@@ -21,8 +21,8 @@ public class FreeBoardArticleGetResponse extends BaseResponse {
 	
 	public static FreeBoardArticleGetResponse of(Integer statusCode, String message, Optional<FreeBoard> article, List<FreeArticleComment> comments) {
 		FreeBoardArticleGetResponse res = new FreeBoardArticleGetResponse();
-		res.setStatusCode(statusCode);
-		res.setMessage(message);
+		res.setStatus(statusCode);
+		res.setObject(message);
 		res.setArticle(article);
 		res.setComments(comments);
 		return res;
