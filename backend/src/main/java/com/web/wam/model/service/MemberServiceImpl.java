@@ -38,6 +38,17 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public String signin(SigninRequest request) {
-        return jwtTokenProvider.createToken();
+
+        Member member = memberRepository.findByEmail(request.getEmail());
+
+        // ID Verification
+        if(member == null) throw new IllegalArgumentException("가입되지 않은 E-MAIL입니다.");
+
+        // Password Verification
+        if(!passwordEncoder.matches(request.getPassword(), member.getPassword()))
+            throw new IllegalArgumentException("잘못된 비밀번호입니다.");
+
+        // return Token
+        return jwtTokenProvider.createToken(member.getUsername(), member.getRoles());
     }
 }

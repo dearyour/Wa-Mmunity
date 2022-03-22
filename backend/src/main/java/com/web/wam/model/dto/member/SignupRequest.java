@@ -1,7 +1,9 @@
 package com.web.wam.model.dto.member;
 
 import com.web.wam.model.entity.Member;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.validation.constraints.Email;
@@ -9,22 +11,33 @@ import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 @Data
-public class SignupRequest implements Serializable {
+public class SignupRequest {
 
     @ApiModelProperty(required = true)
     @NotBlank
-    private final String nickname;
+    private String nickname;
 
     @ApiModelProperty(required = true)
     @NotBlank
     @Email
-    private final String email;
+    private String email;
 
     @ApiModelProperty(required = true)
     @NotBlank
-    private final String password;
+    private String password;
 
-    private final Integer isAdult;
+    private Integer isAdult;
+
+    protected SignupRequest() {
+        
+    }
+
+    public SignupRequest(String nickname, String email, String password, Integer isAdult) {
+        this.nickname = nickname;
+        this.email = email;
+        this.password = password;
+        this.isAdult = isAdult;
+    }
 
     public Member toEntity() {
         return Member.builder()

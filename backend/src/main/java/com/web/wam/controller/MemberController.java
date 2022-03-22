@@ -1,20 +1,21 @@
 package com.web.wam.controller;
 
 import com.web.wam.model.dto.BaseResponse;
+import com.web.wam.model.dto.member.SigninRequest;
 import com.web.wam.model.dto.member.SignupRequest;
 import com.web.wam.model.service.MemberService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 
 import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 @CrossOrigin(origins = { "*" }, methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE} , maxAge = 6000)
 @RequestMapping("/member")
@@ -37,7 +38,18 @@ public class MemberController {
     public ResponseEntity<? extends BaseResponse> signup(@RequestBody @Valid SignupRequest request) {
 
         memberService.signup(request);
-        return ResponseEntity.status(200).body(BaseResponse.of(200, "Success"));
+        return ResponseEntity.status(200).body(BaseResponse.of(200, "success"));
+    }
+
+    @PostMapping("/signin")
+    @ApiOperation(value = "로그인요청", notes = "로그인 요청 API")
+    @ApiResponses({ @ApiResponse(code = 200, message = MESSAGE_200, response = BaseResponse.class),
+            @ApiResponse(code = 401, message = MESSAGE_401, response = BaseResponse.class),
+            @ApiResponse(code = 500, message = MESSAGE_500, response = BaseResponse.class) })
+    public ResponseEntity<? extends BaseResponse> signin(@RequestBody SigninRequest request) {
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("token", memberService.signin(request));
+        return ResponseEntity.status(200).body(BaseResponse.of(200, resultMap));
     }
 
 }
