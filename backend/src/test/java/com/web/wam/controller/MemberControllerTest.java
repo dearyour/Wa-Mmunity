@@ -48,8 +48,8 @@ public class MemberControllerTest {
                         //.content(new ObjectMapper().writeValueAsString(signupRequest))
         )
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.statusCode").exists())
-        .andExpect(jsonPath("$.message").exists())
+        .andExpect(jsonPath("$.status").exists())
+        .andExpect(jsonPath("$.object").exists())
         .andDo(print());
 
         verify(memberService).signup(signupRequest);

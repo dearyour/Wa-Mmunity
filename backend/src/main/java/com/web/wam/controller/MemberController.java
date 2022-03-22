@@ -79,8 +79,7 @@ public class MemberController {
     @PatchMapping("/password")
     @ApiOperation(value = "회원 확인", notes = "이메일 입력 후 회원인지 확인")
     @ApiResponses({ @ApiResponse(code = 200, message = MESSAGE_200, response = BaseResponse.class),
-            @ApiResponse(code = 400, message = "이메일을 다시 입력해주세요.", response = BaseResponse.class),
-            @ApiResponse(code = 401, message = "이메일을 다시 입력해주세요.", response = BaseResponse.class),
+            @ApiResponse(code = 401, message = MESSAGE_401, response = BaseResponse.class),
             @ApiResponse(code = 500, message = MESSAGE_500, response = BaseResponse.class) })
     public ResponseEntity<? extends BaseResponse> isMember(@RequestBody @Valid ChangePasswordRequest request) {
         Map<String, Object> resultMap = new HashMap<>();
@@ -89,4 +88,14 @@ public class MemberController {
         return ResponseEntity.status(200).body(BaseResponse.of(200, resultMap));
     }
 
+    @GetMapping("/{email}")
+    @ApiOperation(value = "회원 정보 보기", notes = "아이디와 일치하는 회원 정보 불러오기")
+    @ApiResponses({ @ApiResponse(code = 200, message = MESSAGE_200, response = BaseResponse.class),
+            @ApiResponse(code = 401, message = MESSAGE_401, response = BaseResponse.class),
+            @ApiResponse(code = 500, message = MESSAGE_500, response = BaseResponse.class) })
+    public ResponseEntity<? extends BaseResponse> findMember(@PathVariable("email") @ApiParam(value = "유저의 email.", required = true) String email) {
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("member", memberService.findMemberInfo(email));
+        return ResponseEntity.status(200).body(BaseResponse.of(200, resultMap));
+    }
 }
