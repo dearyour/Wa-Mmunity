@@ -89,7 +89,6 @@ public class FreeBoardController {
 		return ResponseEntity.status(200).body(BaseResponse.of(200, "Success"));
 	}
 
-	// TO-DO : 여기 수정해야함
 	@GetMapping("/article/{articleId}")
 	@ApiOperation(value = "선택한 게시글 보기", notes = "자유게시판 게시글 보기")
 	@ApiResponses({ @ApiResponse(code = 200, message = "성공", response = BaseResponse.class),
@@ -102,7 +101,8 @@ public class FreeBoardController {
 		FreeBoardResponse article = freeBoardService.getArticleById(articleId);
 		List<FreeaBoardCmtResponse> comments = freeBoardService.getCommentsById(articleId);
 
-		return ResponseEntity.status(200).body(FreeBoardArticleGetResponse.of(200, article, comments));
+		return ResponseEntity.status(200)
+				.body(BaseResponse.of(200, new FreeBoardArticleGetResponse(article, comments)));
 	}
 
 	@GetMapping("/myarticle/{memberId}")
