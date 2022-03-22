@@ -37,10 +37,11 @@ dependencies {
 	implementation 'com.querydsl:querydsl-jpa:5.0.0'
 	
 	//JPA
-	implementation group: 'org.springframework.data', name: 'spring-data-jpa', version: '2.6.1'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	
 	//Hibernate
-	runtimeOnly 'com.h2database:h2'
+	//runtimeOnly 'com.h2database:h2'
+	implementation group: 'com.h2database', name: 'h2'
 	
 	//Lombok
 	compileOnly 'org.projectlombok:lombok'
@@ -51,7 +52,7 @@ dependencies {
 	implementation 'mysql:mysql-connector-java'
 	
 	//S3
-	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+	//implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 	
 	//JWT
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
@@ -68,7 +69,9 @@ dependencies {
   	//Swagger
   	implementation 'io.springfox:springfox-boot-starter:3.0.0'
   	implementation 'io.springfox:springfox-swagger-ui:3.0.0'
-  	
+
+	//Gson
+	implementation group: 'com.google.code.gson', name: 'gson', version: '2.8.5'
 }
 
 
