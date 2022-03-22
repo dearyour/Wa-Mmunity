@@ -10,27 +10,27 @@ import lombok.Setter;
 @ApiModel("BaseResponse")
 public class BaseResponse {
 
-    @ApiModelProperty(value = "status")
-    public int status;
-    @ApiModelProperty(value = "object")
-    public Object object;
+	@ApiModelProperty(value = "status")
+	public Integer status;
+	@ApiModelProperty(value = "object")
+	public Object object;
 
     public BaseResponse() {
     }
 
-    public BaseResponse(int status) {
-        this.status = status;
-    }
+	public BaseResponse(Integer status) {
+		this.status = status;
+	}
 
-    public BaseResponse(int status, Object object) {
-        this.status = status;
-        this.object = object; 
-    }
+	public BaseResponse(Integer status, Object object) {
+		this.status = status;
+		this.object = object;
+	}
 
-    public static BaseResponse of(int status, Object object) {
-    	BaseResponse body = new BaseResponse();
-        body.status = status;
-        body.object = object;
-        return body;
-    }
+	public static BaseResponse of(Integer status, Object object) {
+		BaseResponse body = new BaseResponse();
+		body.status = status;
+		body.object = object;
+		return body;
+	}
 }
