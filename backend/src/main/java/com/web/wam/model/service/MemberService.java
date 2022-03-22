@@ -1,9 +1,6 @@
 package com.web.wam.model.service;
 
-import com.web.wam.model.dto.member.ChangePasswordRequest;
-import com.web.wam.model.dto.member.MemberResponse;
-import com.web.wam.model.dto.member.SigninRequest;
-import com.web.wam.model.dto.member.SignupRequest;
+import com.web.wam.model.dto.member.*;
 
 public interface MemberService {
 
@@ -18,4 +15,6 @@ public interface MemberService {
     void changePassword(ChangePasswordRequest request);
 
     MemberResponse findMemberInfo(String email);
+
+    void updateMemberNickname(ChangeNicknameRequest request);
 }
