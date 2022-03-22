@@ -8,4 +8,8 @@ public interface MemberService {
     void signup(SignupRequest signupRequest);
 
     String signin(SigninRequest request);
+
+    boolean idcheck(String email);
+
+    String createNewPassword(String email);
 }
