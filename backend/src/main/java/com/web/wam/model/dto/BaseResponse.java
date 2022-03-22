@@ -5,9 +5,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
-/**
- * 서버 요청에 대한 기본 응답값(바디) 정의
- */
 @Getter
 @Setter
 @ApiModel("BaseResponse")
@@ -18,8 +15,8 @@ public class BaseResponse {
 	@ApiModelProperty(value = "object")
 	public Object object;
 
-	public BaseResponse() {
-	}
+    public BaseResponse() {
+    }
 
 	public BaseResponse(Integer status) {
 		this.status = status;

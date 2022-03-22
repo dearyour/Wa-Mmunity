@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @ApiModel("FreeboardPostRequest")
-public class FreeboardPostRequest {
+public class FreeBoardPostRequest {
 	@ApiModelProperty(name = "작성자", example = "0")
 	int memberId;
 	

@@ -1,25 +1,45 @@
 package com.web.wam.model.service;
 
 import java.util.List;
-import java.util.Optional;
 
-import com.web.wam.model.dto.freeboard.FreeboardPostRequest;
-import com.web.wam.model.dto.freeboard.FreeboardPutRequest;
-import com.web.wam.model.entity.freeboard.FreeArticleComment;
-import com.web.wam.model.entity.freeboard.FreeBoard;
+import com.web.wam.model.dto.freeboard.FreeBoardCmtPostRequest;
+import com.web.wam.model.dto.freeboard.FreeBoardCmtPutRequest;
+import com.web.wam.model.dto.freeboard.FreeBoardLikePostRequest;
+import com.web.wam.model.dto.freeboard.FreeBoardPostRequest;
+import com.web.wam.model.dto.freeboard.FreeBoardPutRequest;
+import com.web.wam.model.dto.freeboard.FreeBoardResponse;
+import com.web.wam.model.dto.freeboard.FreeaBoardCmtResponse;
 
 public interface FreeBoardService {
 
-	List<FreeBoard> getAllArticle();
+	List<FreeBoardResponse> getAllArticle();
 
-	void createArticle(FreeboardPostRequest articleCreateInfo);
+	void createArticle(FreeBoardPostRequest articleCreateInfo);
 
-	void updateArticle(FreeboardPutRequest articleUpdateInfo);
+	void updateArticle(FreeBoardPutRequest articleUpdateInfo);
 
 	void deleteArticle(int articleId);
 
-	Optional<FreeBoard> getArticleById(int articleId);
+	FreeBoardResponse getArticleById(int articleId);
 
-	List<FreeArticleComment> getCommentsById(int articleId);
+	List<FreeaBoardCmtResponse> getCommentsById(int articleId);
+
+	List<FreeBoardResponse> getArticleByMemberId(int memberId);
+
+	List<FreeaBoardCmtResponse> getCommentByMemberId(int memberId);
+
+	void createComment(FreeBoardCmtPostRequest commentCreateInfo);
+
+	void updateComment(FreeBoardCmtPutRequest commentUpdateInfo);
+
+	void deleteComment(int commentId);
+
+	void addLike(FreeBoardLikePostRequest likeAddInfo);
+
+	void cancelLike(FreeBoardLikePostRequest likeCancelInfo);
+
+	long getLikeCountById(int articleId);
+
+	List<FreeBoardResponse> getArticleByKeyword(String keyword);
 
 }
