@@ -4,6 +4,7 @@ import com.web.wam.config.security.JwtTokenProvider;
 import com.web.wam.exception.member.AlreadyExistEmailException;
 import com.web.wam.exception.member.AlreadyExistNicknameException;
 import com.web.wam.exception.member.NotFoundMemberException;
+import com.web.wam.model.dto.member.ChangePasswordRequest;
 import com.web.wam.model.dto.member.SigninRequest;
 import com.web.wam.model.dto.member.SignupRequest;
 import com.web.wam.model.entity.Member;
@@ -79,6 +80,22 @@ public class MemberServiceImpl implements MemberService {
         }
 
         return newPassword;
+    }
+
+    @Override
+    public void changePassword(ChangePasswordRequest request) {
+
+        Member member = memberRepository.findByEmail(request.getEmail());
+
+        // ID Verification
+        if(member == null) throw new IllegalArgumentException("가입되지 않은 E-MAIL입니다.");
+
+        // Password Verification
+        if(!passwordEncoder.matches(request.getPassword(), member.getPassword()))
+            throw new IllegalArgumentException("잘못된 비밀번호입니다.");
+
+        member.setPassword(passwordEncoder.encode(request.getNewpassword()));
+        memberRepository.save(member);
     }
 
     private String getRandomPassword(int size) {
