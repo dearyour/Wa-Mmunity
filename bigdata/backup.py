@@ -1,8 +1,12 @@
 import argparse
 import sys
+import pickle
 import numpy as np
 from models import matrix_factorization
 
+
+def load(path):
+    return pickle.load(open(path, "rb"))
 
 def recommend(R_train, R_predicted, item_ids, output_path):
     # write train ratings
