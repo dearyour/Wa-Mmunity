@@ -2,8 +2,8 @@ import argparse
 import sys
 import pickle
 import numpy as np
-import json
 from models import matrix_factorization
+
 
 def load(path):
     return pickle.load(open(path, "rb"))
@@ -13,25 +13,15 @@ def recommend(R_train, R_predicted, item_ids, output_path):
     with open(output_path + '/train_ratings.txt', 'w') as f:
         rows, cols = R_train.nonzero()
         for row, col in zip(rows, cols):
-            f.write('%d::%s::%.1f\n' % (row, item_ids[col], R_train[row, col]))
+            f.write('%d::%s::%.1f\n' % (row, item_ids[cols], R_train[row, col]))
             # remove train data from recommendation
             R_predicted[row, col] = 0
     # write recommend ratings
-    recomm_dict = { 'Results': [] }
     with open(output_path + '/recommend_ratings.txt', 'w') as f:
         for i in range(R_predicted.shape[0]):
             for j in range(R_predicted.shape[1]):
                 if R_predicted[i, j] > 1:
                     f.write('%d::%s""%.3f\n' % (i, item_ids[j], R_predicted[i, j]))
-                    tmp_dict = {
-                        'user': int(i),
-                        'wine': int(item_ids[j]),
-                        'est_rating': float(R_predicted[i, j])
-                    }
-                    # print(tmp_dict)
-                    recomm_dict['Results'].append(tmp_dict)
-    with open('recomm.json','w') as f:
-        json.dump(recomm_dict,f)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
