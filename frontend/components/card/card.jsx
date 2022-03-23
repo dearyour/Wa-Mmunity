@@ -20,6 +20,7 @@ const Card = memo(({ card }) => {
   };
 
   let { value } = state;
+
   return (
     <li
       className={`${styles.card} 
