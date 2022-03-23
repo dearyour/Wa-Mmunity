@@ -9,8 +9,6 @@ def load(path):
     return pickle.load(open(path, "rb"))
 
 def recommend(R_train, R_predicted, item_ids, output_path):
-    print(f'train: {R_train}')
-    print(f'predicted: {R_predicted}')
     # write train ratings
     with open(output_path + '/train_ratings.txt', 'w') as f:
         rows, cols = R_train.nonzero()
@@ -26,10 +24,11 @@ def recommend(R_train, R_predicted, item_ids, output_path):
                 if R_predicted[i, j] > 1:
                     f.write('%d::%s""%.3f\n' % (i, item_ids[j], R_predicted[i, j]))
                     tmp_dict = {
-                        'user': int(row),
-                        'wine': int(col),
-                        'est_rating': float(R_train[row, col])
+                        'user': int(i),
+                        'wine': int(item_ids[j]),
+                        'est_rating': float(R_predicted[i, j])
                     }
+                    # print(tmp_dict)
                     recomm_dict['Results'].append(tmp_dict)
     with open('recomm.json','w') as f:
         json.dump(recomm_dict,f)

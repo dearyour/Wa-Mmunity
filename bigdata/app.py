@@ -7,6 +7,7 @@ from scipy.sparse import csr_matrix
 import random
 import pickle
 import json
+from models import related_wine
 
 # flask 객체 인스턴스 생성
 app = Flask(__name__)
@@ -17,12 +18,8 @@ CORS(app)
 def index():
     return '<p>Hello, World!</p>'
 
-@app.route('/model_mf', methods=['POST'])
-# 1 데이터 가져오기 : json -> csv
-# 2 모델 생성
-# 3 모델 런
-# 4 데이터 내보내기 : csv -> json
-def visit():
+@app.route('/model-mf', methods=['POST'])
+def mf():
    if request.method == 'POST':
         # 1 데이터 가져오기 : json -> df
         data = request.get_json()
@@ -59,7 +56,10 @@ def visit():
             recomm = json.load(rcm_json)
 
         return recomm
-        
+
+@app.route('/wines/<wine>', method=['GET'])
+def wine_cb(wine):
+    return related_wine.get_recomm(wine=wine)
 
 
 # debug = True 명시해 코드 수정 시 자동 반영
@@ -68,7 +68,3 @@ if __name__ == '__main__':
 
 # $ export FLASK_APP = app
 # $ flask run(debug 모드 안켜짐) or $ python app.py(debug 모드 켜짐)
-
-# def run_MF(request):
-#     os.system('python train.py -i data/input -o data/output -a 1')
-#     load_result('matrix_factorization')
