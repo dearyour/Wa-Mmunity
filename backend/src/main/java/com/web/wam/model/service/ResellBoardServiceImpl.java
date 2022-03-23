@@ -16,9 +16,11 @@ public class ResellBoardServiceImpl implements ResellBoardService {
     private ResellBoardRepository resellBoardRepository;
 
     @Override
-    public void createArticle(ResellBoardPostRequest request) {
+    public void createArticle(ResellBoardPostRequest request, String photoPath) {
         ResellBoard article = request.toEntity();
+        article.setPhoto(photoPath);
         article.setRegtime(LocalDateTime.now());
-        //freeBoardRepository.save(article);
+        article.setRegtime(LocalDateTime.now());
+        resellBoardRepository.save(article);
     }
 }

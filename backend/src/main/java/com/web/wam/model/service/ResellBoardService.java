@@ -4,5 +4,5 @@ import com.web.wam.model.dto.resellboard.ResellBoardPostRequest;
 
 public interface ResellBoardService {
 
-    void createArticle(ResellBoardPostRequest articleCreateInfo);
+    void createArticle(ResellBoardPostRequest articleCreateInfo, String photoPath);
 }
