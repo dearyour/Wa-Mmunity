@@ -47,12 +47,12 @@ const AppLayout: React.FC<LayoutProps> = ({
   // }, [])
   return (
     <div>
-      {/* <Head>
+      <Head>
         <title>{title}</title>
         <meta charSet="UTF-8" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      </Head> */}
+      </Head>
 
       <Headers></Headers>
       <Container>{children}</Container>
