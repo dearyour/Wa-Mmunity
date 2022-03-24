@@ -39,7 +39,7 @@ public class Member implements UserDetails {
     @Column(name = "is_adult", nullable = false)
     private Integer isAdult;
 
-    @Column(name = "regtime", nullable = true)
+    @Column(name = "regtime", nullable = false)
     private LocalDateTime regtime;
 
     @ElementCollection(fetch = FetchType.EAGER)
@@ -79,6 +79,6 @@ public class Member implements UserDetails {
     }
 
     public MemberResponse toResponse() {
-        return new MemberResponse(this.getId(), this.getEmail(), this.getNickname(), this.getIsAdult(), this.getRegtime());
+        return new MemberResponse(this.getId(), this.getNickname(), this.getEmail(), this.getIsAdult(), this.getRegtime());
     }
 }
