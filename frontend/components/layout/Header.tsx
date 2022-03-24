@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { SearchOutlined } from "@ant-design/icons";
 import WineLogo from "/public/images/wine4.png";
+import SearchBar from "../Home/SearchBar";
 function Header(): JSX.Element {
+  const [searchInput, setSearchInput] = useState("");
   return (
     <>
       <header>
@@ -16,6 +18,10 @@ function Header(): JSX.Element {
           </a>
 
           <div className="sub-menu">
+            {/* <SearchBar
+              value={searchInput}
+              changeInput={(e: any) => setSearchInput(e.target.value)}
+            /> */}
             <div className="search">
               <input type="text" />
               <SearchOutlined />
