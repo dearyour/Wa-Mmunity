@@ -15,7 +15,7 @@ public class ResellBoardResponse {
     Integer id;
 
     @ApiModelProperty(name = "작성자", example = "0")
-    int memberId;
+    Integer memberId;
 
     @ApiModelProperty(name = "제목", example = "리셀게시물 제목")
     String title;
@@ -30,8 +30,11 @@ public class ResellBoardResponse {
     String tag;
 
     @ApiModelProperty(name = "가격", example = "리셀게시물 가격")
-    String price;
+    Integer price;
 
     @ApiModelProperty(name = "작성 시간", example = "리셀게시물이 작성된 시간")
     LocalDateTime regtime;
+
+    @ApiModelProperty(name = "ResellBoard likeCnt", example = "22")
+    Long likeCnt;
 }

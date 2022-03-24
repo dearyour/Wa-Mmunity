@@ -41,11 +41,7 @@ public class ResellBoardController {
             @ApiResponse(code = 401, message = MESSAGE_401, response = BaseResponse.class),
             @ApiResponse(code = 500, message = MESSAGE_500, response = BaseResponse.class) })
     public ResponseEntity<? extends BaseResponse> post(@RequestBody @ApiParam(value = "수정할 회원 사진 파일.", required = true) MultipartFile photo,
-                                                         String title,
-                                                         String content,
-                                                         String tag,
-                                                         String price,
-                                                         String member_id) {
+                                                         String title, String content, String tag, String price, String member_id) {
 
         ResellBoardPostRequest request = new ResellBoardPostRequest();
         request.setContent(content);
@@ -61,6 +57,17 @@ public class ResellBoardController {
         resellBoardService.createArticle(request, photoPath);
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put(MSG, SUCCESS);
+        return ResponseEntity.status(200).body(BaseResponse.of(200, resultMap));
+    }
+
+    @GetMapping()
+    @ApiOperation(value = "게시글 리스트", notes = "리셀 게시판 게시물 목록 반환 API")
+    @ApiResponses({ @ApiResponse(code = 200, message = MESSAGE_200, response = BaseResponse.class),
+            @ApiResponse(code = 401, message = MESSAGE_401, response = BaseResponse.class),
+            @ApiResponse(code = 500, message = MESSAGE_500, response = BaseResponse.class) })
+    public ResponseEntity<? extends BaseResponse> getAllArticle() {
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("articleList", resellBoardService.getAllArticle());
         return ResponseEntity.status(200).body(BaseResponse.of(200, resultMap));
     }
 }
