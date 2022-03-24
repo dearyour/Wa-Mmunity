@@ -3,6 +3,7 @@ package com.web.wam.controller;
 import com.web.wam.model.dto.BaseResponse;
 import com.web.wam.model.dto.member.SignupRequest;
 import com.web.wam.model.dto.resellboard.ResellBoardPostRequest;
+import com.web.wam.model.dto.resellboard.ResellBoardPutRequest;
 import com.web.wam.model.service.ResellBoardService;
 import com.web.wam.model.service.S3Service;
 import io.swagger.annotations.*;
@@ -70,4 +71,30 @@ public class ResellBoardController {
         resultMap.put("articleList", resellBoardService.getAllArticle());
         return ResponseEntity.status(200).body(BaseResponse.of(200, resultMap));
     }
+
+    @PutMapping()
+    @ApiOperation(value = "게시글 수정", notes = "리셀 게시판 게시물 수정 API")
+    @ApiResponses({ @ApiResponse(code = 200, message = MESSAGE_200, response = BaseResponse.class),
+            @ApiResponse(code = 401, message = MESSAGE_401, response = BaseResponse.class),
+            @ApiResponse(code = 500, message = MESSAGE_500, response = BaseResponse.class) })
+    public ResponseEntity<? extends BaseResponse> updateArticle(@RequestBody @ApiParam(value = "수정할 회원 사진 파일.", required = true) MultipartFile photo,
+                                                                String title, String content, String tag, String price, String member_id, String article_id) {
+        ResellBoardPutRequest request = new ResellBoardPutRequest();
+        request.setContent(content);
+        request.setMemberId(Integer.parseInt(member_id));
+        request.setTitle(title);
+        request.setTag(tag);
+        request.setPrice(Integer.parseInt(price));
+        request.setId(Integer.parseInt(article_id));
+
+        String photoPath = "";
+        if(!photo.isEmpty()) {
+            photoPath = s3Service.uploadToResellboard(photo);
+        }
+        resellBoardService.updateArticle(request, photoPath);
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put(MSG, SUCCESS);
+        return ResponseEntity.status(200).body(BaseResponse.of(200, resultMap));
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.web.wam.model.service;
 
 import com.web.wam.model.dto.resellboard.ResellBoardPostRequest;
+import com.web.wam.model.dto.resellboard.ResellBoardPutRequest;
 import com.web.wam.model.dto.resellboard.ResellBoardResponse;
 import com.web.wam.model.entity.resellboard.ResellBoard;
 import com.web.wam.model.repository.resellboard.ResellArticleLikeRepository;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 @Service("resellBoardService")
 public class ResellBoardServiceImpl implements ResellBoardService {
@@ -58,6 +60,19 @@ public class ResellBoardServiceImpl implements ResellBoardService {
         article.setRegtime(LocalDateTime.now());
         article.setRegtime(LocalDateTime.now());
         resellBoardRepository.save(article);
+    }
+
+    @Override
+    public void updateArticle(ResellBoardPutRequest request, String newPhoto) {
+        Optional<ResellBoard> article = resellBoardRepository.findById(request.getId());
+        article.ifPresent(selectedArticle -> {
+            selectedArticle = request.toEntity();
+            selectedArticle.setRegtime(LocalDateTime.now());
+            if(!newPhoto.equals("")) {
+                selectedArticle.setPhoto(newPhoto);
+            }
+            resellBoardRepository.save(selectedArticle);
+        });
     }
 
     @Override
