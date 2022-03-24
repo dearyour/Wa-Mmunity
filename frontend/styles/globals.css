@@ -143,6 +143,7 @@ header .sub-menu {
   top: 10px;
   right: 0;
   display: flex;
+  cursor: pointer;
 }
 header .sub-menu ul.menu {
   font-family: Arial, sans-serif;
@@ -223,6 +224,7 @@ header .main-menu .item .item__name {
   font-family: Arial, sans-serif;
   font-size: 13px;
   color: #861610;
+  cursor: pointer;
 }
 header .main-menu .item:hover .item__name {
   background-color: #2c2a29;
