@@ -110,4 +110,16 @@ public class ResellBoardController {
         return ResponseEntity.status(200).body(BaseResponse.of(200, resultMap));
     }
 
+    @GetMapping("/{article_id}")
+    @ApiOperation(value = "게시글 리스트", notes = "리셀 게시판 게시물 목록 반환 API")
+    @ApiResponses({ @ApiResponse(code = 200, message = MESSAGE_200, response = BaseResponse.class),
+            @ApiResponse(code = 401, message = MESSAGE_401, response = BaseResponse.class),
+            @ApiResponse(code = 500, message = MESSAGE_500, response = BaseResponse.class) })
+    public ResponseEntity<? extends BaseResponse> getAllArticleById(
+            @ApiParam(value = "선택한 게시글 정보", required = true) @PathVariable("article_id") Integer articleId) {
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("article", resellBoardService.getArticleById(articleId));
+        resultMap.put("comments", resellBoardService.getCommentsById(articleId));
+        return ResponseEntity.status(200).body(BaseResponse.of(200, resultMap));
+    }
 }

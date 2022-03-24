@@ -1,5 +1,6 @@
 package com.web.wam.model.service;
 
+import com.web.wam.model.dto.resellboard.ResellBoardCmtResponse;
 import com.web.wam.model.dto.resellboard.ResellBoardPostRequest;
 import com.web.wam.model.dto.resellboard.ResellBoardPutRequest;
 import com.web.wam.model.dto.resellboard.ResellBoardResponse;
@@ -17,4 +18,8 @@ public interface ResellBoardService {
     public long getLikeCountById(Integer articleId);
 
     void deleteArticle(Integer articleId);
+
+    ResellBoardResponse getArticleById(Integer articleId);
+
+    List<ResellBoardCmtResponse> getCommentsById(Integer articleId);
 }
