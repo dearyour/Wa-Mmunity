@@ -1,6 +1,7 @@
 package com.web.wam.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import com.web.wam.model.dto.BaseResponse;
 import com.web.wam.model.dto.wine.WineResponse;
 import com.web.wam.model.dto.wine.WineReviewPostRequest;
 import com.web.wam.model.dto.wine.WineReviewPutRequest;
+import com.web.wam.model.dto.wine.WineSurveyRequest;
 import com.web.wam.model.dto.wine.WineWishlistRequest;
 import com.web.wam.model.service.WineService;
 
@@ -155,5 +157,32 @@ public class WineController {
 			@ApiParam(value = "회원 아이디 정보", required = true) @PathVariable("memberId") int memberId) {
 		List<Integer> wishlist = wineService.searchWishlistByMemberId(memberId);
 		return ResponseEntity.status(200).body(BaseResponse.of(200, wishlist));
+	}
+
+	@PostMapping("/survey")
+	@ApiOperation(value = "취향 분석 설문", notes = "취향 분석 설문 결과 저장")
+	@ApiResponses({ @ApiResponse(code = 200, message = "성공", response = BaseResponse.class),
+			@ApiResponse(code = 401, message = "인증 실패", response = BaseResponse.class),
+			@ApiResponse(code = 404, message = "게시글 없음", response = BaseResponse.class),
+			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponse.class) })
+
+	public ResponseEntity<? extends BaseResponse> saveWineSurvey(
+			@RequestBody @ApiParam(value = "취향 분석 설문 결과 정보", required = true) WineSurveyRequest wineSurveyRequest) {
+		wineService.saveWineSurvey(wineSurveyRequest);
+		return ResponseEntity.status(200).body(BaseResponse.of(200, "Success"));
+	}
+
+	// TODO : 와인 DB에 저장되는 형식 확인 후 확실히 수정
+	// filter/minPrice=500&maxPrice=54000 ~~~~~~
+	@GetMapping("/filter/{filter}")
+	@ApiOperation(value = "필터 적용해서 와인 리스트 보기", notes = "해당 필터에 해당하는 와인 리스트 불러오기")
+	@ApiResponses({ @ApiResponse(code = 200, message = "성공", response = BaseResponse.class),
+			@ApiResponse(code = 401, message = "인증 실패", response = BaseResponse.class),
+			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponse.class) })
+
+	public ResponseEntity<? extends BaseResponse> searchWineByFilter(
+			@ApiParam(value = "회원 아이디 정보", required = true) @PathVariable("filter") Map filter) {
+		List<WineResponse> wineList = wineService.searchWineByFilter(filter);
+		return ResponseEntity.status(200).body(BaseResponse.of(200, wineList));
 	}
 }

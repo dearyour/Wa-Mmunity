@@ -1,10 +1,12 @@
 package com.web.wam.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.web.wam.model.dto.wine.WineResponse;
 import com.web.wam.model.dto.wine.WineReviewPostRequest;
 import com.web.wam.model.dto.wine.WineReviewPutRequest;
+import com.web.wam.model.dto.wine.WineSurveyRequest;
 import com.web.wam.model.dto.wine.WineWishlistRequest;
 
 public interface WineService {
@@ -28,5 +30,9 @@ public interface WineService {
 	void deleteWishlist(int wishlistId);
 
 	List<Integer> searchWishlistByMemberId(int memberId);
+
+	void saveWineSurvey(WineSurveyRequest wineSurveyRequest);
+
+	List<WineResponse> searchWineByFilter(Map filter);
 
 }

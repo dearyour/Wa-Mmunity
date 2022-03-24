@@ -3,6 +3,7 @@ package com.web.wam.model.service;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,13 +12,16 @@ import org.springframework.stereotype.Service;
 import com.web.wam.model.dto.wine.WineResponse;
 import com.web.wam.model.dto.wine.WineReviewPostRequest;
 import com.web.wam.model.dto.wine.WineReviewPutRequest;
+import com.web.wam.model.dto.wine.WineSurveyRequest;
 import com.web.wam.model.dto.wine.WineWishlistRequest;
 import com.web.wam.model.entity.Wine;
 import com.web.wam.model.entity.WineReview;
+import com.web.wam.model.entity.WineSurvey;
 import com.web.wam.model.entity.WineWishlist;
 import com.web.wam.model.repository.wine.WineRepository;
 import com.web.wam.model.repository.wine.WineRepositorySupport;
 import com.web.wam.model.repository.wine.WineReviewRepository;
+import com.web.wam.model.repository.wine.WineSurveyRepository;
 import com.web.wam.model.repository.wine.WineWishlistRepository;
 import com.web.wam.model.repository.wine.WineWishlistRepositorySupport;
 
@@ -34,6 +38,8 @@ public class WineServiceImpl implements WineService {
 	WineWishlistRepository wineWishlistRepository;
 	@Autowired
 	WineWishlistRepositorySupport wineWishlistRepositorySupport;
+	@Autowired
+	WineSurveyRepository wineSurveyRepository;
 
 	private void setWineResponse(Wine wine, WineResponse wineResponse) {
 		wineResponse.setWineId(wine.getWineId());
@@ -184,6 +190,53 @@ public class WineServiceImpl implements WineService {
 	public List<Integer> searchWishlistByMemberId(int memberId) {
 		List<Integer> wishlist = wineWishlistRepositorySupport.searchWishlistByMemberId(memberId);
 		return wishlist;
+	}
+
+	@Override
+	public void saveWineSurvey(WineSurveyRequest wineSurveyRequest) {
+		Optional<WineSurvey> wineSurvey = wineSurveyRepository.findByMemberId(wineSurveyRequest.getMemberId());
+		if (wineSurvey.isEmpty()) {
+			WineSurvey survey = new WineSurvey();
+			survey.setMemberId(wineSurveyRequest.getMemberId());
+			survey.setAmountOfAlcohol(wineSurveyRequest.getAmountOfAlcohol());
+			survey.setSmellTaste1(wineSurveyRequest.getSmellTaste1());
+			survey.setSmellTaste2(wineSurveyRequest.getSmellTaste2());
+			survey.setSmellTaste3(wineSurveyRequest.getSmellTaste3());
+			survey.setAcidicPreference(wineSurveyRequest.getAcidicPreference());
+			survey.setSweetPreference(wineSurveyRequest.getSweetPreference());
+			survey.setTannicPreference(wineSurveyRequest.getTannicPreference());
+			survey.setBoldPreference(wineSurveyRequest.getBoldPreference());
+			survey.setMinPrice(wineSurveyRequest.getMinPrice());
+			survey.setMaxPrice(wineSurveyRequest.getMaxPrice());
+			survey.setFood1(wineSurveyRequest.getFood1());
+			survey.setFood2(wineSurveyRequest.getFood2());
+			survey.setFood3(wineSurveyRequest.getFood3());
+			wineSurveyRepository.save(survey);
+		} else {
+			wineSurvey.ifPresent(survey -> {
+				survey.setAmountOfAlcohol(wineSurveyRequest.getAmountOfAlcohol());
+				survey.setSmellTaste1(wineSurveyRequest.getSmellTaste1());
+				survey.setSmellTaste2(wineSurveyRequest.getSmellTaste2());
+				survey.setSmellTaste3(wineSurveyRequest.getSmellTaste3());
+				survey.setAcidicPreference(wineSurveyRequest.getAcidicPreference());
+				survey.setSweetPreference(wineSurveyRequest.getSweetPreference());
+				survey.setTannicPreference(wineSurveyRequest.getTannicPreference());
+				survey.setBoldPreference(wineSurveyRequest.getBoldPreference());
+				survey.setMinPrice(wineSurveyRequest.getMinPrice());
+				survey.setMaxPrice(wineSurveyRequest.getMaxPrice());
+				survey.setFood1(wineSurveyRequest.getFood1());
+				survey.setFood2(wineSurveyRequest.getFood2());
+				survey.setFood3(wineSurveyRequest.getFood3());
+				wineSurveyRepository.save(survey);
+			});
+		}
+	}
+
+	// TODO : 필터 구현 로직 생각해야함,,,
+	@Override
+	public List<WineResponse> searchWineByFilter(Map filter) {
+		// key : vaule 형태로 넘어옴
+		return null;
 	}
 
 }
