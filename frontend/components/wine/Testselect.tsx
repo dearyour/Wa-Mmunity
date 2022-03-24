@@ -6,7 +6,7 @@ const CheckboxGroup = Checkbox.Group;
 const plainOptions = ["화이트", "레드", "스파클링", "로제", "디저트", "포트"];
 const defaultCheckedList = ["화이트"];
 
-function select(): any {
+function Select(): any {
   const [checkedList, setCheckedList] = React.useState(defaultCheckedList);
   const [indeterminate, setIndeterminate] = React.useState(true);
   const [checkAll, setCheckAll] = React.useState(false);
@@ -42,4 +42,4 @@ function select(): any {
   );
 }
 
-export default select;
+export default Select;

@@ -1,17 +1,11 @@
-import React, {
-  useState,
-  useCallback,
-  useRef,
-  useEffect,
-  useMemo,
-} from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
 import AppLayout from "../layout/AppLayout";
 import Card from "../card/card";
 import Select from "./Testselect";
 import styled from "styled-components";
 
-function winemain(): any {
+function Winemain(): any {
   const __GetWineState = () => {
     return axios({
       method: "GET",
@@ -32,9 +26,7 @@ function winemain(): any {
   return (
     <AppLayout>
       <Main>
-        <Header>
-          <Select />
-        </Header>
+        <Header>{/* <Select /> */}</Header>
         <Section>
           {/* <Winelist props={data} /> */}
           <Card />
@@ -75,4 +67,4 @@ const Section = styled.div`
   z-index: 1;
 `;
 
-export default winemain;
+export default Winemain;
