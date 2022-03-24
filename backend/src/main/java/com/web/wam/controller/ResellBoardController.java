@@ -1,7 +1,9 @@
 package com.web.wam.controller;
 
 import com.web.wam.model.dto.BaseResponse;
+import com.web.wam.model.dto.freeboard.FreeBoardCmtPostRequest;
 import com.web.wam.model.dto.member.SignupRequest;
+import com.web.wam.model.dto.resellboard.ResellBoardCmtPostRequest;
 import com.web.wam.model.dto.resellboard.ResellBoardPostRequest;
 import com.web.wam.model.dto.resellboard.ResellBoardPutRequest;
 import com.web.wam.model.service.ResellBoardService;
@@ -120,6 +122,19 @@ public class ResellBoardController {
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("article", resellBoardService.getArticleById(articleId));
         resultMap.put("comments", resellBoardService.getCommentsById(articleId));
+        return ResponseEntity.status(200).body(BaseResponse.of(200, resultMap));
+    }
+
+    @PostMapping("/comment")
+    @ApiOperation(value = "댓글 작성", notes = "리셀게시판 댓글 작성")
+    @ApiResponses({ @ApiResponse(code = 200, message = MESSAGE_200, response = BaseResponse.class),
+            @ApiResponse(code = 401, message = MESSAGE_401, response = BaseResponse.class),
+            @ApiResponse(code = 500, message = MESSAGE_500, response = BaseResponse.class) })
+    public ResponseEntity<? extends BaseResponse> createComment(
+            @RequestBody @ApiParam(value = "댓글 생성 정보", required = true) ResellBoardCmtPostRequest request) {
+        resellBoardService.createComment(request);
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put(MSG, SUCCESS);
         return ResponseEntity.status(200).body(BaseResponse.of(200, resultMap));
     }
 }
