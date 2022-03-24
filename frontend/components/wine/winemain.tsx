@@ -1,11 +1,34 @@
-import React, { useState } from "react";
-import AppLayout from "../components/layout/AppLayout";
-import Card from "../components/card/card";
-import Select from "../components/winelist/select";
+import React, {
+  useState,
+  useCallback,
+  useRef,
+  useEffect,
+  useMemo,
+} from "react";
+import axios from "axios";
+import AppLayout from "../layout/AppLayout";
+import Card from "../card/card";
+import Select from "./Testselect";
 import styled from "styled-components";
-import Winelist from "../components/winelist/winelist";
 
-function winelist(): any {
+function winemain(): any {
+  const __GetWineState = () => {
+    return axios({
+      method: "GET",
+      url: process.env.BACK_EC2 + "wine",
+    })
+      .then((res) => {
+        console.log(res);
+        return res.data;
+      })
+      .catch((err) => {
+        return err;
+      });
+  };
+
+  useEffect(() => {
+    __GetWineState();
+  }, []);
   return (
     <AppLayout>
       <Main>
@@ -52,4 +75,4 @@ const Section = styled.div`
   z-index: 1;
 `;
 
-export default winelist;
+export default winemain;
