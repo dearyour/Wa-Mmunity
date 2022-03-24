@@ -7,7 +7,7 @@ import WineLogo3 from "/public/images/wine2.png";
 import WineLogo4 from "/public/images/wine1.png";
 function wineMain() {
   return (
-    <AppLayout>
+    <AppLayout title="와인 메인페이지">
       <main>
         <header>
           <h1>
@@ -26,7 +26,7 @@ function wineMain() {
               </div>
 
               <figure>
-                <Image src={WineLogo} />
+                <Image src={WineLogo} alt="image" />
                 <video src="/public/images/wine4.png" loop muted></video>
               </figure>
             </div>
@@ -40,7 +40,7 @@ function wineMain() {
               </div>
 
               <figure>
-                <Image src={WineLogo3} />
+                <Image src={WineLogo3} alt="image" />
                 <video src="vids/vid2.mp4" loop muted></video>
               </figure>
             </div>
@@ -54,7 +54,7 @@ function wineMain() {
               </div>
 
               <figure>
-                <Image src={WineLogo2} />
+                <Image src={WineLogo2} alt="image" />
                 <video src="vids/vid3.mp4" loop muted></video>
               </figure>
             </div>
@@ -68,7 +68,7 @@ function wineMain() {
               </div>
 
               <figure>
-                <Image src={WineLogo4} />
+                <Image src={WineLogo4} alt="image" />
                 <video src="vids/vid4.mp4" loop muted></video>
               </figure>
             </div>

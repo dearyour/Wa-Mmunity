@@ -1,15 +1,13 @@
-import React, { ReactNode, useEffect } from 'react';
-import Head from 'next/head';
-import { Layout } from 'antd';
+import React, { ReactNode, useEffect } from "react";
+import Head from "next/head";
+import { Layout } from "antd";
 import Headers from "./Header";
-import styled from 'styled-components';
-import Router from 'next/router';
-
-
+import styled from "styled-components";
+import Router from "next/router";
 
 interface LayoutProps {
-  children?: ReactNode,
-  title?: string,
+  children?: ReactNode;
+  title?: string;
 }
 
 const Container = styled.div`
@@ -32,27 +30,38 @@ const Container = styled.div`
   @media (min-width: 1200px) {
     max-width: 1200px;
   }
-`
+`;
 
 const { Header, Content, Footer } = Layout;
 
-const AppLayout: React.FC<LayoutProps> = ({ children, title = '' }: LayoutProps) => {
-
+const AppLayout: React.FC<LayoutProps> = ({
+  children,
+  title = "",
+}: LayoutProps) => {
   useEffect(() => {
     setTimeout(() => {
-      if (!localStorage.getItem('Token')) {
-        Router.push('/');
+      if (!localStorage.getItem("Token")) {
+        Router.push("/");
       }
-    }, 2000)
-  }, [])
+    }, 2000);
+  }, []);
   return (
-
     <div>
       <Head>
         <title>{title}</title>
         <meta charSet="UTF-8" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="icon" href="../public/favicon.ico" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        {/* <link
+          href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap"
+          rel="stylesheet"
+        />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/icon?family=Material+Icons"
+        /> */}
       </Head>
       {/* <Layout> */}
       {/* <Header> */}
@@ -60,16 +69,13 @@ const AppLayout: React.FC<LayoutProps> = ({ children, title = '' }: LayoutProps)
       {/* </Header> */}
       {/* </Layout> */}
       {/* <Content> */}
-      <Container>
-        {children}
-      </Container>
+      <Container>{children}</Container>
       {/* </Content> */}
       {/* <Footer> */}
 
       {/* </Footer> */}
     </div>
-  )
-}
-
+  );
+};
 
 export default AppLayout;

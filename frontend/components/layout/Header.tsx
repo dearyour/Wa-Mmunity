@@ -9,8 +9,8 @@ function Header(): JSX.Element {
       <header>
         <div className="inner">
           <a className="logo">
-            <Link href="/">
-              <Image src={WineLogo} width={50} height={50} />
+            <Link href="/" passHref>
+              <Image src={WineLogo} width={50} height={50} alt="image" />
             </Link>
             <div className="logoName">Wa Mmunity</div>
           </a>
@@ -23,10 +23,14 @@ function Header(): JSX.Element {
             </div>
             <ul className="menu">
               <li>
-                <a href="">My Page</a>
+                <Link href="/" passHref>
+                  <a>My Page</a>
+                </Link>
               </li>
               <li>
-                <a href="">Log Out</a>
+                <Link href="/" passHref>
+                  <a>Log out</a>
+                </Link>
               </li>
             </ul>
           </div>
