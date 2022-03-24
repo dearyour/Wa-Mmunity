@@ -9,8 +9,8 @@ function Header(): JSX.Element {
       <header>
         <div className="inner">
           <a className="logo">
-            <Link href="/">
-              <Image src={WineLogo} width={50} height={50} />
+            <Link href="/" passHref>
+              <Image src={WineLogo} width={50} height={50} alt="image" />
             </Link>
             <div className="logoName">Wa Mmunity</div>
           </a>

@@ -23,7 +23,6 @@ export default class MyDocument extends Document {
     return (
       <html>
         <Head>
-          {/* <title>My page</title> */}
           {/* Step 5: Output the styles in the head  */}
           {/* {this.props.styleTags} */}
           <meta
@@ -40,8 +39,6 @@ export default class MyDocument extends Document {
             rel="stylesheet"
             href="https://fonts.googleapis.com/icon?family=Material+Icons"
           />
-
-          <title>와뮤니티</title>
         </Head>
         <body>
           <Main />
