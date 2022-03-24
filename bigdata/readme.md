@@ -1,3 +1,8 @@
+요구 패키지 설치
+```bash
+$ pip install -r requirements.txt
+```
+
 flask([공식문서](https://flask.palletsprojects.com/en/2.0.x/))
 - python의 마이크로 웹 프레임워크
 

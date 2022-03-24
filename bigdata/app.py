@@ -18,7 +18,7 @@ CORS(app)
 def index():
     return '<p>Hello, World!</p>'
 
-@app.route('/model-mf', methods=['POST'])
+@app.route('/recomm/train-mf', methods=['POST'])
 def mf():
    if request.method == 'POST':
         # 1 데이터 가져오기 : json -> df
@@ -57,9 +57,9 @@ def mf():
 
         return recomm
 
-@app.route('/wines/<wine>', method=['GET'])
-def wine_cb(wine):
-    return related_wine.get_recomm(wine=wine)
+@app.route('/recomm/cb/<wine_id>', methods=['GET'])
+def wine_cb(wine_id):
+    return related_wine.get_recomm(wine_id=wine_id)
 
 
 # debug = True 명시해 코드 수정 시 자동 반영
