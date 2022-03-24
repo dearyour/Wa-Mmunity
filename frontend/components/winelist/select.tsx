@@ -17,7 +17,7 @@ function select(): any {
     setCheckAll(list.length === plainOptions.length);
   };
 
-  const onCheckAllChange = (e) => {
+  const onCheckAllChange = (e: any) => {
     setCheckedList(e.target.checked ? plainOptions : []);
     setIndeterminate(false);
     setCheckAll(e.target.checked);

@@ -1,9 +1,5 @@
 import React, { useState } from "react";
-import AppLayout from "../components/layout/AppLayout";
-import Card from "../components/card/card";
-import Select from "../components/winelist/select";
-import styled from "styled-components";
-
+import Card from "../card/card";
 const sortOptionList = [
   { value: "latest", name: "최신순" },
   { value: "oldest", name: "오래된 순" },
@@ -30,7 +26,8 @@ const ControlMenu = React.memo(({ value, onChange, optionList }) => {
     </select>
   );
 });
-function winelist(): any {
+
+const listprops = ({ data }) => {
   const [sortType, setSortType] = useState("latest");
   const [filter, setFilter] = useState("red");
 
@@ -58,61 +55,9 @@ function winelist(): any {
     const sortedList = filteredList.sort(compare);
     return sortedList;
   };
-  return (
-    <AppLayout>
-      <Main>
-        <Header>
-          <Select />
-        </Header>
-        <Section>
-          <div className="left_col">
-            <ControlMenu
-              value={sortType}
-              onChange={setSortType}
-              optionList={sortOptionList}
-            />
-            <ControlMenu
-              value={filter}
-              onChange={setFilter}
-              optionList={filterOptionList}
-            />
-          </div>
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-        </Section>
-      </Main>
-    </AppLayout>
-  );
-}
+  // return  {getProcessedDiaryList().map((it) => (
+  //   <Card key={it.id} {...it} />
+  // ))};
+};
 
-const Main = styled.div`
-  width: 100%;
-  height: 100vh;
-  display: flex;
-`;
-
-const Header = styled.div`
-  margin-left: 25px;
-  width: 30%;
-  height: 100%;
-  padding: 10vh 5vw;
-  /* display: flex; */
-  flex-wrap: wrap;
-  /* justify-content: center;*/
-  /* align-content: space-between;*/
-  position: relative;
-  z-index: 3;
-  background-color: #eae0da;
-`;
-
-const Section = styled.div`
-  width: 70%;
-  height: 100%;
-  margin-left: 50px;
-  /*position: relative; */
-  z-index: 1;
-`;
-
-export default winelist;
+export default listprops;
