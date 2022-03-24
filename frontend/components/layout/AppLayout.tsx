@@ -38,42 +38,24 @@ const AppLayout: React.FC<LayoutProps> = ({
   children,
   title = "",
 }: LayoutProps) => {
-  useEffect(() => {
-    setTimeout(() => {
-      if (!localStorage.getItem("Token")) {
-        Router.push("/");
-      }
-    }, 2000);
-  }, []);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     if (!localStorage.getItem('Token')) {
+  //       Router.push('/');
+  //     }
+  //   }, 2000)
+  // }, [])
   return (
     <div>
-      <Head>
+      {/* <Head>
         <title>{title}</title>
         <meta charSet="UTF-8" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="icon" href="../public/favicon.ico" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" />
-        {/* <link
-          href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap"
-          rel="stylesheet"
-        />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/icon?family=Material+Icons"
-        /> */}
-      </Head>
-      {/* <Layout> */}
-      {/* <Header> */}
-      <Headers></Headers>
-      {/* </Header> */}
-      {/* </Layout> */}
-      {/* <Content> */}
-      <Container>{children}</Container>
-      {/* </Content> */}
-      {/* <Footer> */}
+      </Head> */}
 
-      {/* </Footer> */}
+      <Headers></Headers>
+      <Container>{children}</Container>
     </div>
   );
 };
