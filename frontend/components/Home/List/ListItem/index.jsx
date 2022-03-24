@@ -5,7 +5,7 @@ const ListItem = ({
   item: { coverSrc, title, price, deliveryFee, serviceTime, rating },
 }) => (
   <div className="listItem-wrap">
-    <Image src={coverSrc} alt="Image" />
+    <Image src={coverSrc} alt="Image" width={400} height={300} />
     <header>
       <h4>{title}</h4>
       <span>🌟{rating}</span>
