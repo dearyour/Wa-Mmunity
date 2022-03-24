@@ -97,4 +97,17 @@ public class ResellBoardController {
         return ResponseEntity.status(200).body(BaseResponse.of(200, resultMap));
     }
 
+    @DeleteMapping()
+    @ApiResponses({ @ApiResponse(code = 200, message = "성공", response = BaseResponse.class),
+            @ApiResponse(code = 401, message = "인증 실패", response = BaseResponse.class),
+            @ApiResponse(code = 404, message = "게시글 없음", response = BaseResponse.class),
+            @ApiResponse(code = 500, message = "서버 오류", response = BaseResponse.class) })
+    public ResponseEntity<? extends BaseResponse> deleteArticle(
+            @ApiParam(value = "게시글 삭제 정보", required = true) @PathVariable("articleId") Integer articleId) {
+        resellBoardService.deleteArticle(articleId);
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put(MSG, SUCCESS);
+        return ResponseEntity.status(200).body(BaseResponse.of(200, resultMap));
+    }
+
 }

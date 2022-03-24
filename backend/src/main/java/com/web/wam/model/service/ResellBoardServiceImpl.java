@@ -80,4 +80,12 @@ public class ResellBoardServiceImpl implements ResellBoardService {
         long likeCnt = resellArticleLikeRepositorySupport.countByArticleId(articleId);
         return likeCnt;
     }
+
+    @Override
+    public void deleteArticle(Integer articleId) {
+        Optional<ResellBoard> article = resellBoardRepository.findById(articleId);
+        article.ifPresent(selectedArticle -> {
+            resellBoardRepository.delete(selectedArticle);
+        });
+    }
 }

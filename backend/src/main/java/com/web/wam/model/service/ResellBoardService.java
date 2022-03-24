@@ -15,4 +15,6 @@ public interface ResellBoardService {
     void updateArticle(ResellBoardPutRequest request, String newPhoto);
 
     public long getLikeCountById(Integer articleId);
+
+    void deleteArticle(Integer articleId);
 }
