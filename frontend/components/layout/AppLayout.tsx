@@ -1,15 +1,13 @@
-import React, { ReactNode, useEffect } from 'react';
-import Head from 'next/head';
-import { Layout } from 'antd';
+import React, { ReactNode, useEffect } from "react";
+import Head from "next/head";
+import { Layout } from "antd";
 import Headers from "./Header";
-import styled from 'styled-components';
-import Router from 'next/router';
-
-
+import styled from "styled-components";
+import Router from "next/router";
 
 interface LayoutProps {
-  children?: ReactNode,
-  title?: string,
+  children?: ReactNode;
+  title?: string;
 }
 
 const Container = styled.div`
@@ -32,44 +30,34 @@ const Container = styled.div`
   @media (min-width: 1200px) {
     max-width: 1200px;
   }
-`
+`;
 
 const { Header, Content, Footer } = Layout;
 
-const AppLayout: React.FC<LayoutProps> = ({ children, title = '' }: LayoutProps) => {
-
-  useEffect(() => {
-    setTimeout(() => {
-      if (!localStorage.getItem('Token')) {
-        Router.push('/');
-      }
-    }, 2000)
-  }, [])
+const AppLayout: React.FC<LayoutProps> = ({
+  children,
+  title = "",
+}: LayoutProps) => {
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     if (!localStorage.getItem('Token')) {
+  //       Router.push('/');
+  //     }
+  //   }, 2000)
+  // }, [])
   return (
-
     <div>
-      <Head>
+      {/* <Head>
         <title>{title}</title>
         <meta charSet="UTF-8" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      </Head>
-      {/* <Layout> */}
-      {/* <Header> */}
+      </Head> */}
+
       <Headers></Headers>
-      {/* </Header> */}
-      {/* </Layout> */}
-      {/* <Content> */}
-      <Container>
-        {children}
-      </Container>
-      {/* </Content> */}
-      {/* <Footer> */}
-
-      {/* </Footer> */}
+      <Container>{children}</Container>
     </div>
-  )
-}
-
+  );
+};
 
 export default AppLayout;
