@@ -5,6 +5,7 @@ import WineLogo from "/public/images/wine4.png";
 import WineLogo2 from "/public/images/wine5.png";
 import WineLogo3 from "/public/images/wine2.png";
 import WineLogo4 from "/public/images/wine1.png";
+import Router from "next/router";
 function wineMain() {
   return (
     <AppLayout>
@@ -20,7 +21,12 @@ function wineMain() {
         <section>
           <article>
             <div className="inner">
-              <div className="txt">
+              <div
+                className="txt"
+                onClick={() => {
+                  Router.push(`/wine`);
+                }}
+              >
                 <h2>01</h2>
                 <p>인기 와인</p>
               </div>

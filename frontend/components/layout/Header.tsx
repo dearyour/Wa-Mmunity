@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { SearchOutlined } from "@ant-design/icons";
 import WineLogo from "/public/images/wine4.png";
+import SearchBar from "../Home/SearchBar";
+import Router from "next/router";
 function Header(): JSX.Element {
+  const [searchInput, setSearchInput] = useState("");
   return (
     <>
       <header>
@@ -16,6 +19,10 @@ function Header(): JSX.Element {
           </a>
 
           <div className="sub-menu">
+            {/* <SearchBar
+              value={searchInput}
+              changeInput={(e: any) => setSearchInput(e.target.value)}
+            /> */}
             <div className="search">
               <input type="text" />
               <SearchOutlined />
@@ -32,7 +39,14 @@ function Header(): JSX.Element {
           </div>
           <ul className="main-menu">
             <li className="item">
-              <div className="item__name">와인 리스트</div>
+              <div
+                className="item__name"
+                onClick={() => {
+                  Router.push(`/wine`);
+                }}
+              >
+                와인 리스트
+              </div>
               <div className="item__contents">
                 <div className="contents__menu">
                   <ul className="inner">
