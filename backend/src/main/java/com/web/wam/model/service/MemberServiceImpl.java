@@ -4,9 +4,7 @@ import com.web.wam.config.security.JwtTokenProvider;
 import com.web.wam.exception.member.AlreadyExistEmailException;
 import com.web.wam.exception.member.AlreadyExistNicknameException;
 import com.web.wam.exception.member.NotFoundMemberException;
-import com.web.wam.model.dto.member.ChangePasswordRequest;
-import com.web.wam.model.dto.member.SigninRequest;
-import com.web.wam.model.dto.member.SignupRequest;
+import com.web.wam.model.dto.member.*;
 import com.web.wam.model.entity.Member;
 import com.web.wam.model.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Service("memberService")
@@ -39,6 +38,7 @@ public class MemberServiceImpl implements MemberService {
         } else {
             Member member = signupRequest.toEntity();
             member.setPassword(passwordEncoder.encode(signupRequest.getPassword()));
+            member.setRegtime(LocalDateTime.now());
             memberRepository.save(member);
         }
     }
@@ -97,6 +97,30 @@ public class MemberServiceImpl implements MemberService {
         member.setPassword(passwordEncoder.encode(request.getNewpassword()));
         memberRepository.save(member);
     }
+
+    @Override
+    public MemberResponse findMemberInfo(String email) {
+
+        Member member = memberRepository.findByEmail(email);
+
+        // ID Verification
+        if(member == null) throw new IllegalArgumentException("가입되지 않은 E-MAIL입니다.");
+
+        return member.toResponse();
+    }
+
+    @Override
+    public void updateMemberNickname(ChangeNicknameRequest request) {
+
+        Member member = memberRepository.findByEmail(request.getEmail());
+
+        // ID Verification
+        if(member == null) throw new IllegalArgumentException("가입되지 않은 E-MAIL입니다.");
+
+        member.setNickname(request.getNickname());
+        memberRepository.save(member);
+    }
+
 
     private String getRandomPassword(int size) {
         char[] charSet = new char[] {
