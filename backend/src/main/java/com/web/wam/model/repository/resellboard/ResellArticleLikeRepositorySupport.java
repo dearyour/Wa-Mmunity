@@ -1,7 +1,7 @@
 package com.web.wam.model.repository.resellboard;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.web.wam.model.dto.resellboard.ResellArticleLikePostRequest;
+import com.web.wam.model.dto.resellboard.ResellBoardLikePostRequest;
 import com.web.wam.model.entity.resellboard.QResellArticleLike;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -24,7 +24,7 @@ public class ResellArticleLikeRepositorySupport {
     }
 
     @Transactional
-    public void cancelLike(ResellArticleLikePostRequest likeCancelInfo) {
+    public void cancelLike(ResellBoardLikePostRequest likeCancelInfo) {
         jpaQueryFactory.delete(qResellArticleLike)
                 .where(qResellArticleLike.articleId.eq(likeCancelInfo.getArticleId()))
                 .where(qResellArticleLike.memberId.eq(likeCancelInfo.getMemberId()))

@@ -2,6 +2,7 @@ package com.web.wam.model.service;
 
 import com.web.wam.model.dto.resellboard.*;
 import com.web.wam.model.entity.resellboard.ResellArticleComment;
+import com.web.wam.model.entity.resellboard.ResellArticleLike;
 import com.web.wam.model.entity.resellboard.ResellBoard;
 import com.web.wam.model.repository.resellboard.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,9 @@ public class ResellBoardServiceImpl implements ResellBoardService {
 
     @Autowired
     private ResellBoardRepository resellBoardRepository;
+
+    @Autowired
+    private ResellBoardRepositorySupport resellBoardRepositorySupport;
 
     @Autowired
     private ResellArticleLikeRepository resellArticleLikeRepository;
@@ -103,6 +107,23 @@ public class ResellBoardServiceImpl implements ResellBoardService {
     }
 
     @Override
+    public List<ResellBoardResponse> getArticlesByMemberId(Integer memberId) {
+        return resellBoardRepositorySupport.findByMemberId(memberId);
+    }
+
+    @Override
+    public List<ResellBoardCmtResponse> getCommentsByMemberId(Integer memberId) {
+        List<ResellBoardCmtResponse> commentList = new LinkedList<ResellBoardCmtResponse>();
+        List<ResellArticleComment> comments = resellArticleCommentRepositorySupport.findByMemberId(memberId);
+        for (ResellArticleComment comment : comments) {
+            ResellBoardCmtResponse resellBoardCmtResponse = new ResellBoardCmtResponse();
+            setResellBoardCmtResponse(comment, resellBoardCmtResponse);
+            commentList.add(resellBoardCmtResponse);
+        }
+        return commentList;
+    }
+
+    @Override
     public List<ResellBoardCmtResponse> getCommentsById(Integer articleId) {
         List<ResellBoardCmtResponse> commentList = new LinkedList<ResellBoardCmtResponse>();
         List<ResellArticleComment> comments = resellArticleCommentRepositorySupport.findByArticleId(articleId);
@@ -119,8 +140,12 @@ public class ResellBoardServiceImpl implements ResellBoardService {
         response.setContent(comment.getContent());
         response.setRegtime(comment.getRegtime());
         response.setId(comment.getId());
-        String memberNickname = resellArticleCommentRepositorySupport.findMemberNicknameByMemberId(comment.getMemberId());
-        response.setNickname(memberNickname);
+        //Optional<Member> member = memberRepository.findById(comment.getMemberId());
+
+//        member.ifPresent(selectedMember -> {
+//            response.setNickname(selectedMember.getNickname());
+//        });
+        response.setNickname(resellArticleCommentRepositorySupport.findMemberNicknameByMemberId(comment.getMemberId()));
         response.setArticleId(comment.getArticleId());
     }
 
@@ -133,4 +158,42 @@ public class ResellBoardServiceImpl implements ResellBoardService {
         comment.setRegtime(LocalDateTime.now());
         resellArticleCommentRepository.save(comment);
     }
+
+    @Override
+    public void updateComment(ResellBoardCmtPutRequest request) {
+        Optional<ResellArticleComment> comment = resellArticleCommentRepository.findById(request.getId());
+        comment.ifPresent(selectedCmt -> {
+            selectedCmt.setContent(request.getContent());
+            selectedCmt.setRegtime(LocalDateTime.now());
+            resellArticleCommentRepository.save(selectedCmt);
+        });
+    }
+
+    @Override
+    public void deleteComment(Integer commentId) {
+        Optional<ResellArticleComment> comment = resellArticleCommentRepository.findById(commentId);
+        comment.ifPresent(selectedCmt -> {
+            resellArticleCommentRepository.delete(selectedCmt);
+        });
+    }
+
+    @Override
+    public void addLike(ResellBoardLikePostRequest request) {
+        ResellArticleLike like = new ResellArticleLike();
+        like.setArticleId(request.getArticleId());
+        like.setMemberId(request.getMemberId());
+        resellArticleLikeRepository.save(like);
+    }
+
+    @Override
+    public void deleteLike(ResellBoardLikePostRequest request) {
+        resellArticleLikeRepositorySupport.cancelLike(request);
+    }
+
+    @Override
+    public List<ResellBoardResponse> getArticleByKeyword(String keyword) {
+        List<ResellBoardResponse> articles = resellBoardRepositorySupport.getArticleByKeyword(keyword);
+        return articles;
+    }
+
 }

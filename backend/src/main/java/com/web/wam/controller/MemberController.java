@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @CrossOrigin(origins = { "*" }, methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE} , maxAge = 6000)
-@RequestMapping("/member")
+@RequestMapping("/api/member")
 @Api(value = "회원관리 API", tags = { "member" })
 @RestController
 public class MemberController {

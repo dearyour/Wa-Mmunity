@@ -18,7 +18,21 @@ public interface ResellBoardService {
 
     ResellBoardResponse getArticleById(Integer articleId);
 
+    List<ResellBoardResponse> getArticlesByMemberId(Integer memberId);
+
+    List<ResellBoardCmtResponse> getCommentsByMemberId(Integer memberId);
+
     List<ResellBoardCmtResponse> getCommentsById(Integer articleId);
 
     void createComment(ResellBoardCmtPostRequest request);
+
+    void updateComment(ResellBoardCmtPutRequest request);
+
+    void deleteComment(Integer commentId);
+
+    void addLike(ResellBoardLikePostRequest request);
+
+    void deleteLike(ResellBoardLikePostRequest request);
+
+    List<ResellBoardResponse> getArticleByKeyword(String keyword);
 }

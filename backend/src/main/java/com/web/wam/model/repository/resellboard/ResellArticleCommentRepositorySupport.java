@@ -1,6 +1,7 @@
 package com.web.wam.model.repository.resellboard;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.web.wam.model.entity.Member;
 import com.web.wam.model.entity.QMember;
 import com.web.wam.model.entity.resellboard.QResellArticleComment;
 import com.web.wam.model.entity.resellboard.ResellArticleComment;
@@ -28,6 +29,6 @@ public class ResellArticleCommentRepositorySupport {
     }
 
     public String findMemberNicknameByMemberId(Integer memberId) {
-        return jpaQueryFactory.select(qMember.nickname).from(qMember).where(qMember.id.eq(memberId)).fetch().get(0);
+        return jpaQueryFactory.select(qMember.nickname).from(qMember).where(qMember.id.eq(memberId)).fetchOne();
     }
 }
