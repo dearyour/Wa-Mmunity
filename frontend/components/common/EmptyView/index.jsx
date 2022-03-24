@@ -4,7 +4,7 @@ import Image from "next/image";
 
 const EmptyView = () => (
   <div className="emptyView-wrap">
-    <Image src="/images/gif/empty.gif" alt="Image" />
+    <Image src="/imagez/gif/empty.gif" alt="Image" width={600} height={600} />
   </div>
 );
 
