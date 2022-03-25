@@ -20,13 +20,13 @@ function wineMain() {
 
         <section>
           <article>
-            <div className="inner">
-              <div
-                className="txt"
-                onClick={() => {
-                  Router.push(`/wine`);
-                }}
-              >
+            <div
+              className="inner"
+              onClick={() => {
+                Router.push(`/wine`);
+              }}
+            >
+              <div className="txt">
                 <h2>01</h2>
                 <p>인기 와인</p>
               </div>
