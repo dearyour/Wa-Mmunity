@@ -1,2 +1,4 @@
 /.metadata/
 Servers/
+frontend/dist
+frontend/package-lock.json
