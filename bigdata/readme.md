@@ -1,3 +1,8 @@
+요구 패키지 설치
+```bash
+$ pip install -r requirements.txt
+```
+
 flask([공식문서](https://flask.palletsprojects.com/en/2.0.x/))
 - python의 마이크로 웹 프레임워크
 
@@ -95,4 +100,14 @@ if __name__ == '__main__':
 # {"todo1": "Remember the milk"}
 # $ curl http://localhost:5000/todo1
 # {"todo1": "Remember the milk"}
+```
+
+
+폴더구조
+```
+bigdata
+ ㄴ data
+    ㄴ input
+    ㄴ output
+ ㄴ models
 ```
