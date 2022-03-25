@@ -8,7 +8,7 @@ const nextConfig = {
   env: {
     BACK_EC2: process.env.BACK_EC2,
   },
-  api_domain: "http://localhost:8080",
+  api_domain: "http://j6a101.p.ssafy.io",
 };
 
 const withImages = require("next-images");
