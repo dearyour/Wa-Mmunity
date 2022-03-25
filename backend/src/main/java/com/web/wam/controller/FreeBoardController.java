@@ -34,7 +34,7 @@ import io.swagger.annotations.ApiResponses;
 
 @Api(value = "자유게시판 API", tags = { "freeboard" })
 @RestController
-@RequestMapping("/freeboard")
+@RequestMapping("/api/freeboard")
 public class FreeBoardController {
 	@Autowired
 	FreeBoardService freeBoardService;
