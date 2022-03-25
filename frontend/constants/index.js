@@ -60,7 +60,7 @@ export const dataList = [
     cuisine: "italian",
     rating: 4,
     price: 1000,
-    coverSrc: "/imagez/places/italian.webp",
+    coverSrc: "/imagez/places/italian.jpg",
   },
   {
     id: 3,
