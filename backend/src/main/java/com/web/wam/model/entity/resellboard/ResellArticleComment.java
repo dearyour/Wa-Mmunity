@@ -17,18 +17,18 @@ public class ResellArticleComment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comment_id", nullable = false)
-    private Integer id;
+    Integer id;
 
     @Column(name = "article_id", nullable = false)
-    private Integer articleId;
+    Integer articleId;
 
     @Column(name = "member_id", nullable = false)
-    private Integer memberId;
+    Integer memberId;
 
     @Lob
     @Column(name = "content", nullable = false)
-    private String content;
+    String content;
 
     @Column(name = "regtime", nullable = false)
-    private LocalDateTime regtime;
+    LocalDateTime regtime;
 }
