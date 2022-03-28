@@ -4,8 +4,27 @@ import FilterPanel from "../../components/Home/FilterPanel";
 import List from "../../components/Home/List";
 import SearchBar from "../../components/Home/SearchBar";
 import { dataList } from "../../constants";
+import axios from "axios";
 // import "./styles.css";
 const Home = () => {
+  const __GetWineState = () => {
+    return axios({
+      method: "GET",
+      url: process.env.BACK_EC2 + "wine",
+    })
+      .then((res) => {
+        console.log(res);
+        return res.data;
+      })
+      .catch((err) => {
+        return err;
+      });
+  };
+
+  useEffect(() => {
+    __GetWineState();
+  }, []);
+
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedRating, setSelectedRating] = useState(null);
   const [selectedPrice, setSelectedPrice] = useState([1000, 5000]);
