@@ -3,15 +3,16 @@ package com.web.wam.model.service;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.web.wam.model.dto.wine.WineFilterRequest;
 import com.web.wam.model.dto.wine.WineResponse;
 import com.web.wam.model.dto.wine.WineReviewPostRequest;
 import com.web.wam.model.dto.wine.WineReviewPutRequest;
+import com.web.wam.model.dto.wine.WineReviewResponse;
 import com.web.wam.model.dto.wine.WineSurveyRequest;
 import com.web.wam.model.dto.wine.WineWishlistRequest;
 import com.web.wam.model.entity.Wine;
@@ -259,11 +260,52 @@ public class WineServiceImpl implements WineService {
 		}
 	}
 
-	// TODO : 필터 구현 로직 생각해야함,,,
 	@Override
-	public List<WineResponse> searchWineByFilter(Map filter) {
-		// key : vaule 형태로 넘어옴
-		return null;
+	public List<WineResponse> searchWineByFilter(WineFilterRequest filter) {
+		List<WineResponse> wineList = new LinkedList<WineResponse>();
+		List<Wine> wines = wineRepositorySupport.findByFilter(filter);
+		for (Wine wine : wines) {
+			WineResponse wineResponse = new WineResponse();
+			setWineResponse(wine, wineResponse);
+			wineList.add(wineResponse);
+		}
+		return wineList;
+	}
+
+	@Override
+	public List<WineReviewResponse> searchReviewByMemberId(int memberId) {
+		List<WineReviewResponse> reviewList = new LinkedList<WineReviewResponse>();
+		List<WineReview> reviews = wineReviewRepository.findByMemberId(memberId);
+		for (WineReview review : reviews) {
+			WineReviewResponse wineReviewResponse = new WineReviewResponse();
+			wineReviewResponse.setId(review.getId());
+			wineReviewResponse.setMemberId(review.getMemberId());
+			wineReviewResponse.setWineId(review.getWineId());
+			wineReviewResponse.setRating(review.getRating());
+			wineReviewResponse.setContent(review.getContent());
+			wineReviewResponse.setRegtime(review.getRegtime());
+			reviewList.add(wineReviewResponse);
+		}
+
+		return reviewList;
+	}
+
+	@Override
+	public List<WineReviewResponse> searchReviewByWineId(int wineId) {
+		List<WineReviewResponse> reviewList = new LinkedList<WineReviewResponse>();
+		List<WineReview> reviews = wineReviewRepository.findByWineId(wineId);
+		for (WineReview review : reviews) {
+			WineReviewResponse wineReviewResponse = new WineReviewResponse();
+			wineReviewResponse.setId(review.getId());
+			wineReviewResponse.setMemberId(review.getMemberId());
+			wineReviewResponse.setWineId(review.getWineId());
+			wineReviewResponse.setRating(review.getRating());
+			wineReviewResponse.setContent(review.getContent());
+			wineReviewResponse.setRegtime(review.getRegtime());
+			reviewList.add(wineReviewResponse);
+		}
+
+		return reviewList;
 	}
 
 }
