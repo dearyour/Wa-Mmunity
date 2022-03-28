@@ -82,9 +82,9 @@ body {
   color: rgba(0, 0, 0, 0.26);
 }
 .list-wrap {
-  display: grid;
+  /* display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-gap: 2rem;
+  grid-gap: 2rem; */
 }
 .label {
   margin-bottom: 0.8rem;

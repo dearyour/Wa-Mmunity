@@ -28,7 +28,7 @@ const Home = () => {
 
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedRating, setSelectedRating] = useState(null);
-  const [selectedPrice, setSelectedPrice] = useState([1000, 5000]);
+  const [selectedPrice, setSelectedPrice] = useState([1000, 50000]);
 
   const [cuisines, setCuisines] = useState([
     { id: 1, checked: false, label: "American" },
