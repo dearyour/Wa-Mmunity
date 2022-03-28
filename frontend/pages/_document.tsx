@@ -1,29 +1,13 @@
-import Document, { Head, Main, NextScript } from "next/document";
-// Import styled components ServerStyleSheet
+import React from "react";
+import Document, { Html, Head, Main, NextScript } from "next/document";
 import { ServerStyleSheet } from "styled-components";
+import { ServerStyleSheets } from "@mui/styles";
 
 export default class MyDocument extends Document {
-  static getInitialProps({ renderPage }: any) {
-    // Step 1: Create an instance of ServerStyleSheet
-    const sheet = new ServerStyleSheet();
-
-    // Step 2: Retrieve styles from components in the page
-    const page = renderPage(
-      (App: any) => (props: any) => sheet.collectStyles(<App {...props} />)
-    );
-
-    // Step 3: Extract the styles as <style> tags
-    const styleTags: any = sheet.getStyleElement();
-
-    // Step 4: Pass styleTags as a prop
-    return { ...page, styleTags };
-  }
-
   render() {
     return (
-      <html>
+      <Html>
         <Head>
-          {/* <title>My page</title> */}
           {/* Step 5: Output the styles in the head  */}
           {/* {this.props.styleTags} */}
           <meta
@@ -40,14 +24,39 @@ export default class MyDocument extends Document {
             rel="stylesheet"
             href="https://fonts.googleapis.com/icon?family=Material+Icons"
           />
-
-          <title>와뮤니티</title>
         </Head>
         <body>
           <Main />
           <NextScript />
         </body>
-      </html>
+      </Html>
     );
   }
 }
+
+MyDocument.getInitialProps = async (ctx: any) => {
+  const sheet = new ServerStyleSheet();
+  const materialSheets = new ServerStyleSheets();
+  const originalRenderPage = ctx.renderPage;
+
+  try {
+    ctx.renderPage = () =>
+      originalRenderPage({
+        enhanceApp: (App: any) => (props: any) =>
+          sheet.collectStyles(materialSheets.collect(<App {...props} />)),
+      });
+
+    const initialProps = await Document.getInitialProps(ctx);
+    return {
+      ...initialProps,
+      styles: (
+        <>
+          {initialProps.styles}
+          {sheet.getStyleElement()}
+        </>
+      ),
+    };
+  } finally {
+    sheet.seal();
+  }
+};

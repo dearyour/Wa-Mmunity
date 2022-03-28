@@ -25,7 +25,7 @@ public class QWineReview extends EntityPathBase<WineReview> {
 
     public final NumberPath<Integer> memberId = createNumber("memberId", Integer.class);
 
-    public final StringPath rating = createString("rating");
+    public final NumberPath<Double> rating = createNumber("rating", Double.class);
 
     public final DateTimePath<java.time.LocalDateTime> regtime = createDateTime("regtime", java.time.LocalDateTime.class);
 
