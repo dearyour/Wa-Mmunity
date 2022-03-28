@@ -5,8 +5,10 @@ import List from "../../components/Home/List";
 import SearchBar from "../../components/Home/SearchBar";
 import { dataList } from "../../constants";
 import axios from "axios";
+import Card from "../card/card";
 // import "./styles.css";
 const Home = () => {
+  const [wines, setWines] = useState([]); //프롭으로내려주자
   const __GetWineState = () => {
     return axios({
       method: "GET",
@@ -15,6 +17,7 @@ const Home = () => {
     })
       .then((res) => {
         console.log(res);
+        setWines(res.data.object);
         return res.data;
       })
       .catch((err) => {
@@ -145,7 +148,7 @@ const Home = () => {
         </div>
         {/* List & Empty View */}
         <div className="home_list-wrap">
-          {resultsFound ? <List list={list} /> : <EmptyView />}
+          {resultsFound ? <List list={wines} /> : <EmptyView />}
         </div>
       </div>
     </div>
