@@ -34,9 +34,12 @@ const Home = () => {
     { id: 1, checked: false, label: "American" },
     { id: 2, checked: false, label: "Chinese" },
     { id: 3, checked: false, label: "Italian" },
+    { id: 4, checked: false, label: "American" },
+    { id: 5, checked: false, label: "Chinese" },
+    { id: 6, checked: false, label: "Italian" },
   ]);
 
-  const [list, setList] = useState(dataList);
+  const [list, setList] = useState(dataList); //이부분 axios 가져올것
   const [resultsFound, setResultsFound] = useState(true);
   const [searchInput, setSearchInput] = useState("");
 

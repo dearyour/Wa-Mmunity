@@ -11,6 +11,7 @@ const SearchBar = ({ value, changeInput }) => (
       value={value}
       onChange={changeInput}
     />
+    <div>#### select 부분</div>
   </div>
 );
 

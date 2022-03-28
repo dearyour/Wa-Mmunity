@@ -2,12 +2,32 @@ export const categoryList = [
   {
     id: 1,
     value: "place",
-    label: "🚩 Places",
+    label: "🚩 red",
   },
   {
     id: 2,
     value: "dish",
-    label: "🍕 Dishes",
+    label: "🍕 white",
+  },
+  {
+    id: 3,
+    value: "Sparkling",
+    label: "🍕 Sparkling",
+  },
+  {
+    id: 4,
+    value: "roje",
+    label: "🍕 roje",
+  },
+  {
+    id: 5,
+    value: "bold",
+    label: "🍕 bold",
+  },
+  {
+    id: 6,
+    value: "tmp",
+    label: "🍕 tmps",
   },
 ];
 
