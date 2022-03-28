@@ -77,22 +77,22 @@ public class WineRepositorySupport {
 
 		if (!wineStyle.isEmpty()) {
 			for (String style : wineStyle) {
-				builder.and(qWine.cat1.like("%" + style + "%"));
+				builder.or(qWine.cat1.like("%" + style + "%"));
 			}
 		}
 
 		if (!countries.isEmpty()) {
 			for (String country : countries) {
-				builder.and(qWine.country.like("%" + country + "%"));
+				builder.or(qWine.country.like("%" + country + "%"));
 			}
 		}
 
 		if (!regions.isEmpty()) {
 
 			for (String region : regions) {
-				builder.and(qWine.region1.like("%" + region + "%"));
-				builder.and(qWine.region2.like("%" + region + "%"));
-				builder.and(qWine.region3.like("%" + region + "%"));
+				builder.or(qWine.region1.like("%" + region + "%"));
+				builder.or(qWine.region2.like("%" + region + "%"));
+				builder.or(qWine.region3.like("%" + region + "%"));
 			}
 		}
 
