@@ -43,4 +43,14 @@ public class ResellBoard {
     @Column(name = "regtime", nullable = false)
     private LocalDateTime regtime;
 
+    public ResellBoard toEntity() {
+        return ResellBoard.builder()
+                .memberId(this.memberId)
+                .title(this.title)
+                .content(this.content)
+                .tag(this.tag)
+                .price(this.price)
+                .build();
+    }
+
 }

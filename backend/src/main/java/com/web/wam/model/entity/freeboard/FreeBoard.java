@@ -37,6 +37,9 @@ public class FreeBoard {
     @Column(name = "tag")
     private String tag;
 
+    @Column(name = "price", nullable = false)
+    private Integer price;
+
     @Column(name = "regtime", nullable = false)
     private LocalDateTime regtime;
 
