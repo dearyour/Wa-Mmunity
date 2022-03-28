@@ -88,6 +88,7 @@ public class WineRepositorySupport {
 		}
 
 		if (!regions.isEmpty()) {
+
 			for (String region : regions) {
 				builder.and(qWine.region1.like("%" + region + "%"));
 				builder.and(qWine.region2.like("%" + region + "%"));
