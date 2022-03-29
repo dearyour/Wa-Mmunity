@@ -8,6 +8,7 @@ import random
 import pickle
 import json
 from models import related_wine
+from flask import Response
 
 # flask 객체 인스턴스 생성
 app = Flask(__name__)
@@ -59,7 +60,8 @@ def mf():
 
 @app.route('/recomm/cb/<wine_id>', methods=['GET'])
 def wine_cb(wine_id):
-    return related_wine.get_recomm(wine_id=wine_id)
+    return Response(json.dumps(related_wine.get_recomm(wine_id=wine_id)),
+     mimetype='application/json')
 
 
 # debug = True 명시해 코드 수정 시 자동 반영
