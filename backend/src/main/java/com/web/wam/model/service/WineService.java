@@ -18,7 +18,7 @@ public interface WineService {
 
 	List<WineResponse> searchWineByKeyword(String keyword);
 
-	WineResponse searchWindByWindId(int wineId);
+	WineResponse searchWineByWineId(int wineId);
 
 	void createReview(WineReviewPostRequest wineReviewInfo);
 
@@ -39,5 +39,7 @@ public interface WineService {
 	List<WineReviewResponse> searchReviewByMemberId(int memberId);
 
 	List<WineReviewResponse> searchReviewByWineId(int wineId);
+
+	List<WineResponse> recommendWineByWineId(int wineId);
 
 }

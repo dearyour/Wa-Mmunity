@@ -54,10 +54,23 @@ public class WineController {
 			@ApiResponse(code = 401, message = "인증 실패", response = BaseResponse.class),
 			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponse.class) })
 
-	public ResponseEntity<? extends BaseResponse> searchWindByWindId(
+	public ResponseEntity<? extends BaseResponse> searchWineByWineId(
 			@ApiParam(value = "와인 아이디 정보", required = true) @PathVariable("wineId") int wineId) {
-		WineResponse wine = wineService.searchWindByWindId(wineId);
+		WineResponse wine = wineService.searchWineByWineId(wineId);
 		return ResponseEntity.status(200).body(BaseResponse.of(200, wine));
+	}
+
+	@GetMapping("/recommend/{wineId}")
+	@ApiOperation(value = "관련 와인 추천 정보", notes = "선택한 와인 관련 와인 추천 정보 불러오기")
+	@ApiResponses({ @ApiResponse(code = 200, message = "성공", response = BaseResponse.class),
+			@ApiResponse(code = 401, message = "인증 실패", response = BaseResponse.class),
+			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponse.class) })
+
+	public ResponseEntity<? extends BaseResponse> recommendWineByWineId(
+			@ApiParam(value = "와인 아이디 정보", required = true) @PathVariable("wineId") int wineId) {
+
+		List<WineResponse> wineList = wineService.recommendWineByWineId(wineId);
+		return ResponseEntity.status(200).body(BaseResponse.of(200, wineList));
 	}
 
 	@GetMapping("/sort/{sortType}")
