@@ -4,7 +4,19 @@ import ListItem from "./ListItem";
 import styles from "./list.module.css";
 import styled from "styled-components";
 import Image from "next/image";
+import { Rate } from "antd";
 const DEFAULT_IMAGE = "/images/wine2.png";
+const desc = ["1.0", "2.0", "3.0", "4.0", "5.0"];
+
+let state = {
+  value: 5,
+};
+
+let handleChange = (value) => {
+  setState({ value });
+};
+
+let { value } = state;
 const CategoryIcon = styled(Image)`
   width: 14em;
   height: 14em;
@@ -13,6 +25,10 @@ const CategoryIcon = styled(Image)`
   margin-right: 1em;
   cursor: pointer;
   margin-top: 30px;
+  &:hover {
+    width: 120px;
+    height: 420px;
+  }
 `;
 
 const VVoid = styled.div`
@@ -51,17 +67,17 @@ const List = ({ list, index }) => (
       <div className={styles.right}>
         <h1 className={styles.name}></h1>
         <p className={styles.star}>
-          {/* <span>
-        <Rate tooltips={desc} onChange={handleChange} value={value} />
-        {value ? (
-          <span className="ant-rate-text" style={{}}>
-            　　　 {desc[value - 1]}
+          <span>
+            <Rate tooltips={desc} onChange={handleChange} value={value} />
+            {value ? (
+              <span className="ant-rate-text" style={{}}>
+                　　　 {desc[value - 1]}
+              </span>
+            ) : (
+              ""
+            )}
           </span>
-        ) : (
-          ""
-        )}
-      </span> */}
-          <span>🌟🌟🌟</span>
+          {/* <span>🌟🌟🌟</span> */}
         </p>
       </div>
     </li>
