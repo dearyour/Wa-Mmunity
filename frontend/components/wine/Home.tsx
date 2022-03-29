@@ -11,7 +11,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 const Home = () => {
   //인피니티 스크롤
   const [loading, setLoading] = useState<boolean>(false);
-  const [nowFeedsnum, setNowFeedsNum] = useState(5);
+  const [nowFeedsnum, setNowFeedsNum] = useState(10);
   const loadmoredata = () => {
     if (loading) {
       return;
@@ -24,7 +24,13 @@ const Home = () => {
   };
 
   const [wines, setWines] = useState([]); //프롭으로내려주자
-  const __GetWineState = () => {
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedRating, setSelectedRating] = useState(null);
+  const [selectedPrice, setSelectedPrice] = useState([1000, 500000]);
+  const [searchInput, setSearchInput] = useState("");
+  const [list, setList] = useState(dataList); //이부분 axios 가져올것;
+
+  const __GetWineState = useCallback(() => {
     return axios({
       method: "GET",
       url: process.env.BACK_EC2 + "wine",
@@ -38,18 +44,14 @@ const Home = () => {
       .catch((err) => {
         return err;
       });
-  };
+  }, []);
 
   useEffect(() => {
     __GetWineState();
   }, []);
 
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [selectedRating, setSelectedRating] = useState(null);
-  const [selectedPrice, setSelectedPrice] = useState([1000, 50000]);
-
   const [cuisines, setCuisines] = useState([
-    { id: 1, checked: false, label: "American" },
+    { id: 1, checked: false, label: "France" },
     { id: 2, checked: false, label: "Chinese" },
     { id: 3, checked: false, label: "Italian" },
     { id: 4, checked: false, label: "American" },
@@ -57,14 +59,12 @@ const Home = () => {
     { id: 6, checked: false, label: "Italian" },
   ]);
 
-  const [list, setList] = useState(dataList); //이부분 axios 가져올것
   const [resultsFound, setResultsFound] = useState(true);
-  const [searchInput, setSearchInput] = useState("");
 
-  const handleSelectCategory = (event: any, value: any) =>
+  const handleSelectCategory = (event: Event, value: any) =>
     !value ? null : setSelectedCategory(value);
 
-  const handleSelectRating = (event: any, value: any) =>
+  const handleSelectRating = (event: Event, value: any) =>
     !value ? null : setSelectedRating(value);
 
   const handleChangeChecked = (id: any) => {
@@ -75,24 +75,28 @@ const Home = () => {
     setCuisines(changeCheckedCuisines);
   };
 
-  const handleChangePrice = (event: any, value: any) => {
+  const handleChangePrice = (event: Event, value: Number) => {
     setSelectedPrice(value);
   };
-
+  //////////////////////////////////////////////////////////////////
   const applyFilters = useCallback(() => {
-    let updatedList = dataList;
+    let updatedList = wines;
+    console.log(updatedList);
 
     // Rating Filter
     if (selectedRating) {
       updatedList = updatedList.filter(
-        (item) => Number(item.rating) === parseInt(selectedRating)
+        (item) => Number(item.ratingAvg) === parseInt(selectedRating)
       );
     }
 
     // Category Filter
     if (selectedCategory) {
-      updatedList = updatedList.filter(
-        (item) => item.category === selectedCategory
+      // updatedList = updatedList.filter(
+      //   (item) => item.wineStyle === selectedCategory
+      // );
+      updatedList = updatedList.filter((item) =>
+        selectedCategory.includes(item.wineStyle)
       );
     }
 
@@ -103,7 +107,7 @@ const Home = () => {
 
     if (cuisinesChecked.length) {
       updatedList = updatedList.filter((item) =>
-        cuisinesChecked.includes(item.cuisine)
+        cuisinesChecked.includes(item.country.toLowerCase())
       );
     }
 
@@ -111,7 +115,7 @@ const Home = () => {
     if (searchInput) {
       updatedList = updatedList.filter(
         (item) =>
-          item.title.toLowerCase().search(searchInput.toLowerCase().trim()) !==
+          item.name.toLowerCase().search(searchInput.toLowerCase().trim()) !==
           -1
       );
     }
@@ -124,7 +128,9 @@ const Home = () => {
       (item) => item.price >= minPrice && item.price <= maxPrice
     );
 
-    setList(updatedList);
+    // setList(updatedList);
+    setWines(updatedList);
+    console.log(updatedList);
 
     !updatedList.length ? setResultsFound(false) : setResultsFound(true);
   }, [cuisines, searchInput, selectedCategory, selectedPrice, selectedRating]);
@@ -185,7 +191,9 @@ const Home = () => {
                   return <List list={item} index={idx} />;
                 })}
             </InfiniteScroll>
-          ) : null}
+          ) : (
+            <EmptyView />
+          )}
 
           {/* {resultsFound ? <List list={wines} /> : <EmptyView />} */}
         </div>

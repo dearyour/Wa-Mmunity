@@ -1,7 +1,8 @@
 import React from "react";
+import AppLayout from "../../components/layout/AppLayout";
 
 function WineDetail() {
-  return <div>windId</div>;
+  return <AppLayout>ㅎㅎㅎ </AppLayout>;
 }
 
 export default WineDetail;

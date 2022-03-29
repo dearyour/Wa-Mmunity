@@ -15,6 +15,7 @@
   background-color: #f7f3f0;
   box-shadow: 6px 6px 8px 0px makerShadow;
   max-width: 45rem;
+  cursor: pointer;
 }
 
 .avatar {

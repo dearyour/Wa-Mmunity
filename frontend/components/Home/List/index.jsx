@@ -5,6 +5,7 @@ import styles from "./list.module.css";
 import styled from "styled-components";
 import Image from "next/image";
 import { Rate } from "antd";
+import Router from "next/router";
 const DEFAULT_IMAGE = "/images/wine2.png";
 const desc = ["1.0", "2.0", "3.0", "4.0", "5.0"];
 
@@ -39,7 +40,12 @@ const url =
   DEFAULT_IMAGE;
 
 const List = ({ list, index }) => (
-  <div className="list-wrap">
+  <div
+    className="list-wrap"
+    onClick={() => {
+      Router.push(`/wine/${list.wineId}`);
+    }}
+  >
     <li
       className={`${styles.card} 
 `}
@@ -71,13 +77,15 @@ const List = ({ list, index }) => (
             <Rate tooltips={desc} onChange={handleChange} value={value} />
             {value ? (
               <span className="ant-rate-text" style={{}}>
-                　　　 {desc[value - 1]}
+                　　　
+                {/* {desc[value - 1]}  */}
+                평점 : {list.ratingAvg}
               </span>
             ) : (
               ""
             )}
           </span>
-          {/* <span>🌟🌟🌟</span> */}
+          {/* <span>🌟🌟🌟 {list.ratingAvg}</span> */}
         </p>
       </div>
     </li>
