@@ -6,8 +6,23 @@ import SearchBar from "../../components/Home/SearchBar";
 import { dataList } from "../../constants";
 import axios from "axios";
 import Card from "../card/card";
+import InfiniteScroll from "react-infinite-scroll-component";
 // import "./styles.css";
 const Home = () => {
+  //인피니티 스크롤
+  const [loading, setLoading] = useState<boolean>(false);
+  const [nowFeedsnum, setNowFeedsNum] = useState(5);
+  const loadmoredata = () => {
+    if (loading) {
+      return;
+    }
+    setLoading(true);
+    setTimeout(() => {
+      setNowFeedsNum(nowFeedsnum + 5);
+    }, 1000);
+    setLoading(false);
+  };
+
   const [wines, setWines] = useState([]); //프롭으로내려주자
   const __GetWineState = () => {
     return axios({
@@ -148,7 +163,31 @@ const Home = () => {
         </div>
         {/* List & Empty View */}
         <div className="home_list-wrap">
-          {resultsFound ? <List list={wines} /> : <EmptyView />}
+          {/* <Winielist /> */}
+          {wines ? (
+            <InfiniteScroll
+              dataLength={wines.slice(0, nowFeedsnum).length} //This is important field to render the next data
+              next={loadmoredata}
+              hasMore={nowFeedsnum < wines.length}
+              loader={<h4 style={{ textAlign: "center" }}>Loading...</h4>}
+              endMessage={
+                <p style={{ textAlign: "center" }}>
+                  <b>마지막입니다</b>
+                </p>
+              }
+            >
+              {wines &&
+                wines.slice(0, nowFeedsnum).map((item: any, idx: number) => {
+                  // console.log(feeds);
+                  // console.log(feedstate.length)
+                  // console.log(nowFeedsnum)
+
+                  return <List list={item} index={idx} />;
+                })}
+            </InfiniteScroll>
+          ) : null}
+
+          {/* {resultsFound ? <List list={wines} /> : <EmptyView />} */}
         </div>
       </div>
     </div>
