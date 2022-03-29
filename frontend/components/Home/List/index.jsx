@@ -80,7 +80,7 @@ const List = ({ list }) => (
               <span className="ant-rate-text" style={{}}>
                 　　
                 {/* {desc[value - 1]}  */}
-                평점 : [{list.ratingAvg.toFixed(1)}]
+                평점 : [ {list.ratingAvg.toFixed(1)} ]
               </span>
             ) : (
               ""
@@ -88,7 +88,7 @@ const List = ({ list }) => (
           </span>
           <span className="ant-rate-text" style={{}}>
             　{/* {desc[value - 1]}  */}
-            리뷰 갯수 : [{list.ratingNum}]
+            리뷰 갯수 : [ {list.ratingNum} ]
           </span>
           {/* <span>🌟🌟🌟 {list.ratingAvg}</span> */}
         </p>

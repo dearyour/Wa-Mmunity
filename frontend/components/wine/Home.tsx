@@ -230,7 +230,7 @@ const Home = () => {
               loader={<h4 style={{ textAlign: "center" }}>🌟Loading...🌟</h4>}
               endMessage={
                 <p style={{ textAlign: "center" }}>
-                  <b>마지막입니다</b>
+                  <b>🚩 검색 완료 🚩</b>
                 </p>
               }
             >
