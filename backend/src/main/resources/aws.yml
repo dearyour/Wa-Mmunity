@@ -1,0 +1,16 @@
+cloud:
+  aws:
+    credentials:
+      accessKey: AKIA5OF36AUO332QBZG7
+      secretKey: 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
+    s3:
+      bucket: wamunity-01-s3
+      hosting: http://wamunity-01-s3.s3-website.ap-northeast-2.amazonaws.com
+      dirFreeboard: freeboard
+      dirResellboard: resellboard
+      dirMember: member
+      dirWine: wine
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import AppLayout from "../layout/AppLayout";
 import Card from "../card/card";
@@ -6,6 +6,7 @@ import Select from "./Testselect";
 import styled from "styled-components";
 
 function Winemain(): any {
+  const [wines, setWines] = useState([]); //프롭으로내려주자
   const __GetWineState = () => {
     return axios({
       method: "GET",
@@ -13,6 +14,7 @@ function Winemain(): any {
     })
       .then((res) => {
         console.log(res);
+        setWines(res.data.object);
         return res.data;
       })
       .catch((err) => {

@@ -27,6 +27,8 @@ public class QFreeBoard extends EntityPathBase<FreeBoard> {
 
     public final StringPath photo = createString("photo");
 
+    public final NumberPath<Integer> price = createNumber("price", Integer.class);
+
     public final DateTimePath<java.time.LocalDateTime> regtime = createDateTime("regtime", java.time.LocalDateTime.class);
 
     public final StringPath tag = createString("tag");

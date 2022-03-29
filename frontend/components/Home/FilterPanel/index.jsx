@@ -16,12 +16,12 @@ const FilterPanel = ({
   changePrice,
 }) => (
   <div>
-    <div className="input-group">
+    <div className="input-group category">
       <p className="label">Category</p>
       <FilterListToggle
         options={categoryList}
-        value={selectedCategory}
-        selectToggle={selectCategory}
+        value={selectedCategory} // useState값
+        selectToggle={selectCategory} //온체인지 함수
       />
     </div>
     <div className="input-group">

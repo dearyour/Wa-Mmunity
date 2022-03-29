@@ -5,15 +5,34 @@ import List from "../../components/Home/List";
 import SearchBar from "../../components/Home/SearchBar";
 import { dataList } from "../../constants";
 import axios from "axios";
+import Card from "../card/card";
+import InfiniteScroll from "react-infinite-scroll-component";
 // import "./styles.css";
 const Home = () => {
+  //인피니티 스크롤
+  const [loading, setLoading] = useState<boolean>(false);
+  const [nowFeedsnum, setNowFeedsNum] = useState(5);
+  const loadmoredata = () => {
+    if (loading) {
+      return;
+    }
+    setLoading(true);
+    setTimeout(() => {
+      setNowFeedsNum(nowFeedsnum + 5);
+    }, 1000);
+    setLoading(false);
+  };
+
+  const [wines, setWines] = useState([]); //프롭으로내려주자
   const __GetWineState = () => {
     return axios({
       method: "GET",
       url: process.env.BACK_EC2 + "wine",
+      // url: "http://j6a101.p.ssafy.io:8080/api/wine",
     })
       .then((res) => {
         console.log(res);
+        setWines(res.data.object);
         return res.data;
       })
       .catch((err) => {
@@ -27,15 +46,18 @@ const Home = () => {
 
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedRating, setSelectedRating] = useState(null);
-  const [selectedPrice, setSelectedPrice] = useState([1000, 5000]);
+  const [selectedPrice, setSelectedPrice] = useState([1000, 50000]);
 
   const [cuisines, setCuisines] = useState([
     { id: 1, checked: false, label: "American" },
     { id: 2, checked: false, label: "Chinese" },
     { id: 3, checked: false, label: "Italian" },
+    { id: 4, checked: false, label: "American" },
+    { id: 5, checked: false, label: "Chinese" },
+    { id: 6, checked: false, label: "Italian" },
   ]);
 
-  const [list, setList] = useState(dataList);
+  const [list, setList] = useState(dataList); //이부분 axios 가져올것
   const [resultsFound, setResultsFound] = useState(true);
   const [searchInput, setSearchInput] = useState("");
 
@@ -141,7 +163,31 @@ const Home = () => {
         </div>
         {/* List & Empty View */}
         <div className="home_list-wrap">
-          {resultsFound ? <List list={list} /> : <EmptyView />}
+          {/* <Winielist /> */}
+          {wines ? (
+            <InfiniteScroll
+              dataLength={wines.slice(0, nowFeedsnum).length} //This is important field to render the next data
+              next={loadmoredata}
+              hasMore={nowFeedsnum < wines.length}
+              loader={<h4 style={{ textAlign: "center" }}>Loading...</h4>}
+              endMessage={
+                <p style={{ textAlign: "center" }}>
+                  <b>마지막입니다</b>
+                </p>
+              }
+            >
+              {wines &&
+                wines.slice(0, nowFeedsnum).map((item: any, idx: number) => {
+                  // console.log(feeds);
+                  // console.log(feedstate.length)
+                  // console.log(nowFeedsnum)
+
+                  return <List list={item} index={idx} />;
+                })}
+            </InfiniteScroll>
+          ) : null}
+
+          {/* {resultsFound ? <List list={wines} /> : <EmptyView />} */}
         </div>
       </div>
     </div>
