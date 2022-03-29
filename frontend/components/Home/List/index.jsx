@@ -39,7 +39,7 @@ const url =
   // fileURL ||
   DEFAULT_IMAGE;
 
-const List = ({ list, index }) => (
+const List = ({ list }) => (
   <div
     className="list-wrap"
     onClick={() => {
@@ -80,7 +80,7 @@ const List = ({ list, index }) => (
               <span className="ant-rate-text" style={{}}>
                 　　　
                 {/* {desc[value - 1]}  */}
-                평점 : {list.ratingAvg}
+                평점 : {list.ratingAvg.toFixed(1)}
               </span>
             ) : (
               ""

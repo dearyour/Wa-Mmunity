@@ -54,7 +54,7 @@ const Home = () => {
   useEffect(() => {
     __GetWineState();
     dispatch(feedAction.getFeed());
-  }, []);
+  }, [__GetWineState, dispatch]);
 
   const [cuisines, setCuisines] = useState<any[]>([
     { id: 1, checked: false, label: "France" },
@@ -146,7 +146,14 @@ const Home = () => {
     console.log(updatedList);
 
     !updatedList.length ? setResultsFound(false) : setResultsFound(true);
-  }, [cuisines, searchInput, selectedCategory, selectedPrice, selectedRating]);
+  }, [
+    cuisines,
+    searchInput,
+    selectedCategory,
+    selectedPrice,
+    selectedRating,
+    feedstate,
+  ]);
 
   useEffect(() => {
     applyFilters();
@@ -201,7 +208,7 @@ const Home = () => {
                   // console.log(feedstate.length)
                   // console.log(nowFeedsnum)
 
-                  return <List list={item} index={idx} />;
+                  return <List list={item} key={idx} />;
                 })}
             </InfiniteScroll>
           ) : (

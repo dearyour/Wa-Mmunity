@@ -29,7 +29,7 @@ function Winemain(): any {
   useEffect(() => {
     __GetWineState();
     dispatch(feedAction.getFeed());
-  }, []);
+  }, [dispatch]);
   return (
     <AppLayout>
       <Main>
