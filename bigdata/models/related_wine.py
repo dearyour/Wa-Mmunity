@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+import json
 
 df = pd.read_csv('./data/related_wine/wines_db_cb.csv', index_col=0)
 tfidf_vect = TfidfVectorizer(ngram_range=(1, 3))
@@ -25,4 +26,7 @@ def get_recomm(wine_id, top=10):
     #     },
     #     'data': []
     # }
-    return result.to_json(orient='table')
+    jsonfiles = json.loads(result.to_json(orient='records'))
+    # return result.to_json(orient='table')
+
+    return jsonfiles
