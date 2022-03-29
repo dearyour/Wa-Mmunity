@@ -107,7 +107,7 @@ const Home = () => {
         (item: any) =>
           // selectedCategory.includes(item.wineStyle)
           // item.wineStyle.includes(selectedCategory)
-          item.wineStyle
+          item.cat1
             .toLowerCase()
             .search(selectedCategory.toLowerCase().trim()) !== -1
       );

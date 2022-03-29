@@ -65,7 +65,7 @@ const List = ({ list }) => (
       {/* <img className={styles.avatar} src={url} alt="wineImage" /> */}
       <div className={styles.info}>
         <h1 className={styles.name}> {list.name}</h1>
-        <p className={styles.title}> 와인스타일 : {list.wineStyle}</p>
+        <p className={styles.title}> 와인스타일 : {list.cat1}</p>
         <p className={styles.title}> 회사 : {list.winery}</p>
         <p className={styles.title}> 지역 : {list.region1}</p>
         <p className={styles.company}> 원산지 : {list.country}</p>

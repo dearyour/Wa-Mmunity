@@ -1,13 +1,13 @@
 export const categoryList = [
   {
     id: 1,
-    value: "white",
-    label: "white",
+    value: "Red",
+    label: "Red",
   },
   {
     id: 2,
-    value: "red",
-    label: "red",
+    value: "White",
+    label: "White",
   },
   {
     id: 3,
@@ -16,18 +16,18 @@ export const categoryList = [
   },
   {
     id: 4,
-    value: "rose",
-    label: "rose",
+    value: "Ros",
+    label: "Rose",
   },
   {
     id: 5,
-    value: "French",
-    label: "French",
+    value: "Dessert",
+    label: "Dessert",
   },
   {
     id: 6,
-    value: "Port",
-    label: "Port",
+    value: "Fortified",
+    label: "Fortified",
   },
 ];
 
