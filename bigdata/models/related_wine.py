@@ -17,7 +17,7 @@ def get_recomm(wine_id, top=10):
     target_wine_index = df[df['id']==int(wine_id)].index.values
     sim_index = cos_sim[target_wine_index, :top].reshape(-1)
     sim_index = sim_index[sim_index != target_wine_index]
-    result = df.iloc[sim_index]
+    result = df.iloc[sim_index]['id']
 
     # json으로 반환
     # {
