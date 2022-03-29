@@ -30,7 +30,7 @@ import io.swagger.annotations.ApiResponses;
 
 @Api(value = "와인관리 API", tags = { "wine" })
 @RestController
-@RequestMapping("/wine")
+@RequestMapping("/api/wine")
 public class WineController {
 	@Autowired
 	WineService wineService;
