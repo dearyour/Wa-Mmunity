@@ -17,7 +17,7 @@ const FilterPanel = ({
 }) => (
   <div>
     <div className="input-group category">
-      <p className="label">Category</p>
+      <p className="label">와인 스타일</p>
       <FilterListToggle
         options={categoryList}
         value={selectedCategory} // useState값
@@ -25,7 +25,7 @@ const FilterPanel = ({
       />
     </div>
     <div className="input-group">
-      <p className="label">Cuisine</p>
+      <p className="label">원산지</p>
       {cuisines.map((cuisine) => (
         <CheckboxProton
           key={cuisine.id}
@@ -35,11 +35,11 @@ const FilterPanel = ({
       ))}
     </div>
     <div className="input-group">
-      <p className="label-range">Price Range</p>
+      <p className="label-range">가격 범위</p>
       <SliderProton value={selectedPrice} changePrice={changePrice} />
     </div>
     <div className="input-group">
-      <p className="label">Star Rating</p>
+      <p className="label">평균 평점</p>
       <FilterListToggle
         options={ratingList}
         value={selectedRating}

@@ -1,61 +1,62 @@
 export const categoryList = [
   {
     id: 1,
-    value: "red",
-    label: "red",
-  },
-  {
-    id: 2,
     value: "white",
     label: "white",
   },
   {
+    id: 2,
+    value: "red",
+    label: "red",
+  },
+  {
     id: 3,
     value: "Sparkling",
-    label: "🍕 Sparkling",
+    label: "Sparkling",
   },
   {
     id: 4,
-    value: "roje",
-    label: "🍕 roje",
+    value: "rose",
+    label: "rose",
   },
   {
     id: 5,
-    value: "bold",
-    label: "🍕 bold",
+    value: "French",
+    label: "French",
   },
   {
     id: 6,
-    value: "tmp",
-    label: "🍕 tmps",
+    value: "Port",
+    label: "Port",
   },
 ];
 
 export const ratingList = [
-  {
-    id: 1,
-    value: "1",
-    label: "1🌟",
-  },
-  {
-    id: 2,
-    value: "2",
-    label: "2🌟",
-  },
+  // {
+  //   id: 1,
+  //   value: "1",
+  //   label: "★",
+  // },
+  // {
+  //   id: 2,
+  //   value: "2",
+  //   label: "★★",
+  // },
   {
     id: 3,
     value: "3",
-    label: "3🌟",
+    label: "★★★ 2.5 ~ 3.5",
   },
   {
     id: 4,
     value: "4",
-    label: "4🌟",
+    label: "★★★★ 3.5 ~ 4.5",
   },
   {
     id: 5,
     value: "5",
-    label: "5🌟",
+    // label: "5🌟",
+    label: "★★★★★ 4.5 이상",
   },
 ];
 

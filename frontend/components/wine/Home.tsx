@@ -7,9 +7,13 @@ import { dataList } from "../../constants";
 import axios from "axios";
 import Card from "../card/card";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { useDispatch, useSelector } from "react-redux";
+import { feedAction } from "store/slice/feed";
+import { RootState } from "../../store/module";
 // import "./styles.css";
 const Home = () => {
   //인피니티 스크롤
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState<boolean>(false);
   const [nowFeedsnum, setNowFeedsNum] = useState(10);
   const loadmoredata = () => {
@@ -26,10 +30,11 @@ const Home = () => {
   const [wines, setWines] = useState([]); //프롭으로내려주자
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedRating, setSelectedRating] = useState(null);
-  const [selectedPrice, setSelectedPrice] = useState([1000, 500000]);
+  const [selectedPrice, setSelectedPrice] = useState([1, 500000]);
   const [searchInput, setSearchInput] = useState("");
   const [list, setList] = useState(dataList); //이부분 axios 가져올것;
 
+  const feedstate = useSelector((state: RootState) => state.feed.items);
   const __GetWineState = useCallback(() => {
     return axios({
       method: "GET",
@@ -48,15 +53,16 @@ const Home = () => {
 
   useEffect(() => {
     __GetWineState();
+    dispatch(feedAction.getFeed());
   }, []);
 
   const [cuisines, setCuisines] = useState([
     { id: 1, checked: false, label: "France" },
-    { id: 2, checked: false, label: "Chinese" },
-    { id: 3, checked: false, label: "Italian" },
-    { id: 4, checked: false, label: "American" },
-    { id: 5, checked: false, label: "Chinese" },
-    { id: 6, checked: false, label: "Italian" },
+    { id: 2, checked: false, label: "Italy" },
+    { id: 3, checked: false, label: "Hungary" },
+    { id: 4, checked: false, label: "Portugal" },
+    { id: 5, checked: false, label: "Germany" },
+    { id: 6, checked: false, label: "Spain" },
   ]);
 
   const [resultsFound, setResultsFound] = useState(true);
@@ -80,13 +86,15 @@ const Home = () => {
   };
   //////////////////////////////////////////////////////////////////
   const applyFilters = useCallback(() => {
-    let updatedList = wines;
+    let updatedList = feedstate;
     console.log(updatedList);
 
     // Rating Filter
     if (selectedRating) {
       updatedList = updatedList.filter(
-        (item) => Number(item.ratingAvg) === parseInt(selectedRating)
+        (item: any) =>
+          item.ratingAvg >= parseInt(selectedRating) - 0.5 &&
+          item.ratingAvg <= parseInt(selectedRating) + 0.5
       );
     }
 
@@ -95,8 +103,13 @@ const Home = () => {
       // updatedList = updatedList.filter(
       //   (item) => item.wineStyle === selectedCategory
       // );
-      updatedList = updatedList.filter((item) =>
-        selectedCategory.includes(item.wineStyle)
+      updatedList = updatedList.filter(
+        (item: any) =>
+          // selectedCategory.includes(item.wineStyle)
+          // item.wineStyle.includes(selectedCategory)
+          item.wineStyle
+            .toLowerCase()
+            .search(selectedCategory.toLowerCase().trim()) !== -1
       );
     }
 
@@ -106,7 +119,7 @@ const Home = () => {
       .map((item) => item.label.toLowerCase());
 
     if (cuisinesChecked.length) {
-      updatedList = updatedList.filter((item) =>
+      updatedList = updatedList.filter((item: any) =>
         cuisinesChecked.includes(item.country.toLowerCase())
       );
     }
@@ -114,7 +127,7 @@ const Home = () => {
     // Search Filter
     if (searchInput) {
       updatedList = updatedList.filter(
-        (item) =>
+        (item: any) =>
           item.name.toLowerCase().search(searchInput.toLowerCase().trim()) !==
           -1
       );
@@ -125,7 +138,7 @@ const Home = () => {
     const maxPrice = selectedPrice[1];
 
     updatedList = updatedList.filter(
-      (item) => item.price >= minPrice && item.price <= maxPrice
+      (item: any) => item.price >= minPrice && item.price <= maxPrice
     );
 
     // setList(updatedList);
@@ -175,7 +188,7 @@ const Home = () => {
               dataLength={wines.slice(0, nowFeedsnum).length} //This is important field to render the next data
               next={loadmoredata}
               hasMore={nowFeedsnum < wines.length}
-              loader={<h4 style={{ textAlign: "center" }}>Loading...</h4>}
+              loader={<h4 style={{ textAlign: "center" }}>🌟Loading...🌟</h4>}
               endMessage={
                 <p style={{ textAlign: "center" }}>
                   <b>마지막입니다</b>

@@ -7,7 +7,7 @@ const SearchBar = ({ value, changeInput }) => (
     <SearchIcon className="searchBar-icon" />
     <input
       type="text"
-      placeholder="Wa Mmunity"
+      placeholder="와인이름 검색"
       value={value}
       onChange={changeInput}
     />

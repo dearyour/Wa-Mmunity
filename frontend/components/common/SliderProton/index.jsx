@@ -9,6 +9,7 @@ const useStyles = makeStyles({
   },
   thumb: {
     color: "#000",
+    // fontSize: "1px",
   },
   rail: {
     color: `rgba(0, 0, 0, 0.26)`,
@@ -27,7 +28,7 @@ const SliderProton = ({ value, changePrice }) => {
         value={value}
         onChange={changePrice}
         valueLabelDisplay="on"
-        min={1000}
+        min={1}
         max={500000}
         classes={{
           thumb: classes.thumb,
