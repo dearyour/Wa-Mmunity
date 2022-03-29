@@ -28,7 +28,7 @@ const Home = () => {
   };
 
   const [wines, setWines] = useState([]); //프롭으로내려주자
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState<any>(null);
   const [selectedRating, setSelectedRating] = useState(null);
   const [selectedPrice, setSelectedPrice] = useState([1, 500000]);
   const [searchInput, setSearchInput] = useState("");
@@ -56,7 +56,7 @@ const Home = () => {
     dispatch(feedAction.getFeed());
   }, []);
 
-  const [cuisines, setCuisines] = useState([
+  const [cuisines, setCuisines] = useState<any[]>([
     { id: 1, checked: false, label: "France" },
     { id: 2, checked: false, label: "Italy" },
     { id: 3, checked: false, label: "Hungary" },
@@ -81,7 +81,7 @@ const Home = () => {
     setCuisines(changeCheckedCuisines);
   };
 
-  const handleChangePrice = (event: Event, value: Number) => {
+  const handleChangePrice = (event: Event, value: any) => {
     setSelectedPrice(value);
   };
   //////////////////////////////////////////////////////////////////
