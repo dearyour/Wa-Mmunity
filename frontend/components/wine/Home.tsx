@@ -65,6 +65,15 @@ const Home = () => {
     { id: 6, checked: false, label: "Spain" },
   ]);
 
+  const [regions, setRegions] = useState<any[]>([
+    { id: 1, checked: false, label: "Duriense" },
+    { id: 2, checked: false, label: "Central Valley" },
+    { id: 3, checked: false, label: "Vin de Pays" },
+    { id: 4, checked: false, label: "Mendoza" },
+    { id: 5, checked: false, label: "Piemonte" },
+    { id: 6, checked: false, label: "South Australia" },
+  ]);
+
   const [resultsFound, setResultsFound] = useState(true);
 
   const handleSelectCategory = (event: Event, value: any) =>
@@ -79,6 +88,14 @@ const Home = () => {
       item.id === id ? { ...item, checked: !item.checked } : item
     );
     setCuisines(changeCheckedCuisines);
+  };
+
+  const handleChangeCheckeds = (id: any) => {
+    const regionsStateList = regions;
+    const changeCheckedRegions = regionsStateList.map((item) =>
+      item.id === id ? { ...item, checked: !item.checked } : item
+    );
+    setRegions(changeCheckedRegions);
   };
 
   const handleChangePrice = (event: Event, value: any) => {
@@ -124,6 +141,17 @@ const Home = () => {
       );
     }
 
+    // regions Filter
+    const regionsChecked = regions
+      .filter((item) => item.checked)
+      .map((item) => item.label.toLowerCase());
+
+    if (regionsChecked.length) {
+      updatedList = updatedList.filter((item: any) =>
+        regionsChecked.includes(item.region1.toLowerCase())
+      );
+    }
+
     // Search Filter
     if (searchInput) {
       updatedList = updatedList.filter(
@@ -148,6 +176,7 @@ const Home = () => {
     !updatedList.length ? setResultsFound(false) : setResultsFound(true);
   }, [
     cuisines,
+    regions,
     searchInput,
     selectedCategory,
     selectedPrice,
@@ -161,6 +190,7 @@ const Home = () => {
     selectedRating,
     selectedCategory,
     cuisines,
+    regions,
     searchInput,
     selectedPrice,
     applyFilters,
@@ -183,7 +213,9 @@ const Home = () => {
             selectedPrice={selectedPrice}
             selectRating={handleSelectRating}
             cuisines={cuisines}
+            regions={regions}
             changeChecked={handleChangeChecked}
+            changeCheckeds={handleChangeCheckeds}
             changePrice={handleChangePrice}
           />
         </div>

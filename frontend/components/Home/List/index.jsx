@@ -78,13 +78,17 @@ const List = ({ list }) => (
             <Rate tooltips={desc} onChange={handleChange} value={value} />
             {value ? (
               <span className="ant-rate-text" style={{}}>
-                　　　
+                　　
                 {/* {desc[value - 1]}  */}
-                평점 : {list.ratingAvg.toFixed(1)}
+                평점 : [{list.ratingAvg.toFixed(1)}]
               </span>
             ) : (
               ""
             )}
+          </span>
+          <span className="ant-rate-text" style={{}}>
+            　{/* {desc[value - 1]}  */}
+            리뷰 갯수 : [{list.ratingNum}]
           </span>
           {/* <span>🌟🌟🌟 {list.ratingAvg}</span> */}
         </p>

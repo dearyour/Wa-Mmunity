@@ -1,6 +1,7 @@
 import React from "react";
 import { categoryList, ratingList } from "../../../constants";
 import CheckboxProton from "../../common/CheckboxProton";
+import CheckboxProtons from "../../common/CheckboxProtons";
 import FilterListToggle from "../../common/FilterListToggle";
 import SliderProton from "../../common/SliderProton";
 // import './styles.css';
@@ -12,7 +13,9 @@ const FilterPanel = ({
   selectedPrice,
   selectRating,
   cuisines,
+  regions,
   changeChecked,
+  changeCheckeds,
   changePrice,
 }) => (
   <div>
@@ -24,15 +27,27 @@ const FilterPanel = ({
         selectToggle={selectCategory} //온체인지 함수
       />
     </div>
-    <div className="input-group">
-      <p className="label">원산지</p>
-      {cuisines.map((cuisine) => (
-        <CheckboxProton
-          key={cuisine.id}
-          cuisine={cuisine}
-          changeChecked={changeChecked}
-        />
-      ))}
+    <div className="input-groups">
+      <div className="input-group">
+        <p className="label">원산지</p>
+        {cuisines.map((cuisine) => (
+          <CheckboxProton
+            key={cuisine.id}
+            cuisine={cuisine}
+            changeChecked={changeChecked}
+          />
+        ))}
+      </div>
+      <div className="input-groupr">
+        <p className="label">지역</p>
+        {regions.map((region) => (
+          <CheckboxProtons
+            key={region.id}
+            region={region}
+            changeCheckeds={changeCheckeds}
+          />
+        ))}
+      </div>
     </div>
     <div className="input-group">
       <p className="label-range">가격 범위</p>
