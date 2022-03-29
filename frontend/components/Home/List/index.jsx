@@ -60,15 +60,15 @@ const List = ({ list }) => (
         }}
       ></div> */}
       <VVoid></VVoid>
-      <CategoryIcon src={list.img} alt="wineImage" width={100} height={350} />
+      <CategoryIcon src={list.img} alt="wineImage" width={130} height={350} />
       <VVoid></VVoid>
       {/* <img className={styles.avatar} src={url} alt="wineImage" /> */}
       <div className={styles.info}>
         <h1 className={styles.name}> {list.name}</h1>
-        <p className={styles.title}> 와인스타일 : {list.cat1}</p>
-        <p className={styles.title}> 회사 : {list.winery}</p>
+        <p className={styles.title}> 와인 스타일 : {list.cat1}</p>
+        <p className={styles.title}> 원산지 : {list.country} </p>
         <p className={styles.title}> 지역 : {list.region1}</p>
-        <p className={styles.company}> 원산지 : {list.country}</p>
+        <p className={styles.company}> 회사 : {list.winery}</p>
         <p className={styles.message}>해외 평균가 : ₩ {list.price} </p>
       </div>
       <div className={styles.right}>

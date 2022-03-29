@@ -7,18 +7,18 @@ const SearchBar = ({ value, changeInput }) => (
     <SearchIcon className="searchBar-icon" />
     <input
       type="text"
-      placeholder="와인이름 검색"
+      placeholder="와인 검색"
       value={value}
       onChange={changeInput}
     />
-    <div
+    {/* <div
       className="btn"
       onClick={() => {
-        Router.push(`/`);
+        Router.push(`/wine`);
       }}
     >
       초기화
-    </div>
+    </div> */}
   </div>
 );
 
