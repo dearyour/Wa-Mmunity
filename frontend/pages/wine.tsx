@@ -1,13 +1,14 @@
-import React, { useState } from "react";
-import WineList from "../components/wine/winemain";
+import React from "react";
 import Home from "../components/wine/Home";
 import AppLayout from "../components/layout/AppLayout";
-function winelist(): any {
+import ScrollToTop from "components/ScrollToTop";
+function Winelist(): any {
   return (
     <AppLayout>
       <Home />
+      <ScrollToTop />
     </AppLayout>
   );
 }
 
-export default winelist;
+export default Winelist;

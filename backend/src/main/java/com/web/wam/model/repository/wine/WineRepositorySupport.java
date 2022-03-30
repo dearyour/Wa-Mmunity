@@ -64,7 +64,9 @@ public class WineRepositorySupport {
 	}
 
 	public List<Wine> findByFilter(WineFilterRequest filter) {
-		BooleanBuilder builder = new BooleanBuilder();
+		BooleanBuilder styleBuilder = new BooleanBuilder();
+		BooleanBuilder coutryBuilder = new BooleanBuilder();
+		BooleanBuilder regionBuilder = new BooleanBuilder();
 
 		List<String> wineStyle = filter.getWineStyle();
 		List<String> countries = filter.getCountry();
@@ -77,27 +79,28 @@ public class WineRepositorySupport {
 
 		if (!wineStyle.isEmpty()) {
 			for (String style : wineStyle) {
-				builder.or(qWine.cat1.like("%" + style + "%"));
+				styleBuilder.or(qWine.cat1.like("%" + style + "%"));
 			}
 		}
 
 		if (!countries.isEmpty()) {
 			for (String country : countries) {
-				builder.or(qWine.country.like("%" + country + "%"));
+				coutryBuilder.or(qWine.country.like("%" + country + "%"));
 			}
 		}
 
 		if (!regions.isEmpty()) {
 
 			for (String region : regions) {
-				builder.or(qWine.region1.like("%" + region + "%"));
-				builder.or(qWine.region2.like("%" + region + "%"));
-				builder.or(qWine.region3.like("%" + region + "%"));
+				regionBuilder.or(qWine.region1.like("%" + region + "%"));
+				regionBuilder.or(qWine.region2.like("%" + region + "%"));
+				regionBuilder.or(qWine.region3.like("%" + region + "%"));
 			}
 		}
 
 		List<Wine> wines = jpaQueryFactory.select(qWine).from(qWine).where(qWine.price.between(minPrice, maxPrice))
-				.where(qWine.ratingAvg.between(minRate, maxRate)).where(builder).fetch();
+				.where(qWine.ratingAvg.between(minRate, maxRate)).where(styleBuilder).where(coutryBuilder)
+				.where(regionBuilder).fetch();
 
 		return wines;
 	}
