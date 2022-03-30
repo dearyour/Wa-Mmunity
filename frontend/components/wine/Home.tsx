@@ -110,8 +110,8 @@ const Home = () => {
     if (selectedRating) {
       updatedList = updatedList.filter(
         (item: any) =>
-          item.ratingAvg >= parseInt(selectedRating) - 0.5 &&
-          item.ratingAvg <= parseInt(selectedRating) + 0.5
+          item.ratingAvg >= parseFloat(selectedRating) &&
+          item.ratingAvg <= parseFloat(selectedRating) + Number(0.6)
       );
     }
 
