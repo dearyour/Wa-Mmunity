@@ -324,7 +324,7 @@ public class WineServiceImpl implements WineService {
 
 		RestTemplate restTemplate = new RestTemplate();
 
-		String wines = restTemplate.getForObject("http://j6a101.p.ssafy.io:8000/recomm/cb/" + wineId, String.class);
+		String wines = restTemplate.getForObject("https://j6a101.p.ssafy.io:8000/recomm/cb/" + wineId, String.class);
 
 		StringTokenizer st = new StringTokenizer(wines.substring(1, wines.length() - 1), ", ");
 
@@ -348,8 +348,8 @@ public class WineServiceImpl implements WineService {
 		HttpEntity<?> entity = new HttpEntity<>(headers);
 
 		RestTemplate restTemplate = new RestTemplate();
-		System.out.println(
-				restTemplate.postForObject("http://j6a101.p.ssafy.io:8000/recomm/train-mf", wineReviews, String.class));
+		System.out.println(restTemplate.postForObject("https://j6a101.p.ssafy.io:8000/recomm/train-mf", wineReviews,
+				String.class));
 
 	}
 
