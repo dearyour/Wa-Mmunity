@@ -227,11 +227,11 @@ const Home = () => {
               dataLength={wines.slice(0, nowFeedsnum).length} //This is important field to render the next data
               next={loadmoredata}
               hasMore={nowFeedsnum < wines.length}
-              loader={<h4 style={{ textAlign: "center" }}>🌟Loading...🌟</h4>}
+              loader={<div style={{ textAlign: "center" }}>🌟Loading...🌟</div>}
               endMessage={
-                <p style={{ textAlign: "center" }}>
-                  <b>🚩 검색 완료 🚩</b>
-                </p>
+                <div style={{ textAlign: "center" }}>
+                  <div>🚩 검색 완료 🚩</div>
+                </div>
               }
             >
               {wines &&
