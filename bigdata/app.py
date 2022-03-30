@@ -68,7 +68,7 @@ def wine_cb(wine_id):
 # debug = True 명시해 코드 수정 시 자동 반영
 if __name__ == '__main__':
     app.debug = True
-    app.run(host='0.0.0.0', port="443", ssl_context='adhoc')
+    app.run(host='0.0.0.0', ssl_context='adhoc')
 
 # $ export FLASK_APP = app
 # $ flask run(debug 모드 안켜짐) or $ python app.py(debug 모드 켜짐)

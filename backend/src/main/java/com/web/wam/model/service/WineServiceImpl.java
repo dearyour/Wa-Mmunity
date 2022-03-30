@@ -324,7 +324,7 @@ public class WineServiceImpl implements WineService {
 
 		RestTemplate restTemplate = new RestTemplate();
 
-		String wines = restTemplate.getForObject("htts://j6a101.p.ssafy.io:443/recomm/cb/" + wineId, String.class);
+		String wines = restTemplate.getForObject("htts://j6a101.p.ssafy.io:8000/recomm/cb/" + wineId, String.class);
 
 		StringTokenizer st = new StringTokenizer(wines.substring(1, wines.length() - 1), ", ");
 
