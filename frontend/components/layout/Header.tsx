@@ -11,12 +11,17 @@ function Header(): JSX.Element {
     <>
       <header>
         <div className="inner">
-          <a className="logo">
-            <Link href="/" passHref>
-              <Image src={WineLogo} width={50} height={50} alt="image" />
-            </Link>
+          <div
+            className="logo"
+            onClick={() => {
+              Router.push(`/`);
+            }}
+          >
+            {/* <Link href="/" passHref> */}
+            <Image src={WineLogo} width={50} height={50} alt="image" />
+            {/* </Link> */}
             <div className="logoName">Wa Mmunity</div>
-          </a>
+          </div>
 
           <div className="sub-menu">
             {/* <SearchBar

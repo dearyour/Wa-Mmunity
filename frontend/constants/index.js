@@ -32,31 +32,21 @@ export const categoryList = [
 ];
 
 export const ratingList = [
-  // {
-  //   id: 1,
-  //   value: "1",
-  //   label: "★",
-  // },
-  // {
-  //   id: 2,
-  //   value: "2",
-  //   label: "★★",
-  // },
+  {
+    id: 1,
+    value: "3.0",
+    label: "★★★ 3.0 ~ 3.6",
+  },
+  {
+    id: 2,
+    value: "3.6",
+    label: "★★★★ 3.6 ~ 4.2",
+  },
   {
     id: 3,
-    value: "3",
-    label: "★★★ 2.5 ~ 3.5",
-  },
-  {
-    id: 4,
-    value: "4",
-    label: "★★★★ 3.5 ~ 4.5",
-  },
-  {
-    id: 5,
-    value: "5",
+    value: "4.2",
     // label: "5🌟",
-    label: "★★★★★ 4.5 이상",
+    label: "★★★★★ 4.2 이상",
   },
 ];
 

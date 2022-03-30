@@ -110,8 +110,8 @@ const Home = () => {
     if (selectedRating) {
       updatedList = updatedList.filter(
         (item: any) =>
-          item.ratingAvg >= parseInt(selectedRating) - 0.5 &&
-          item.ratingAvg <= parseInt(selectedRating) + 0.5
+          item.ratingAvg >= parseFloat(selectedRating) &&
+          item.ratingAvg <= parseFloat(selectedRating) + Number(0.6)
       );
     }
 
@@ -227,11 +227,11 @@ const Home = () => {
               dataLength={wines.slice(0, nowFeedsnum).length} //This is important field to render the next data
               next={loadmoredata}
               hasMore={nowFeedsnum < wines.length}
-              loader={<h4 style={{ textAlign: "center" }}>🌟Loading...🌟</h4>}
+              loader={<div style={{ textAlign: "center" }}>🌟Loading...🌟</div>}
               endMessage={
-                <p style={{ textAlign: "center" }}>
-                  <b>마지막입니다</b>
-                </p>
+                <div style={{ textAlign: "center" }}>
+                  <div>🚩 검색 완료 🚩</div>
+                </div>
               }
             >
               {wines &&

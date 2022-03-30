@@ -35,9 +35,9 @@ const CategoryIcon = styled(Image)`
 const VVoid = styled.div`
   width: 140px;
 `;
-const url =
-  // fileURL ||
-  DEFAULT_IMAGE;
+// const url =
+//   // fileURL ||
+//   DEFAULT_IMAGE;
 
 const List = ({ list }) => (
   <div
@@ -73,25 +73,25 @@ const List = ({ list }) => (
       </div>
       <div className={styles.right}>
         <h1 className={styles.name}></h1>
-        <p className={styles.star}>
+        <div className={styles.star}>
           <span>
             <Rate tooltips={desc} onChange={handleChange} value={value} />
             {value ? (
-              <span className="ant-rate-text" style={{}}>
+              <div className="ant-rate-text" style={{}}>
                 　　
                 {/* {desc[value - 1]}  */}
-                평점 : [{list.ratingAvg.toFixed(1)}]
-              </span>
+                평점 : [ {list.ratingAvg.toFixed(1)} ]
+              </div>
             ) : (
               ""
             )}
           </span>
-          <span className="ant-rate-text" style={{}}>
+          <div className="ant-rate-text" style={{}}>
             　{/* {desc[value - 1]}  */}
-            리뷰 갯수 : [{list.ratingNum}]
-          </span>
+            리뷰 갯수 : [ {list.ratingNum} ]
+          </div>
           {/* <span>🌟🌟🌟 {list.ratingAvg}</span> */}
-        </p>
+        </div>
       </div>
     </li>
   </div>
