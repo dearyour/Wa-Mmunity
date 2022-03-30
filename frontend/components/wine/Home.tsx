@@ -103,77 +103,79 @@ const Home = () => {
   };
   //////////////////////////////////////////////////////////////////
   const applyFilters = useCallback(() => {
-    let updatedList = feedstate;
-    console.log(updatedList);
+    if (feedstate) {
+      let updatedList = feedstate;
+      console.log(updatedList);
 
-    // Rating Filter
-    if (selectedRating) {
+      // Rating Filter
+      if (selectedRating) {
+        updatedList = updatedList.filter(
+          (item: any) =>
+            item.ratingAvg >= parseFloat(selectedRating) &&
+            item.ratingAvg <= parseFloat(selectedRating) + Number(0.6)
+        );
+      }
+
+      // Category Filter 정확하지 않게 데이터 떨어질때, 중간문자열 포함
+      if (selectedCategory) {
+        // updatedList = updatedList.filter(
+        //   (item) => item.wineStyle === selectedCategory
+        // );
+        updatedList = updatedList.filter(
+          (item: any) =>
+            // selectedCategory.includes(item.wineStyle)
+            // item.wineStyle.includes(selectedCategory)
+            item.cat1
+              .toLowerCase()
+              .search(selectedCategory.toLowerCase().trim()) !== -1
+        );
+      }
+
+      // Cuisine Filter 정확하게 데이터 떨어질때
+      const cuisinesChecked = cuisines
+        .filter((item) => item.checked)
+        .map((item) => item.label.toLowerCase());
+
+      if (cuisinesChecked.length) {
+        updatedList = updatedList.filter((item: any) =>
+          cuisinesChecked.includes(item.country.toLowerCase())
+        );
+      }
+
+      // regions Filter
+      const regionsChecked = regions
+        .filter((item) => item.checked)
+        .map((item) => item.label.toLowerCase());
+
+      if (regionsChecked.length) {
+        updatedList = updatedList.filter((item: any) =>
+          regionsChecked.includes(item.region1.toLowerCase())
+        );
+      }
+
+      // Search Filter
+      if (searchInput) {
+        updatedList = updatedList.filter(
+          (item: any) =>
+            item.name.toLowerCase().search(searchInput.toLowerCase().trim()) !==
+            -1
+        );
+      }
+
+      // Price Filter
+      const minPrice = selectedPrice[0];
+      const maxPrice = selectedPrice[1];
+
       updatedList = updatedList.filter(
-        (item: any) =>
-          item.ratingAvg >= parseFloat(selectedRating) &&
-          item.ratingAvg <= parseFloat(selectedRating) + Number(0.6)
+        (item: any) => item.price >= minPrice && item.price <= maxPrice
       );
+
+      // setList(updatedList);
+      setWines(updatedList);
+      console.log(updatedList);
+
+      !updatedList.length ? setResultsFound(false) : setResultsFound(true);
     }
-
-    // Category Filter
-    if (selectedCategory) {
-      // updatedList = updatedList.filter(
-      //   (item) => item.wineStyle === selectedCategory
-      // );
-      updatedList = updatedList.filter(
-        (item: any) =>
-          // selectedCategory.includes(item.wineStyle)
-          // item.wineStyle.includes(selectedCategory)
-          item.cat1
-            .toLowerCase()
-            .search(selectedCategory.toLowerCase().trim()) !== -1
-      );
-    }
-
-    // Cuisine Filter
-    const cuisinesChecked = cuisines
-      .filter((item) => item.checked)
-      .map((item) => item.label.toLowerCase());
-
-    if (cuisinesChecked.length) {
-      updatedList = updatedList.filter((item: any) =>
-        cuisinesChecked.includes(item.country.toLowerCase())
-      );
-    }
-
-    // regions Filter
-    const regionsChecked = regions
-      .filter((item) => item.checked)
-      .map((item) => item.label.toLowerCase());
-
-    if (regionsChecked.length) {
-      updatedList = updatedList.filter((item: any) =>
-        regionsChecked.includes(item.region1.toLowerCase())
-      );
-    }
-
-    // Search Filter
-    if (searchInput) {
-      updatedList = updatedList.filter(
-        (item: any) =>
-          item.name.toLowerCase().search(searchInput.toLowerCase().trim()) !==
-          -1
-      );
-    }
-
-    // Price Filter
-    const minPrice = selectedPrice[0];
-    const maxPrice = selectedPrice[1];
-
-    updatedList = updatedList.filter(
-      (item: any) => item.price >= minPrice && item.price <= maxPrice
-    );
-
-    // setList(updatedList);
-    setWines(updatedList);
-    console.log(updatedList);
-
-    !updatedList.length ? setResultsFound(false) : setResultsFound(true);
   }, [
     cuisines,
     regions,
