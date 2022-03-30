@@ -6,7 +6,7 @@ import WineLogo2 from "/public/images/wine5.png";
 import WineLogo3 from "/public/images/wine2.png";
 import WineLogo4 from "/public/images/wine1.png";
 import Router from "next/router";
-function wineMain() {
+function WineMain() {
   return (
     <AppLayout>
       <main>
@@ -108,4 +108,4 @@ function wineMain() {
   );
 }
 
-export default wineMain;
+export default WineMain;

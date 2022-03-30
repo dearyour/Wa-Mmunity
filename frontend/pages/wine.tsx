@@ -1,9 +1,8 @@
-import React, { useState } from "react";
-import WineList from "../components/wine/winemain";
+import React from "react";
 import Home from "../components/wine/Home";
 import AppLayout from "../components/layout/AppLayout";
 import ScrollToTop from "components/ScrollToTop";
-function winelist(): any {
+function Winelist(): any {
   return (
     <AppLayout>
       <Home />
@@ -12,4 +11,4 @@ function winelist(): any {
   );
 }
 
-export default winelist;
+export default Winelist;
