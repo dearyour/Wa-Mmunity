@@ -16,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.web.wam.model.dto.wine.WineFilterRequest;
 import com.web.wam.model.dto.wine.WineResponse;
+import com.web.wam.model.dto.wine.WineReviewFlaskResponse;
 import com.web.wam.model.dto.wine.WineReviewPostRequest;
 import com.web.wam.model.dto.wine.WineReviewPutRequest;
 import com.web.wam.model.dto.wine.WineReviewResponse;
@@ -314,7 +315,6 @@ public class WineServiceImpl implements WineService {
 		return reviewList;
 	}
 
-//		recomm/cb/{wind_id}
 	@Override
 	public List<WineResponse> recommendWineByWineId(int wineId) {
 
@@ -325,8 +325,6 @@ public class WineServiceImpl implements WineService {
 		RestTemplate restTemplate = new RestTemplate();
 
 		String wines = restTemplate.getForObject("http://j6a101.p.ssafy.io:8000/recomm/cb/" + wineId, String.class);
-
-		System.out.println(wines);
 
 		StringTokenizer st = new StringTokenizer(wines.substring(1, wines.length() - 1), ", ");
 
@@ -339,6 +337,52 @@ public class WineServiceImpl implements WineService {
 		}
 
 		return wineList;
+	}
+
+	@Override
+	public void recommendWineByReview() {
+		List<WineReviewFlaskResponse> wineReviews = searchAllReviewForFlask();
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+		HttpEntity<?> entity = new HttpEntity<>(headers);
+
+		RestTemplate restTemplate = new RestTemplate();
+		System.out.println(
+				restTemplate.postForObject("http://j6a101.p.ssafy.io:8000/recomm/train-mf", wineReviews, String.class));
+
+	}
+
+	private List<WineReviewFlaskResponse> searchAllReviewForFlask() {
+		List<WineReviewFlaskResponse> reviewList = new LinkedList<WineReviewFlaskResponse>();
+		List<WineReview> reviews = wineReviewRepository.findAll();
+		for (WineReview review : reviews) {
+			WineReviewFlaskResponse wineReviewFlaskResponse = new WineReviewFlaskResponse();
+			wineReviewFlaskResponse.setUser(review.getMemberId());
+			wineReviewFlaskResponse.setWine(review.getWineId());
+			wineReviewFlaskResponse.setRating(review.getRating());
+			reviewList.add(wineReviewFlaskResponse);
+		}
+
+		return reviewList;
+	}
+
+	@Override
+	public List<WineReviewResponse> searchAllReview() {
+		List<WineReviewResponse> reviewList = new LinkedList<WineReviewResponse>();
+		List<WineReview> reviews = wineReviewRepository.findAll();
+		for (WineReview review : reviews) {
+			WineReviewResponse wineReviewResponse = new WineReviewResponse();
+			wineReviewResponse.setId(review.getId());
+			wineReviewResponse.setMemberId(review.getMemberId());
+			wineReviewResponse.setWineId(review.getWineId());
+			wineReviewResponse.setRating(review.getRating());
+			wineReviewResponse.setContent(review.getContent());
+			wineReviewResponse.setRegtime(review.getRegtime());
+			reviewList.add(wineReviewResponse);
+		}
+
+		return reviewList;
 	}
 
 }

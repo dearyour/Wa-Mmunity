@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,6 +32,8 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
+@CrossOrigin(origins = { "*" }, methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT,
+		RequestMethod.DELETE }, maxAge = 6000)
 @Api(value = "와인관리 API", tags = { "wine" })
 @RestController
 @RequestMapping("/api/wine")
@@ -71,6 +75,18 @@ public class WineController {
 
 		List<WineResponse> wineList = wineService.recommendWineByWineId(wineId);
 		return ResponseEntity.status(200).body(BaseResponse.of(200, wineList));
+	}
+
+	@PostMapping("/personal")
+	@ApiOperation(value = "리뷰 데이터 기반 추천 와인 검색", notes = "리뷰 데이터 기반 추천 와인 검색")
+	@ApiResponses({ @ApiResponse(code = 200, message = "성공", response = BaseResponse.class),
+			@ApiResponse(code = 401, message = "인증 실패", response = BaseResponse.class),
+			@ApiResponse(code = 404, message = "게시글 없음", response = BaseResponse.class),
+			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponse.class) })
+
+	public ResponseEntity<? extends BaseResponse> recommendWineByReview() {
+		wineService.recommendWineByReview();
+		return ResponseEntity.status(200).body(BaseResponse.of(200, "Success"));
 	}
 
 	@GetMapping("/sort/{sortType}")
@@ -118,6 +134,17 @@ public class WineController {
 	public ResponseEntity<? extends BaseResponse> searchReviewByWineId(
 			@ApiParam(value = "검색할 와인 아이디 정보", required = true) @PathVariable("wineId") int wineId) {
 		List<WineReviewResponse> reviewList = wineService.searchReviewByWineId(wineId);
+		return ResponseEntity.status(200).body(BaseResponse.of(200, reviewList));
+	}
+
+	@GetMapping("/review")
+	@ApiOperation(value = "전체 리뷰 가져오기", notes = "전체 리뷰 리스트 조회")
+	@ApiResponses({ @ApiResponse(code = 200, message = "성공", response = BaseResponse.class),
+			@ApiResponse(code = 401, message = "인증 실패", response = BaseResponse.class),
+			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponse.class) })
+
+	public ResponseEntity<? extends BaseResponse> searchAllReview() {
+		List<WineReviewResponse> reviewList = wineService.searchAllReview();
 		return ResponseEntity.status(200).body(BaseResponse.of(200, reviewList));
 	}
 

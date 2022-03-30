@@ -42,4 +42,8 @@ public interface WineService {
 
 	List<WineResponse> recommendWineByWineId(int wineId);
 
+	void recommendWineByReview();
+
+	List<WineReviewResponse> searchAllReview();
+
 }
