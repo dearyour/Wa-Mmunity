@@ -1,41 +1,52 @@
 export const categoryList = [
   {
     id: 1,
-    value: "place",
-    label: "🚩 Places",
+    value: "Red",
+    label: "Red",
   },
   {
     id: 2,
-    value: "dish",
-    label: "🍕 Dishes",
+    value: "White",
+    label: "White",
+  },
+  {
+    id: 3,
+    value: "Sparkling",
+    label: "Sparkling",
+  },
+  {
+    id: 4,
+    value: "Ros",
+    label: "Rose",
+  },
+  {
+    id: 5,
+    value: "Dessert",
+    label: "Dessert",
+  },
+  {
+    id: 6,
+    value: "Fortified",
+    label: "Fortified",
   },
 ];
 
 export const ratingList = [
   {
     id: 1,
-    value: "1",
-    label: "1🌟",
+    value: "3.0",
+    label: "★★★ 3.0 ~ 3.6",
   },
   {
     id: 2,
-    value: "2",
-    label: "2🌟",
+    value: "3.6",
+    label: "★★★★ 3.6 ~ 4.2",
   },
   {
     id: 3,
-    value: "3",
-    label: "3🌟",
-  },
-  {
-    id: 4,
-    value: "4",
-    label: "4🌟",
-  },
-  {
-    id: 5,
-    value: "5",
-    label: "5🌟",
+    value: "4.2",
+    // label: "5🌟",
+    label: "★★★★★ 4.2 이상",
   },
 ];
 
@@ -60,7 +71,7 @@ export const dataList = [
     cuisine: "italian",
     rating: 4,
     price: 1000,
-    coverSrc: "/imagez/places/italian.webp",
+    coverSrc: "/imagez/places/italian.jpg",
   },
   {
     id: 3,

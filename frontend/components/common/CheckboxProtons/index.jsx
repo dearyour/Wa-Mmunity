@@ -11,7 +11,7 @@ const useStyles = makeStyles({
   },
   checked: {},
   wrap: {
-    width: "20%",
+    width: "100%",
     display: "flex",
     // flexDirection: "row-reverse",
     // justifyContent: "space-between",
@@ -28,9 +28,9 @@ const useStyles = makeStyles({
   },
 });
 
-const CheckboxProton = ({ changeChecked, cuisine }) => {
+const CheckboxProtons = ({ changeCheckeds, region }) => {
   const classes = useStyles();
-  const { checked, label, id } = cuisine;
+  const { checked, label, id } = region;
   return (
     <div>
       <FormControlLabel
@@ -46,7 +46,7 @@ const CheckboxProton = ({ changeChecked, cuisine }) => {
             }}
             size="small"
             checked={checked}
-            onChange={() => changeChecked(id)}
+            onChange={() => changeCheckeds(id)}
             inputProps={{ "aria-label": "checkbox with small size" }}
           />
         }
@@ -56,4 +56,4 @@ const CheckboxProton = ({ changeChecked, cuisine }) => {
   );
 };
 
-export default CheckboxProton;
+export default CheckboxProtons;
