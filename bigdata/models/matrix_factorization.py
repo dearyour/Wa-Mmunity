@@ -157,6 +157,7 @@ def train(res_dir, R_train, R_valid, max_iter=50, lambda_u=1, lambda_v=100, dime
     model.load_best()
     # u,v 곱
     R_predicted = model.U.dot(model.V.T) 
+    
     return R_predicted
 
 
