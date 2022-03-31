@@ -2,6 +2,11 @@ import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
+def to_id(df, idx):
+    id = df['id'][int(idx)]
+    # int 안씌워주면 클래스가 numpy.int64이 돼, json 처리시 에러 발생
+    return int(id)
+
 def get_survey(survey):
     # survey : string
     # wine_db 읽어오기
@@ -26,5 +31,5 @@ def get_survey(survey):
     sim_scores = sorted(sim_scores, key = lambda x: x[1], reverse=True)
 
     # 유사도 높은 순으로 10개 와인 id 리스트 형태 반환
-    print(sim_scores[:10])
-    return [s[0] for s in sim_scores[:10]]
+    result = [to_id(wines_db, s[0]) for s in sim_scores[:10]]
+    return list(set(result))
