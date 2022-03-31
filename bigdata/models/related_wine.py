@@ -11,7 +11,7 @@ tfvect_df = pd.DataFrame(tfvect.transform(df['kw']).toarray(),
     columns = sorted(tfidf_vect.vocabulary_))
 
 cosine_matrix = cosine_similarity(tfvect_df, tfvect_df)
-np.save('./data/related_wine/tfidf_cos_mat', cosine_matrix)
+np.save('./data/related_wine/tfidf_cos_mat.npy', cosine_matrix)
 
 def get_recomm(wine_id):
     
@@ -19,7 +19,7 @@ def get_recomm(wine_id):
     cosine_matrix = np.load('./data/related_wine/tfidf_cos_mat.npy')
 
     # 유사도 높은순으로 정렬, 설문결과 10개 반환
-    idx = wine_id
+    idx = int(wine_id)
     sim_scores = [(i,c) for i,c in enumerate(cosine_matrix[idx]) if i != idx]
     sim_scores = sorted(sim_scores, key = lambda x: x[1], reverse=True)
 
