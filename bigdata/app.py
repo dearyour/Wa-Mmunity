@@ -8,7 +8,7 @@ from scipy.sparse import csr_matrix
 import random
 import pickle
 import json
-from models import related_wine
+from models import related_wine, survey
 from flask import Response
 
 # flask 객체 인스턴스 생성
@@ -61,9 +61,22 @@ def mf():
 
 @app.route('/recomm/cb/<wine_id>', methods=['GET'])
 def wine_cb(wine_id):
-    return Response(json.dumps(related_wine.get_recomm(wine_id=wine_id)),
-     mimetype='application/json')
+    result = json.dumps(related_wine.get_recomm(wine_id=wine_id))
+    return Response(result, mimetype='application/json')
+    # result = related_wine.get_recomm(wine_id=wine_id)
+    # return result
 
+@app.route('/recomm/survey', methods=['POST'])
+def wine_survey():
+    if request.method == 'POST':
+        # json -> string
+        data = request.get_json()
+        survey_data = ' '.join(' '.join(list(data.values())).split())
+        # 함수 실행
+        result = json.dumps(survey.get_survey(survey=survey_data))
+        # 와인 id list(array) 반환
+        return Response(result, mimetype='application/json')
+        
 
 # debug = True 명시해 코드 수정 시 자동 반영
 if __name__ == '__main__':

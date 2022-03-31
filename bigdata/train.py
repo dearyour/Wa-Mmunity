@@ -30,7 +30,7 @@ def recommend(R_train, R_predicted, item_ids, output_path):
                     }
                     # print(tmp_dict)
                     recomm_dict['Results'].append(tmp_dict)
-    with open('recomm.json','w') as f:
+    with open(output_path + 'recomm.json','w') as f:
         json.dump(recomm_dict,f)
 
 if __name__ == '__main__':
@@ -75,6 +75,6 @@ if __name__ == '__main__':
         print("\n\t start training MF")
         R_predicted = matrix_factorization.train(res_dir=output_path, R_train=R_train, R_valid=R_valid,
                                    max_iter=max_iter, lambda_u=lambda_u, lambda_v=lambda_v, dimension=d, theta=theta)
-        recommend(R_train, R_predicted, item_ids, '.')
+        recommend(R_train, R_predicted, item_ids, './data/output')
     else:
         print("select algorithm from 0 to 2")
