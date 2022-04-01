@@ -27,6 +27,11 @@ body {
   /* scrollbar-width: none; Firefox */
 }
 
+.ant-rate-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .emptyView-wrap {
   display: flex;
   justify-content: center;
@@ -75,7 +80,7 @@ body {
   font-size: 1.2rem;
   outline: none;
   border: none;
-  width: 30%;
+  width: 25%;
 }
 
 .searchBar-wrap input::placeholder {
@@ -92,6 +97,15 @@ body {
 }
 .input-group {
   margin-bottom: 2rem;
+}
+.input-groups {
+  margin-bottom: 2rem;
+  display: flex;
+  /* justify-content: center; */
+}
+.input-groupr {
+  margin-left: 10rem;
+  /* justify-content: center; */
 }
 /* .categorys {
   display: grid;

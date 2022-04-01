@@ -1,61 +1,52 @@
 export const categoryList = [
   {
     id: 1,
-    value: "place",
-    label: "🚩 red",
+    value: "Red",
+    label: "Red",
   },
   {
     id: 2,
-    value: "dish",
-    label: "🍕 white",
+    value: "White",
+    label: "White",
   },
   {
     id: 3,
     value: "Sparkling",
-    label: "🍕 Sparkling",
+    label: "Sparkling",
   },
   {
     id: 4,
-    value: "roje",
-    label: "🍕 roje",
+    value: "Ros",
+    label: "Rose",
   },
   {
     id: 5,
-    value: "bold",
-    label: "🍕 bold",
+    value: "Dessert",
+    label: "Dessert",
   },
   {
     id: 6,
-    value: "tmp",
-    label: "🍕 tmps",
+    value: "Fortified",
+    label: "Fortified",
   },
 ];
 
 export const ratingList = [
   {
     id: 1,
-    value: "1",
-    label: "1🌟",
+    value: "3.0",
+    label: "★★★ 3.0 ~ 3.6",
   },
   {
     id: 2,
-    value: "2",
-    label: "2🌟",
+    value: "3.6",
+    label: "★★★★ 3.6 ~ 4.2",
   },
   {
     id: 3,
-    value: "3",
-    label: "3🌟",
-  },
-  {
-    id: 4,
-    value: "4",
-    label: "4🌟",
-  },
-  {
-    id: 5,
-    value: "5",
-    label: "5🌟",
+    value: "4.2",
+    // label: "5🌟",
+    label: "★★★★★ 4.2 이상",
   },
 ];
 

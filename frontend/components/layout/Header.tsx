@@ -3,21 +3,49 @@ import Image from "next/image";
 import Link from "next/link";
 import { SearchOutlined } from "@ant-design/icons";
 import WineLogo from "/public/images/wine4.png";
+import WineLogo2 from "/public/fonts/WaMmunity.png";
 import SearchBar from "../Home/SearchBar";
 import Router from "next/router";
+import styled from "@emotion/styled";
+
+// const BackdropImage = styled.div<{ imageUrl: any }>`
+//   background: url(${({ imageUrl }) => imageUrl})
+//   min-width: 250px;
+//   height: 50px;
+//   // position: relative;
+//   // top: auto;
+//   // left: auto;
+//   // filter: none;
+//   // margin: 0px 0px 0px 100px;
+//   // border: solid 2px fff;
+//   // background-color: #eae0da;
+// `;
 function Header(): JSX.Element {
   const [searchInput, setSearchInput] = useState("");
   return (
     <>
       <header>
         <div className="inner">
-          <a className="logo">
-            <Link href="/" passHref>
-              <Image src={WineLogo} width={50} height={50} alt="image" />
-            </Link>
-            <div className="logoName">Wa Mmunity</div>
-          </a>
-
+          <div
+            className="logo"
+            onClick={() => {
+              Router.push(`/`);
+            }}
+          >
+            {/* <Link href="/" passHref> */}
+            <Image src={WineLogo} width={50} height={50} alt="image" />
+            {/* <BackdropImage imageUrl={WineLogo2} /> */}
+            {/* </Link> */}
+            {/* <div className="logoName">Wa Mmunity</div> */}
+          </div>
+          <div
+            className="logo2"
+            onClick={() => {
+              Router.push(`/`);
+            }}
+          >
+            <Image src={WineLogo2} width={250} height={50} alt="image" />
+          </div>
           <div className="sub-menu">
             {/* <SearchBar
               value={searchInput}
@@ -53,32 +81,7 @@ function Header(): JSX.Element {
               </div>
               <div className="item__contents">
                 <div className="contents__menu">
-                  <ul className="inner">
-                    <li>
-                      <h4>화이트 와인</h4>
-                      <ul>
-                        <li>이탈리아</li>
-                        <li>스페인</li>
-                        <li>프랑스</li>
-                      </ul>
-                    </li>
-                    <li>
-                      <h4>레드 와인</h4>
-                      <ul>
-                        <li>이탈리아</li>
-                        <li>스페인</li>
-                        <li>프랑스</li>
-                      </ul>
-                    </li>
-                    <li>
-                      <h4>로제 와인</h4>
-                      <ul>
-                        <li>이탈리아</li>
-                        <li>스페인</li>
-                        <li>프랑스</li>
-                      </ul>
-                    </li>
-                  </ul>
+                  <ul className="inner"></ul>
                 </div>
               </div>
             </li>

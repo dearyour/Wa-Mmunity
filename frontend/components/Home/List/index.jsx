@@ -1,10 +1,10 @@
 import React from "react";
-import ListItem from "./ListItem";
 // import './styles.css';
 import styles from "./list.module.css";
 import styled from "styled-components";
 import Image from "next/image";
 import { Rate } from "antd";
+import Router from "next/router";
 const DEFAULT_IMAGE = "/images/wine2.png";
 const desc = ["1.0", "2.0", "3.0", "4.0", "5.0"];
 
@@ -32,14 +32,19 @@ const CategoryIcon = styled(Image)`
 `;
 
 const VVoid = styled.div`
-  width: 80px;
+  width: 140px;
 `;
-const url =
-  // fileURL ||
-  DEFAULT_IMAGE;
+// const url =
+//   // fileURL ||
+//   DEFAULT_IMAGE;
 
-const List = ({ list, index }) => (
-  <div className="list-wrap">
+const List = ({ list }) => (
+  <div
+    className="list-wrap"
+    onClick={() => {
+      Router.push(`/wine/${list.wineId}`);
+    }}
+  >
     <li
       className={`${styles.card} 
 `}
@@ -54,31 +59,37 @@ const List = ({ list, index }) => (
         }}
       ></div> */}
       <VVoid></VVoid>
-      <CategoryIcon src={list.img} alt="wineImage" width={100} height={400} />
+      <CategoryIcon src={list.img} alt="wineImage" width={130} height={350} />
       <VVoid></VVoid>
       {/* <img className={styles.avatar} src={url} alt="wineImage" /> */}
       <div className={styles.info}>
         <h1 className={styles.name}> {list.name}</h1>
-        <p className={styles.title}> 회사 : {list.winery}</p>
-        <p className={styles.title}> 지역 : {list.region1}</p>
-        <p className={styles.company}> 원산지 : {list.country}</p>
+        <p className={styles.title}> 와인 스타일 : {list.cat1}</p>
+        <p className={styles.title}> 원산지 : {list.country} </p>
+        <p className={styles.title}> 포도 품종 : {list.grape1}</p>
+        <p className={styles.company}> 제조 회사 : {list.winery}</p>
         <p className={styles.message}>해외 평균가 : ₩ {list.price} </p>
       </div>
       <div className={styles.right}>
         <h1 className={styles.name}></h1>
-        <p className={styles.star}>
+        <div className={styles.star}>
           <span>
             <Rate tooltips={desc} onChange={handleChange} value={value} />
             {value ? (
-              <span className="ant-rate-text" style={{}}>
-                　　　 {desc[value - 1]}
-              </span>
+              <div className="ant-rate-text" style={{}}>
+                {/* {desc[value - 1]}  */}
+                평점 : [ {list.ratingAvg.toFixed(1)} ]
+              </div>
             ) : (
               ""
             )}
           </span>
-          {/* <span>🌟🌟🌟</span> */}
-        </p>
+          <div className="ant-rate-text" style={{}}>
+            {/* {desc[value - 1]}  */}
+            리뷰 갯수 : [ {list.ratingNum} ]
+          </div>
+          {/* <span>🌟🌟🌟 {list.ratingAvg}</span> */}
+        </div>
       </div>
     </li>
   </div>

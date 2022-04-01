@@ -5,13 +5,16 @@ import List from "../../components/Home/List";
 import SearchBar from "../../components/Home/SearchBar";
 import { dataList } from "../../constants";
 import axios from "axios";
-import Card from "../card/card";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { useDispatch, useSelector } from "react-redux";
+import { feedAction } from "store/slice/feed";
+import { RootState } from "../../store/module";
 // import "./styles.css";
 const Home = () => {
   //인피니티 스크롤
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState<boolean>(false);
-  const [nowFeedsnum, setNowFeedsNum] = useState(5);
+  const [nowFeedsnum, setNowFeedsNum] = useState(10);
   const loadmoredata = () => {
     if (loading) {
       return;
@@ -24,7 +27,14 @@ const Home = () => {
   };
 
   const [wines, setWines] = useState([]); //프롭으로내려주자
-  const __GetWineState = () => {
+  const [selectedCategory, setSelectedCategory] = useState<any>(null);
+  const [selectedRating, setSelectedRating] = useState(null);
+  const [selectedPrice, setSelectedPrice] = useState([1, 300000]);
+  const [searchInput, setSearchInput] = useState("");
+  const [list, setList] = useState(dataList); //이부분 axios 가져올것;
+
+  const feedstate = useSelector((state: RootState) => state.feed.items);
+  const __GetWineState = useCallback(() => {
     return axios({
       method: "GET",
       url: process.env.BACK_EC2 + "wine",
@@ -38,33 +48,37 @@ const Home = () => {
       .catch((err) => {
         return err;
       });
-  };
+  }, []);
 
   useEffect(() => {
     __GetWineState();
-  }, []);
+    dispatch(feedAction.getFeed());
+  }, [__GetWineState, dispatch]);
 
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [selectedRating, setSelectedRating] = useState(null);
-  const [selectedPrice, setSelectedPrice] = useState([1000, 50000]);
-
-  const [cuisines, setCuisines] = useState([
-    { id: 1, checked: false, label: "American" },
-    { id: 2, checked: false, label: "Chinese" },
-    { id: 3, checked: false, label: "Italian" },
-    { id: 4, checked: false, label: "American" },
-    { id: 5, checked: false, label: "Chinese" },
-    { id: 6, checked: false, label: "Italian" },
+  const [cuisines, setCuisines] = useState<any[]>([
+    { id: 1, checked: false, label: "France" },
+    { id: 2, checked: false, label: "Italy" },
+    { id: 3, checked: false, label: "Spain" },
+    { id: 4, checked: false, label: "Chile" },
+    { id: 5, checked: false, label: "Germany" },
+    { id: 6, checked: false, label: "Argentina" },
   ]);
 
-  const [list, setList] = useState(dataList); //이부분 axios 가져올것
-  const [resultsFound, setResultsFound] = useState(true);
-  const [searchInput, setSearchInput] = useState("");
+  const [regions, setRegions] = useState<any[]>([
+    { id: 1, checked: false, label: "Cabernet Sauvignon" },
+    { id: 2, checked: false, label: "Shiraz/Syrah" },
+    { id: 3, checked: false, label: "Pinot Noir" },
+    { id: 4, checked: false, label: "Chardonnay" },
+    { id: 5, checked: false, label: "Riesling" },
+    { id: 6, checked: false, label: "Sauvignon Blanc" },
+  ]);
 
-  const handleSelectCategory = (event: any, value: any) =>
+  const [resultsFound, setResultsFound] = useState(true);
+
+  const handleSelectCategory = (event: Event, value: any) =>
     !value ? null : setSelectedCategory(value);
 
-  const handleSelectRating = (event: any, value: any) =>
+  const handleSelectRating = (event: Event, value: any) =>
     !value ? null : setSelectedRating(value);
 
   const handleChangeChecked = (id: any) => {
@@ -75,59 +89,101 @@ const Home = () => {
     setCuisines(changeCheckedCuisines);
   };
 
-  const handleChangePrice = (event: any, value: any) => {
-    setSelectedPrice(value);
+  const handleChangeCheckeds = (id: any) => {
+    const regionsStateList = regions;
+    const changeCheckedRegions = regionsStateList.map((item) =>
+      item.id === id ? { ...item, checked: !item.checked } : item
+    );
+    setRegions(changeCheckedRegions);
   };
 
+  const handleChangePrice = (event: Event, value: any) => {
+    setSelectedPrice(value);
+  };
+  //////////////////////////////////////////////////////////////////
   const applyFilters = useCallback(() => {
-    let updatedList = dataList;
+    if (feedstate) {
+      let updatedList = feedstate;
+      console.log(updatedList);
 
-    // Rating Filter
-    if (selectedRating) {
+      // Rating Filter
+      if (selectedRating) {
+        updatedList = updatedList.filter(
+          (item: any) =>
+            item.ratingAvg >= parseFloat(selectedRating) &&
+            item.ratingAvg <= parseFloat(selectedRating) + Number(0.6)
+        );
+      }
+
+      // Category Filter 정확하지 않게 데이터 떨어질때, 중간문자열 포함
+      if (selectedCategory) {
+        // updatedList = updatedList.filter(
+        //   (item) => item.wineStyle === selectedCategory
+        // );
+        updatedList = updatedList.filter(
+          (item: any) =>
+            // selectedCategory.includes(item.wineStyle)
+            // item.wineStyle.includes(selectedCategory)
+            item.cat1
+              .toLowerCase()
+              .search(selectedCategory.toLowerCase().trim()) !== -1
+        );
+      }
+
+      // Cuisine Filter 정확하게 데이터 떨어질때
+      const cuisinesChecked = cuisines
+        .filter((item) => item.checked)
+        .map((item) => item.label.toLowerCase());
+
+      if (cuisinesChecked.length) {
+        updatedList = updatedList.filter((item: any) =>
+          cuisinesChecked.includes(item.country.toLowerCase())
+        );
+      }
+
+      // regions Filter
+      const regionsChecked = regions
+        .filter((item) => item.checked)
+        .map((item) => item.label.toLowerCase());
+
+      if (regionsChecked.length) {
+        updatedList = updatedList.filter((item: any) =>
+          regionsChecked.includes(item.grape1.toLowerCase())
+        );
+      }
+
+      // Search Filter
+      if (searchInput) {
+        updatedList = updatedList.filter(
+          (item: any) =>
+            item.name.toLowerCase().search(searchInput.toLowerCase().trim()) !==
+            -1
+        );
+      }
+
+      // Price Filter
+      const minPrice = selectedPrice[0];
+      const maxPrice = selectedPrice[1];
+
       updatedList = updatedList.filter(
-        (item) => Number(item.rating) === parseInt(selectedRating)
+        (item: any) => item.price >= minPrice && item.price <= maxPrice
       );
+
+      // setList(updatedList);
+      setWines(updatedList);
+      console.log(updatedList);
+
+      !updatedList.length ? setResultsFound(false) : setResultsFound(true);
     }
-
-    // Category Filter
-    if (selectedCategory) {
-      updatedList = updatedList.filter(
-        (item) => item.category === selectedCategory
-      );
-    }
-
-    // Cuisine Filter
-    const cuisinesChecked = cuisines
-      .filter((item) => item.checked)
-      .map((item) => item.label.toLowerCase());
-
-    if (cuisinesChecked.length) {
-      updatedList = updatedList.filter((item) =>
-        cuisinesChecked.includes(item.cuisine)
-      );
-    }
-
-    // Search Filter
-    if (searchInput) {
-      updatedList = updatedList.filter(
-        (item) =>
-          item.title.toLowerCase().search(searchInput.toLowerCase().trim()) !==
-          -1
-      );
-    }
-
-    // Price Filter
-    const minPrice = selectedPrice[0];
-    const maxPrice = selectedPrice[1];
-
-    updatedList = updatedList.filter(
-      (item) => item.price >= minPrice && item.price <= maxPrice
-    );
-
-    setList(updatedList);
-
-    !updatedList.length ? setResultsFound(false) : setResultsFound(true);
-  }, [cuisines, searchInput, selectedCategory, selectedPrice, selectedRating]);
+  }, [
+    cuisines,
+    regions,
+    searchInput,
+    selectedCategory,
+    selectedPrice,
+    selectedRating,
+    feedstate,
+  ]);
 
   useEffect(() => {
     applyFilters();
@@ -135,6 +191,7 @@ const Home = () => {
     selectedRating,
     selectedCategory,
     cuisines,
+    regions,
     searchInput,
     selectedPrice,
     applyFilters,
@@ -157,7 +214,9 @@ const Home = () => {
             selectedPrice={selectedPrice}
             selectRating={handleSelectRating}
             cuisines={cuisines}
+            regions={regions}
             changeChecked={handleChangeChecked}
+            changeCheckeds={handleChangeCheckeds}
             changePrice={handleChangePrice}
           />
         </div>
@@ -169,11 +228,11 @@ const Home = () => {
               dataLength={wines.slice(0, nowFeedsnum).length} //This is important field to render the next data
               next={loadmoredata}
               hasMore={nowFeedsnum < wines.length}
-              loader={<h4 style={{ textAlign: "center" }}>Loading...</h4>}
+              loader={<div style={{ textAlign: "center" }}>🌟Loading...🌟</div>}
               endMessage={
-                <p style={{ textAlign: "center" }}>
-                  <b>마지막입니다</b>
-                </p>
+                <div style={{ textAlign: "center" }}>
+                  <div>🚩 검색 완료 🚩</div>
+                </div>
               }
             >
               {wines &&
@@ -182,10 +241,12 @@ const Home = () => {
                   // console.log(feedstate.length)
                   // console.log(nowFeedsnum)
 
-                  return <List list={item} index={idx} />;
+                  return <List list={item} key={idx} />;
                 })}
             </InfiniteScroll>
-          ) : null}
+          ) : (
+            <EmptyView />
+          )}
 
           {/* {resultsFound ? <List list={wines} /> : <EmptyView />} */}
         </div>
