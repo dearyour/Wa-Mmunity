@@ -1,5 +1,4 @@
 import React from "react";
-import ListItem from "./ListItem";
 // import './styles.css';
 import styles from "./list.module.css";
 import styled from "styled-components";
@@ -67,8 +66,8 @@ const List = ({ list }) => (
         <h1 className={styles.name}> {list.name}</h1>
         <p className={styles.title}> 와인 스타일 : {list.cat1}</p>
         <p className={styles.title}> 원산지 : {list.country} </p>
-        <p className={styles.title}> 지역 : {list.region1}</p>
-        <p className={styles.company}> 회사 : {list.winery}</p>
+        <p className={styles.title}> 포도 품종 : {list.grape1}</p>
+        <p className={styles.company}> 제조 회사 : {list.winery}</p>
         <p className={styles.message}>해외 평균가 : ₩ {list.price} </p>
       </div>
       <div className={styles.right}>
@@ -78,7 +77,6 @@ const List = ({ list }) => (
             <Rate tooltips={desc} onChange={handleChange} value={value} />
             {value ? (
               <div className="ant-rate-text" style={{}}>
-                　　
                 {/* {desc[value - 1]}  */}
                 평점 : [ {list.ratingAvg.toFixed(1)} ]
               </div>
@@ -87,7 +85,7 @@ const List = ({ list }) => (
             )}
           </span>
           <div className="ant-rate-text" style={{}}>
-            　{/* {desc[value - 1]}  */}
+            {/* {desc[value - 1]}  */}
             리뷰 갯수 : [ {list.ratingNum} ]
           </div>
           {/* <span>🌟🌟🌟 {list.ratingAvg}</span> */}

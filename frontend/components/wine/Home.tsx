@@ -5,7 +5,6 @@ import List from "../../components/Home/List";
 import SearchBar from "../../components/Home/SearchBar";
 import { dataList } from "../../constants";
 import axios from "axios";
-import Card from "../card/card";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch, useSelector } from "react-redux";
 import { feedAction } from "store/slice/feed";
@@ -30,7 +29,7 @@ const Home = () => {
   const [wines, setWines] = useState([]); //프롭으로내려주자
   const [selectedCategory, setSelectedCategory] = useState<any>(null);
   const [selectedRating, setSelectedRating] = useState(null);
-  const [selectedPrice, setSelectedPrice] = useState([1, 500000]);
+  const [selectedPrice, setSelectedPrice] = useState([1, 300000]);
   const [searchInput, setSearchInput] = useState("");
   const [list, setList] = useState(dataList); //이부분 axios 가져올것;
 
@@ -59,19 +58,19 @@ const Home = () => {
   const [cuisines, setCuisines] = useState<any[]>([
     { id: 1, checked: false, label: "France" },
     { id: 2, checked: false, label: "Italy" },
-    { id: 3, checked: false, label: "Hungary" },
-    { id: 4, checked: false, label: "Portugal" },
+    { id: 3, checked: false, label: "Spain" },
+    { id: 4, checked: false, label: "Chile" },
     { id: 5, checked: false, label: "Germany" },
-    { id: 6, checked: false, label: "Spain" },
+    { id: 6, checked: false, label: "Argentina" },
   ]);
 
   const [regions, setRegions] = useState<any[]>([
-    { id: 1, checked: false, label: "Duriense" },
-    { id: 2, checked: false, label: "Central Valley" },
-    { id: 3, checked: false, label: "Vin de Pays" },
-    { id: 4, checked: false, label: "Mendoza" },
-    { id: 5, checked: false, label: "Piemonte" },
-    { id: 6, checked: false, label: "South Australia" },
+    { id: 1, checked: false, label: "Cabernet Sauvignon" },
+    { id: 2, checked: false, label: "Shiraz/Syrah" },
+    { id: 3, checked: false, label: "Pinot Noir" },
+    { id: 4, checked: false, label: "Chardonnay" },
+    { id: 5, checked: false, label: "Riesling" },
+    { id: 6, checked: false, label: "Sauvignon Blanc" },
   ]);
 
   const [resultsFound, setResultsFound] = useState(true);
@@ -149,7 +148,7 @@ const Home = () => {
 
       if (regionsChecked.length) {
         updatedList = updatedList.filter((item: any) =>
-          regionsChecked.includes(item.region1.toLowerCase())
+          regionsChecked.includes(item.grape1.toLowerCase())
         );
       }
 

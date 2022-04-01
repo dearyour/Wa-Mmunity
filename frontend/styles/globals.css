@@ -49,10 +49,10 @@ img {
 
 /*BUTTON*/
 .btn {
-  width: 130px;
+  width: 140px;
   padding: 10px;
   border: 2px solid #590805;
-  border: 2px solid #333;
+  border: 1px solid #333;
   border-radius: 4px;
   color: #590805;
   color: #333;
@@ -76,8 +76,8 @@ img {
   color: #fff;
 }
 .btn.btn--reverse {
-  background-color: #590805;
   background-color: #333;
+  background-color: #590805;
   color: #fff;
 }
 .btn.btn--reverse:hover {
@@ -100,6 +100,15 @@ img {
 .btn.btn--gold:hover {
   color: #fff;
   background-color: #d9aa8a;
+}
+.btn.btn--golds {
+  color: #fff;
+  border-color: #dab5a5;
+  background-color: #dab5a5;
+}
+.btn.btn--golds:hover {
+  color: #dab5a5;
+  background-color: #fff;
 }
 .btn.btn--white {
   color: #fff;
@@ -130,7 +139,20 @@ header .logo {
   color: #861610;
   cursor: pointer;
 }
+header .logo2 {
+  height: 50px;
+  position: absolute;
+  top: -45px;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  color: #861610;
+  cursor: pointer;
+}
 header .logo:hover {
+  color: red;
+}
+header .logo2:hover {
   color: red;
 }
 header .logoName {
