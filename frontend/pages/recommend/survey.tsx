@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, useEffect } from 'react'
 import AppLayout from '../../components/layout/AppLayout'
 import Stepper from '@mui/material/Stepper'
 import Step from '@mui/material/Step'
@@ -71,11 +71,13 @@ export default class Survey extends Component {
   }
   // submit
   handleSubmit = () => {
-    submitSurvey(this.state, 
-      (res: any) => {
-        console.log(res)
-      },
-      (err: any) => console.log(err))
+    fetch('https://j6a101.p.ssafy.io:8000/recomm/survey', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ data: this.state })
+    })
+    .then(res => console.log(res))
+    .catch(err => console.log(err))
 
     // this.setState({
     //   step: 0,
