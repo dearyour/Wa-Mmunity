@@ -75,7 +75,9 @@ def wine_survey():
         # 함수 실행
         result = json.dumps(survey.get_survey(survey=survey_data))
         # 와인 id list(array) 반환
-        return Response(result, mimetype='application/json')
+        res = Response(result, mimetype='application/json')
+        res.headers['Access-Control-Allow-Origin'] = '*'
+        return res
         
 
 # debug = True 명시해 코드 수정 시 자동 반영
