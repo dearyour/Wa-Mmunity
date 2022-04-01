@@ -80,11 +80,7 @@ def wine_survey():
 
 # debug = True 명시해 코드 수정 시 자동 반영
 if __name__ == '__main__':
-    app.debug = True
-    
-    ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS)
-    ssl_context.load_cert_chain(certfile='cert.pem', keyfile='flaskkey.pem')
-    app.run(host="0.0.0.0", ssl_context=ssl_context)
+    app.run(ssl_context=('cert.pem', 'key.pem'))
 
 # $ export FLASK_APP = app
 # $ flask run(debug 모드 안켜짐) or $ python app.py(debug 모드 켜짐)
