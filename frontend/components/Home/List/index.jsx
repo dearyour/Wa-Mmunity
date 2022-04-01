@@ -81,12 +81,15 @@ const List = ({ list }) => {
           <p className={styles.title}> 원산지 : {list.country} </p>
           <p className={styles.title}> 포도 품종 : {list.grape1}</p>
           <p className={styles.company}> 제조 회사 : {list.winery}</p>
-          <p className={styles.message}>해외 평균가 : ₩ {list.price} </p>
+          <p className={styles.message}>
+            해외 평균가 : ₩{" "}
+            {list.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
+          </p>
         </div>
         <div className={styles.right}>
-          <h1 className={styles.name}></h1>
+          {/* <h1 className={styles.name}></h1> */}
           <div className={styles.star}>
-            <div>
+            <div className={styles.antdstar}>
               {[...Array(5)].map((star, i) => {
                 const ratingValue = i + 1;
                 return (
@@ -115,17 +118,17 @@ const List = ({ list }) => {
             <span>
               {/* <Rate tooltips={desc} onChange={handleChange} value={value} /> */}
               {/* {value ? ( */}
-              <div className="ant-rate-text" style={{}}>
-                {/* {desc[value - 1]}  */}
-                평점 : [ {list.ratingAvg.toFixed(1)} ]
+              <div className={styles.ratetext} style={{}}>
+                평점 : {/* {desc[value - 1]}  */}[ {list.ratingAvg.toFixed(1)} ]
               </div>
               {/* ) : (
               ""
             )} */}
             </span>
-            <div className="ant-rate-text" style={{}}>
+            <div className={styles.ratetext} style={{}}>
               {/* {desc[value - 1]}  */}
-              리뷰 갯수 : [ {list.ratingNum} ]
+              {/* "ant-rate-text" */}
+              최근 리뷰 : [ {list.ratingNum} ]
             </div>
             {/* <span>🌟🌟🌟 {list.ratingAvg}</span> */}
           </div>

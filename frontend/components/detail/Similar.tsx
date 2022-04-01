@@ -1,6 +1,6 @@
-import React from 'react';
-import styled from '@emotion/styled';
-import useSimilarMovie from '../useMovieSimilar';
+import React from "react";
+import styled from "@emotion/styled";
+import useSimilarMovie from "../useMovieSimilar";
 
 const Base = styled.section`
   padding: 11px 15px;
@@ -100,8 +100,8 @@ const Card: React.FC<MovieProps> = ({ id, posterPath, title, voteAverage }) => {
         </Info>
       </CardContainer>
     </Link>
-  )
-}
+  );
+};
 
 const Similar: React.FC<Props> = ({ id }) => {
   const { isLoading, data } = useSimilarMovie(id);
@@ -114,23 +114,21 @@ const Similar: React.FC<Props> = ({ id }) => {
         </ContentHeader>
       </ContentHeaderWrapper>
       <ContentsWrapper>
-        {
-          isLoading || !data ? (
-            <div>Loading...</div>
-          ) : (
-            data.results.map(result => (
-              <Card
-                id={result.id}
-                posterPath={result.poster_path}
-                title={result.title}
-                voteAverage={result.vote_average}
-              />
-            ))
-          )
-        }
+        {isLoading || !data ? (
+          <div>Loading...</div>
+        ) : (
+          data.results.map((result) => (
+            <Card
+              id={result.id}
+              posterPath={result.poster_path}
+              title={result.title}
+              voteAverage={result.vote_average}
+            />
+          ))
+        )}
       </ContentsWrapper>
     </Base>
-  )
-}
+  );
+};
 
 export default Similar;
