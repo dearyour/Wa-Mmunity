@@ -42,8 +42,14 @@ const SliderProton = ({ value, changePrice }) => {
         }}
       />
       <VV>
-        <div>최저 가격 : [&nbsp;{value[0]}&nbsp;]</div>
-        <div>최대 가격 : [&nbsp;{value[1]}&nbsp;]</div>
+        <div>
+          최저 가격 : [&nbsp;
+          {value[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}&nbsp;]
+        </div>
+        <div>
+          최대 가격 : [&nbsp;
+          {value[1].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}&nbsp;]
+        </div>
       </VV>
     </div>
   );

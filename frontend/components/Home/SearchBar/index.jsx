@@ -4,8 +4,12 @@ import SearchIcon from "@material-ui/icons/Search";
 import Router, { useRouter } from "next/router";
 const SearchBar = ({ value, changeInput }) => {
   const __Routing = () => {
+    // location.reload();
     Router.push(`/`);
     Router.push(`/wine`);
+    // setTimeout(() => {
+    //   Router.push(`/wine`);
+    // }, 5);
   };
   const router = useRouter();
   return (

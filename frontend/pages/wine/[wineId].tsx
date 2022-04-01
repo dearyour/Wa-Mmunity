@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import AppLayout from "../../components/layout/AppLayout";
 import { Progress } from "antd";
 import Slider from "../../components/Slider";
@@ -6,8 +6,10 @@ import styled from "@emotion/styled";
 // import Card from "components/card/Card";
 // import { dataList } from "constants";
 import Router, { useRouter } from "next/router";
+import { FaStar } from "react-icons/fa";
 import axios from "axios";
-
+import StyleDrawer from "components/wine/StyleInfo";
+import WineSlider from "components/wineSlider";
 const Base = styled.div`
   position: relative;
 `;
@@ -41,7 +43,7 @@ const Backdrop = styled.div`
 
 const BackdropImage = styled.div<{ imageUrl: string }>`
   background: url(${({ imageUrl }) => imageUrl}) center center / cover no-repeat;
-  min-width: 110px;
+  min-width: 100px;
   position: relative;
   top: auto;
   left: auto;
@@ -88,7 +90,8 @@ const Container = styled.div`
   margin: 0 auto;
   position: relative;
   background-color: white;
-  // padding: 20px 100px;
+  padding: 10px 20px 30px 20px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 `;
 const Containers = styled.div`
   max-width: 960px;
@@ -99,6 +102,7 @@ const Containers = styled.div`
 const ContentWrapper = styled.div`
   margin: 0px 0px 0px 100px;
   text-align: left;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 `;
 
 const Title = styled.h1`
@@ -120,6 +124,7 @@ const Keyword = styled.div`
   padding: 8px 0;
   // border-bottom: 1px solid white;
   color: rgba(0, 0, 0, 0.5);
+  // color: #590805;
 `;
 
 const AverageRate = styled.div`
@@ -160,9 +165,9 @@ const StarRates = styled.div`
 
 const StarRateText = styled.div`
   font-size: 20px;
-  line-height: 16px;
+  line-height: 8px;
   margin-bottom: 20px;
-  margin-top: 20px;
+  margin-top: 15px;
   color: #787878;
 `;
 
@@ -186,6 +191,7 @@ const ActionButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: -5px;
 `;
 
 const ActionButton = styled.button`
@@ -223,10 +229,44 @@ const PP = styled.div`
   font-size: 1.2rem;
 `;
 
+const Radio = styled.input`
+  display: none;
+`;
+
+const SStar = styled(FaStar)`
+  cursor: pointer;
+  transition: color 200ms;
+`;
+
 function WineDetail(): any {
   const router = useRouter();
   const { wineId } = router.query;
   const [data, setdata] = useState<any>("");
+  const [rating, setRating] = useState<Number>(0);
+  const [hover, setHover] = useState<Number>(0);
+
+  const [dats, setdats] = useState<any>("");
+  // const { data: nowPlayingitemResponse, isLoading } = useNowPlayingitem();
+  const __GetWineSlider = useCallback(() => {
+    return axios({
+      method: "GET",
+      url: process.env.BACK_EC2 + "wine/recommend/" + wineId,
+      // url: "http://j6a101.p.ssafy.io:8080/wine/recommend/" + wineId,
+    })
+      .then((res) => {
+        console.log("###Slider" + res);
+        setdata(res.data);
+        return res.data;
+      })
+      .catch((err) => {
+        return err;
+      });
+  }, []);
+
+  useEffect(() => {
+    __GetWineSlider();
+  }, [__GetWineSlider]);
+  //
   useEffect(() => {
     console.log(wineId);
     if (!wineId) {
@@ -258,13 +298,22 @@ function WineDetail(): any {
                 <ContentWrapper>
                   <Title>{data.name}</Title>
 
-                  <AverageRate>· 와인 스타일 : {data.cat1}</AverageRate>
+                  <AverageRate className="태양">
+                    · 와인 스타일 : {data.cat1}
+                  </AverageRate>
                   <AverageRate>· 원산지 : {data.country}</AverageRate>
                   <AverageRate>· 지역 : {data.region1}</AverageRate>
                   <AverageRate>· 제조 회사 : {data.winery}</AverageRate>
                   <AverageRate>· 숙성 기간 : {data.ageing} 년</AverageRate>
                   <AverageRate>· 포도 품종 : {data.grape1}</AverageRate>
-                  <Keyword> · 해외 평균가 : ₩ {data.price}</Keyword>
+                  <Keyword>
+                    · 해외 평균가 : ₩
+                    {data
+                      ? data.price
+                          .toString()
+                          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                      : ""}
+                  </Keyword>
                   <Actions>
                     {/* <Divider /> */}
                     {/* 액션 버튼 */}
@@ -290,19 +339,47 @@ function WineDetail(): any {
                     </ActionButtonContainer>
                     <StarRate>
                       <StarRateText>
-                        ✨ 평점 : [ {data.ratingAvg} ]
+                        {/* ✨ 평점 : [ {data.ratingAvg} ] */}
                       </StarRateText>
-                      <StarRateText>
-                        리뷰 갯수 : [ {data.ratingNum} ]
-                      </StarRateText>
+
                       <RatingWrapper>
                         {/* <Rating size="large" /> */}
                       </RatingWrapper>
                     </StarRate>
                   </Actions>
                 </ContentWrapper>
+
                 <StarRates>
+                  <div>
+                    {[...Array(5)].map((star, i) => {
+                      const ratingValue = i + 1;
+                      return (
+                        <label htmlFor={data.wineId}>
+                          <Radio
+                            id={data.wineId}
+                            type="radio"
+                            name="rating"
+                            value={ratingValue}
+                            onClick={() => setRating(ratingValue)}
+                            // onChange={() => setRating(list.ratingAvg)}
+                          />
+                          <SStar
+                            size={30}
+                            color={
+                              ratingValue <= data.ratingAvg
+                                ? "#ffc107"
+                                : "white"
+                            }
+                            onMouseEnter={() => setHover(ratingValue)}
+                            onMouseLeave={() => setHover(0)}
+                          />
+                        </label>
+                        //list.ratingAvg  ===  hover || rating
+                      );
+                    })}
+                  </div>
                   <StarRateText>✨ 평점 : [ {data.ratingAvg} ]</StarRateText>
+                  <StarRateText>최근 리뷰 : [ {data.ratingNum} ]</StarRateText>
                 </StarRates>
               </Backdrop>
             </PosterContainer>
@@ -311,33 +388,41 @@ function WineDetail(): any {
 
             <Main>
               <Container>
-                <Titles>기본 정보</Titles>
+                <TitlesRapper>
+                  <Titles>기본 정보</Titles>
+
+                  <StyleDrawer>도움말</StyleDrawer>
+                </TitlesRapper>
                 <UserStates>
                   　· 당도 [&nbsp;
                   {data ? <span> {data.sweet.toFixed(1)}</span> : null}
                   &nbsp;]&nbsp;
                   {data ? (
-                    <OndoProgress
-                      strokeColor={{
-                        "0%": "#058cec",
-                        "100%": "#ff0000",
-                      }}
-                      percent={data.sweet}
-                      showInfo={false}
-                    />
+                    <OndoProgress>
+                      <Progress
+                        strokeColor={{
+                          "0%": "#058cec",
+                          "100%": "#ff0000",
+                        }}
+                        percent={data.sweet}
+                        showInfo={false}
+                      />
+                    </OndoProgress>
                   ) : null}
                   　· 산도&nbsp;[&nbsp;
                   {data ? <span> {data.acidic.toFixed(1)}</span> : null}
                   &nbsp;]&nbsp;
                   {data ? (
-                    <OndoProgress
-                      strokeColor={{
-                        "0%": "#058cec",
-                        "100%": "#ff0000",
-                      }}
-                      percent={data.acidic}
-                      showInfo={false}
-                    />
+                    <OndoProgress>
+                      <Progress
+                        strokeColor={{
+                          "0%": "#058cec",
+                          "100%": "#ff0000",
+                        }}
+                        percent={data.acidic}
+                        showInfo={false}
+                      />
+                    </OndoProgress>
                   ) : null}
                 </UserStates>
                 <UserStates>
@@ -345,27 +430,31 @@ function WineDetail(): any {
                   {data ? <span> {data.bold.toFixed(1)}</span> : null}
                   &nbsp;]&nbsp;
                   {data ? (
-                    <OndoProgress
-                      strokeColor={{
-                        "0%": "#058cec",
-                        "100%": "#ff0000",
-                      }}
-                      percent={data.bold}
-                      showInfo={false}
-                    />
+                    <OndoProgress>
+                      <Progress
+                        strokeColor={{
+                          "0%": "#058cec",
+                          "100%": "#ff0000",
+                        }}
+                        percent={data.bold}
+                        showInfo={false}
+                      />
+                    </OndoProgress>
                   ) : null}
                   　· 타닌&nbsp;[&nbsp;
                   {data ? <span> {data.tannic.toFixed(1)}</span> : null}
                   &nbsp;]&nbsp;
                   {data ? (
-                    <OndoProgress
-                      strokeColor={{
-                        "0%": "#058cec",
-                        "100%": "#ff0000",
-                      }}
-                      percent={data.tannic}
-                      showInfo={false}
-                    />
+                    <OndoProgress>
+                      <Progress
+                        strokeColor={{
+                          "0%": "#058cec",
+                          "100%": "#ff0000",
+                        }}
+                        percent={data.tannic}
+                        showInfo={false}
+                      />
+                    </OndoProgress>
                   ) : null}
                 </UserStates>
                 <UserStates>
@@ -373,27 +462,31 @@ function WineDetail(): any {
                   {data ? <span> {data.alcoholContent.toFixed(1)}</span> : null}
                   &nbsp;]&nbsp;
                   {data ? (
-                    <OndoProgress
-                      strokeColor={{
-                        "0%": "#058cec",
-                        "100%": "#ff0000",
-                      }}
-                      percent={data.alcoholContent}
-                      showInfo={false}
-                    />
+                    <OndoProgress>
+                      <Progress
+                        strokeColor={{
+                          "0%": "#058cec",
+                          "100%": "#ff0000",
+                        }}
+                        percent={data.alcoholContent}
+                        showInfo={false}
+                      />
+                    </OndoProgress>
                   ) : null}
                   　· 와인향&nbsp;[&nbsp;
                   {data ? <span> {data.driedFruit.toFixed(1)}</span> : null}
                   &nbsp;]&nbsp;
                   {data ? (
-                    <OndoProgress
-                      strokeColor={{
-                        "0%": "#058cec",
-                        "100%": "#ff0000",
-                      }}
-                      percent={data.driedFruit}
-                      showInfo={false}
-                    />
+                    <OndoProgress>
+                      <Progress
+                        strokeColor={{
+                          "0%": "#058cec",
+                          "100%": "#ff0000",
+                        }}
+                        percent={data.driedFruit}
+                        showInfo={false}
+                      />
+                    </OndoProgress>
                   ) : null}
                 </UserStates>
               </Container>
@@ -457,7 +550,7 @@ function WineDetail(): any {
             </Mains>
           </TopInfo>
 
-          {/* 상세 정보 */}
+          {/* 리뷰 정보 */}
 
           <BottomInfo>
             <ContentSectionContainer>
@@ -531,16 +624,25 @@ function WineDetail(): any {
                 <div>dd</div>
               </InnerOut>
             </ContentSectionContainer>
+            {/* <WineSlider /> */}
           </BottomInfo>
         </>
       </Base>
     </AppLayout>
   );
 }
-const OndoProgress = styled(Progress)`
+const TitlesRapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+const OndoProgress = styled.div`
   transition: all 2s ease-in-out;
   width: 25%;
 `;
+// const OndoProgress = styled(Progress)`
+//   transition: all 2s ease-in-out;
+//   width: 25%;
+// `;
 
 const UserStates = styled.div`
   display: flex;
