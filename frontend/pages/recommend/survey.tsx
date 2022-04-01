@@ -1,19 +1,34 @@
 import React, { Component } from 'react'
 import AppLayout from '../../components/layout/AppLayout'
+import Stepper from '@mui/material/Stepper'
+import Step from '@mui/material/Step'
+import StepLabel from '@mui/material/StepLabel'
 import { Row, Col, Steps, Typography, Button } from 'antd'
 import WineType from '../../components/recomm/WineType'
-import WineAlcohol from '../../components/recomm/WineAlcohol'
+import WineBody from '../../components/recomm/WineBody'
 import WinePrice from '../../components/recomm/WinePrice'
+import WineTannin from 'components/recomm/WineTannin'
+import WineSweetness from 'components/recomm/WineSweetness'
+import WineAcidity from 'components/recomm/WineAcidity'
+import WineFlavour from 'components/recomm/WineFlavour'
+import WineFoods from 'components/recomm/WineFoods'
+import axios from 'axios'
+import { submitSurvey } from './api'
 
-const { Step } = Steps
+// const { Step } = Steps
 const { Title, Paragraph, Text, Link } = Typography;
 
 function getSteps() {
   return [
-    'form0',
-    'form1',
-    'form2',
-    'form3',
+    'start',
+    'type',
+    'winebody',
+    'tannin',
+    'sweetness',
+    'acidity',
+    'flavour',
+    'foods',
+    'price',
   ]
 }
 
@@ -21,8 +36,13 @@ export default class Survey extends Component {
   state = {
     step: 0,
     type: '',
-    alcohol: '',
-    price: [],
+    winebody: '',
+    tannin: '',
+    sweetness: '',
+    acidity: '',
+    flavour: '',
+    foods: '',
+    price: [10000, 200000],
   }
 
   // go back to previous step
@@ -37,8 +57,37 @@ export default class Survey extends Component {
   }
   // go to first step
   handleReset = () => {
-    const { step } = this.state;
-    this.setState({ step: 0 });
+    this.setState({
+      step: 0,
+      type: '',
+      winebody: '',
+      tannin: '',
+      sweetness: '',
+      acidity: '',
+      flavour: '',
+      foods: '',
+      price: [10000, 200000],
+    })
+  }
+  // submit
+  handleSubmit = () => {
+    submitSurvey(this.state, 
+      (res: any) => {
+        console.log(res)
+      },
+      (err: any) => console.log(err))
+
+    // this.setState({
+    //   step: 0,
+    //   type: '',
+    //   winebody: '',
+    //   tannin: '',
+    //   sweetness: '',
+    //   acidity: '',
+    //   flavour: '',
+    //   foods: '',
+    //   price: [10000, 200000],
+    // })
   }
   // handle fields change
   handleChange = (input: any) => (e: any) => {
@@ -49,8 +98,11 @@ export default class Survey extends Component {
     this.setState({ [input]: checkedValues });
   }
   // handle Slider change
-  handleChangeSlider = (input: any) => (value: any) => {
-    this.setState({ [input]: value });
+  // handleChangeSlider = (input: any) => (value: any) => {
+  //   this.setState({ [input]: value });
+  // }
+  handleChangeSlider = (input: any) => (e: any) => {
+    this.setState({ [input]: e.target.value });
   }
 
   getStepContent(stepIndex: number, values: any) {
@@ -66,12 +118,47 @@ export default class Survey extends Component {
         )
       case 2:
         return (
-          <WineAlcohol
+          <WineBody
             handleChange={this.handleChange}
             values={ values }
           />
         )
       case 3:
+        return (
+          <WineTannin
+          handleChange={this.handleChange}
+            values={ values }
+            />
+        )
+      case 4:
+        return (
+          <WineSweetness
+          handleChange={this.handleChange}
+            values={ values }
+            />
+        )
+      case 5:
+        return (
+          <WineAcidity
+          handleChange={this.handleChange}
+            values={ values }
+            />
+        )
+      case 6:
+        return (
+          <WineFlavour
+            handleChangeCheckbox={this.handleChangeCheckbox}
+            values={ values }
+          />
+        )
+      case 7:
+        return (
+          <WineFoods
+            handleChangeCheckbox={this.handleChangeCheckbox}
+            values={ values }
+          />
+        )
+      case 8:
         return (
           <WinePrice
             handleChangeSlider={this.handleChangeSlider}
@@ -79,30 +166,38 @@ export default class Survey extends Component {
             />
         )
       default:
-        return 'unknown stepIndex'
+        return '설문 끝'
     }
   }
   
   render() {
     const { step } = this.state;
-    const { type, alcohol, price, } = this.state;
+    const { type, winebody, tannin, sweetness, acidity, flavour, foods, price, } = this.state;
     const steplabels = getSteps()
-    const values = { type, alcohol, price }
+    const values = { type, winebody, tannin, sweetness, acidity, flavour, foods, price, }
     
     return (
     <AppLayout>
       <Row justify="center">
-        <Col lg={16} sm={16} >
-          <Steps progressDot current={step}>
+        <Col>
+          <Stepper activeStep={step} alternativeLabel>
+            {steplabels.map((label) => (
+              <Step key={label}>
+                <StepLabel>{label}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+          {/* <Steps progressDot current={step}>
             {steplabels.map((label) => (
               <Step title={label}>
               </Step>
             ))}
-          </Steps>
+          </Steps> */}
           {step === steplabels.length ? (
             <div>
               <Typography><Title>모든 form 종료</Title></Typography>
               <Button onClick={this.handleReset}>Reset</Button>
+              <Button onClick={this.handleSubmit}>Submit</Button>
             </div>
           ) : (
             <div>
@@ -121,9 +216,12 @@ export default class Survey extends Component {
                     color="primary"
                     onClick={this.handleNext}
                     >
-                    {step === steplabels.length - 1 ? '제출' : '다음'}
+                    다음
                   </Button>
                 </Col>
+              </Row>
+              <Row>
+                {JSON.stringify(this.state)}
               </Row>
             </div>
           )}
