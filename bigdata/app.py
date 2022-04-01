@@ -12,7 +12,7 @@ from flask import Response
 
 # flask 객체 인스턴스 생성
 app = Flask(__name__)
-CORS(app)
+CORS(app, support_credentials=True)
 
 # 접속 url 설정
 @app.route('/')
@@ -74,7 +74,9 @@ def wine_survey():
         # 함수 실행
         result = json.dumps(survey.get_survey(survey=survey_data))
         # 와인 id list(array) 반환
-        return Response(result, mimetype='application/json')
+        res = Response(result, mimetype='application/json')
+        res.headers['Access-Control-Allow-Origin'] = '*'
+        return res
         
 
 # debug = True 명시해 코드 수정 시 자동 반영
