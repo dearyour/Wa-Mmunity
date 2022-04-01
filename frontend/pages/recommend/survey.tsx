@@ -71,10 +71,11 @@ export default class Survey extends Component {
   }
   // submit
   handleSubmit = () => {
-    fetch('https://j6a101.p.ssafy.io:8000/recomm/survey', {
+    fetch('http://j6a101.p.ssafy.io:8000/recomm/survey', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ data: this.state })
+      mode: 'cors',
+      body: JSON.stringify({ data: this.state }),
+      headers: { 'Content-Type':'application/json' },
     })
     .then(res => console.log(res))
     .catch(err => console.log(err))
