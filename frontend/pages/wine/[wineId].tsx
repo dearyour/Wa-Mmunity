@@ -6,6 +6,7 @@ import styled from "@emotion/styled";
 // import Card from "components/card/Card";
 // import { dataList } from "constants";
 import Router, { useRouter } from "next/router";
+import { FaStar } from "react-icons/fa";
 import axios from "axios";
 
 const Base = styled.div`
@@ -160,9 +161,9 @@ const StarRates = styled.div`
 
 const StarRateText = styled.div`
   font-size: 20px;
-  line-height: 16px;
+  line-height: 8px;
   margin-bottom: 20px;
-  margin-top: 20px;
+  margin-top: 15px;
   color: #787878;
 `;
 
@@ -223,10 +224,21 @@ const PP = styled.div`
   font-size: 1.2rem;
 `;
 
+const Radio = styled.input`
+  display: none;
+`;
+
+const SStar = styled(FaStar)`
+  cursor: pointer;
+  transition: color 200ms;
+`;
+
 function WineDetail(): any {
   const router = useRouter();
   const { wineId } = router.query;
   const [data, setdata] = useState<any>("");
+  const [rating, setRating] = useState<Number>(0);
+  const [hover, setHover] = useState<Number>(0);
   useEffect(() => {
     console.log(wineId);
     if (!wineId) {
@@ -290,19 +302,49 @@ function WineDetail(): any {
                     </ActionButtonContainer>
                     <StarRate>
                       <StarRateText>
-                        ✨ 평점 : [ {data.ratingAvg} ]
+                        {/* ✨ 평점 : [ {data.ratingAvg} ] */}
                       </StarRateText>
-                      <StarRateText>
-                        리뷰 갯수 : [ {data.ratingNum} ]
-                      </StarRateText>
+
                       <RatingWrapper>
                         {/* <Rating size="large" /> */}
                       </RatingWrapper>
                     </StarRate>
                   </Actions>
                 </ContentWrapper>
+
                 <StarRates>
+                  <div>
+                    {[...Array(5)].map((star, i) => {
+                      const ratingValue = i + 1;
+                      return (
+                        <label htmlFor={data.wineId}>
+                          <Radio
+                            id={data.wineId}
+                            type="radio"
+                            name="rating"
+                            value={ratingValue}
+                            onClick={() => setRating(ratingValue)}
+                            // onChange={() => setRating(list.ratingAvg)}
+                          />
+                          <SStar
+                            size={30}
+                            color={
+                              ratingValue <= data.ratingAvg
+                                ? "#ffc107"
+                                : "white"
+                            }
+                            onMouseEnter={() => setHover(ratingValue)}
+                            onMouseLeave={() => setHover(0)}
+                          />
+                        </label>
+                        //list.ratingAvg  ===  hover || rating
+                      );
+                    })}
+                  </div>
                   <StarRateText>✨ 평점 : [ {data.ratingAvg} ]</StarRateText>
+                  <StarRateText>
+                    리뷰 참여자 : [ {data.ratingNum} ]
+                  </StarRateText>
                 </StarRates>
               </Backdrop>
             </PosterContainer>
