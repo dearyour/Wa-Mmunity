@@ -84,6 +84,8 @@ const StyleDrawer: React.FC = () => {
             <div>테라 4.6 도</div>
             <div>장수막걸리 6 도</div>
             <div>백세주 13 도</div>
+            <div>샴폐인 15 도</div>
+            <div>보드카,양주 40 도</div>
           </p>
         </div>
         <br />
