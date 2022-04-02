@@ -9,6 +9,7 @@ import Router, { useRouter } from "next/router";
 import { FaStar } from "react-icons/fa";
 import axios from "axios";
 import StyleDrawer from "components/wine/StyleInfo";
+import Rating from "@mui/material/Rating";
 import WineSlider from "components/wineSlider";
 const Base = styled.div`
   position: relative;
@@ -242,30 +243,31 @@ function WineDetail(): any {
   const router = useRouter();
   const { wineId } = router.query;
   const [data, setdata] = useState<any>("");
-  const [rating, setRating] = useState<Number>(0);
+  const [datas, setdatas] = useState<any>("");
+  const [rating, setRating] = useState<number>(0);
   const [hover, setHover] = useState<Number>(0);
 
   const [dats, setdats] = useState<any>("");
   // const { data: nowPlayingitemResponse, isLoading } = useNowPlayingitem();
-  const __GetWineSlider = useCallback(() => {
-    return axios({
-      method: "GET",
-      url: process.env.BACK_EC2 + "wine/recommend/" + wineId,
-      // url: "http://j6a101.p.ssafy.io:8080/wine/recommend/" + wineId,
-    })
-      .then((res) => {
-        console.log("###Slider" + res);
-        setdata(res.data);
-        return res.data;
-      })
-      .catch((err) => {
-        return err;
-      });
-  }, []);
+  // const __GetWineSlider = useCallback(() => {
+  //   return axios({
+  //     method: "GET",
+  //     url: process.env.BACK_EC2 + "wine/recommend/" + wineId,
+  //     // url: "http://j6a101.p.ssafy.io:8080/wine/recommend/" + wineId,
+  //   })
+  //     .then((res) => {
+  //       console.log("###Slider" + res);
+  //       setdatas(res.data);
+  //       // return res.data;
+  //     })
+  //     .catch((err) => {
+  //       return err;
+  //     });
+  // }, []);
 
-  useEffect(() => {
-    __GetWineSlider();
-  }, [__GetWineSlider]);
+  // useEffect(() => {
+  //   __GetWineSlider();
+  // }, [__GetWineSlider]);
   //
   useEffect(() => {
     console.log(wineId);
@@ -279,6 +281,7 @@ function WineDetail(): any {
       .then((res) => {
         console.log(res.data);
         setdata(res.data.object);
+        setRating(res.data.object.ratingAvg);
         // router.push("/wine/" + wineId);
       })
       .catch((err) => {
@@ -348,9 +351,8 @@ function WineDetail(): any {
                     </StarRate>
                   </Actions>
                 </ContentWrapper>
-
                 <StarRates>
-                  <div>
+                  {/* <div>
                     {[...Array(5)].map((star, i) => {
                       const ratingValue = i + 1;
                       return (
@@ -377,6 +379,18 @@ function WineDetail(): any {
                         //list.ratingAvg  ===  hover || rating
                       );
                     })}
+                  </div> */}
+                  <div>
+                    <Rating
+                      name="text-feedback"
+                      value={rating}
+                      readOnly
+                      precision={0.5}
+                      size="large"
+                      // emptyIcon={
+                      //   <StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />
+                      // }
+                    />
                   </div>
                   <StarRateText>✨ 평점 : [ {data.ratingAvg} ]</StarRateText>
                   <StarRateText>최근 리뷰 : [ {data.ratingNum} ]</StarRateText>

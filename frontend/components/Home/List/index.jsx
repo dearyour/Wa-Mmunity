@@ -6,6 +6,8 @@ import Image from "next/image";
 import { Rate } from "antd";
 import Router from "next/router";
 import { FaStar } from "react-icons/fa";
+import Rating from "@mui/material/Rating";
+import Stack from "@mui/material/Stack";
 const DEFAULT_IMAGE = "/images/wine2.png";
 // const desc = ["1.0", "2.0", "3.0", "4.0", "5.0"];
 
@@ -90,7 +92,7 @@ const List = ({ list }) => {
           {/* <h1 className={styles.name}></h1> */}
           <div className={styles.star}>
             <div className={styles.antdstar}>
-              {[...Array(5)].map((star, i) => {
+              {/* {[...Array(5)].map((star, i) => {
                 const ratingValue = i + 1;
                 return (
                   <label>
@@ -112,7 +114,16 @@ const List = ({ list }) => {
                   </label>
                   //list.ratingAvg  ===  hover || rating
                 );
-              })}
+              })} */}
+              <Rating
+                name="text-feedback"
+                value={list.ratingAvg}
+                readOnly
+                precision={0.5}
+                // emptyIcon={
+                //   <StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />
+                // }
+              />
             </div>
 
             <span>
