@@ -44,7 +44,9 @@ const Backdrop = styled.div`
 
 const BackdropImage = styled.div<{ imageUrl: string }>`
   background: url(${({ imageUrl }) => imageUrl}) center center / cover no-repeat;
-  min-width: 100px;
+  min-width: 110px;
+  // min-width: 9em;
+  // height: 14em;
   position: relative;
   top: auto;
   left: auto;
@@ -394,6 +396,14 @@ function WineDetail(): any {
                   </div>
                   <StarRateText>✨ 평점 : [ {data.ratingAvg} ]</StarRateText>
                   <StarRateText>최근 리뷰 : [ {data.ratingNum} ]</StarRateText>
+
+                  {/* <CommentCount>
+                    <CommentImg src="/assets/pngwing.com5.png"></CommentImg>
+                    <span>
+                      {" "}
+                      {data && data.comments ? data.comments.length : 0}
+                    </span>
+                  </CommentCount> */}
                 </StarRates>
               </Backdrop>
             </PosterContainer>
@@ -732,9 +742,9 @@ const CommentCount = styled.div`
   padding: 2px;
 `;
 
-const CommentImg = styled.div`
-  width: 3rem;
-  background-position: center;
+const CommentImg = styled.img`
+  width: 2rem;
+  background-positsion: center;
   background-size: cover;
   background-repeat: no-repeat;
 `;

@@ -14,8 +14,8 @@ import styled from "@emotion/styled";
 
 const sortOptionList = [
   { value: "latest", name: "높은 가격 순" },
-  { value: "oldest", name: "낮은 가격 순" },
   { value: "ratingDesc", name: "높은 평점 순" },
+  { value: "oldest", name: "낮은 가격 순" },
   { value: "ratingAsc", name: "낮은 평점 순" },
 ];
 
@@ -62,7 +62,7 @@ const Home = () => {
   const [wines, setWines] = useState([]); //프롭으로내려주자
   const [selectedCategory, setSelectedCategory] = useState<any>(null);
   const [selectedRating, setSelectedRating] = useState(null);
-  const [selectedPrice, setSelectedPrice] = useState([1, 300000]);
+  const [selectedPrice, setSelectedPrice] = useState([1, 500000]);
   const [searchInput, setSearchInput] = useState("");
   const [list, setList] = useState(dataList); //이부분 axios 가져올것;
 
