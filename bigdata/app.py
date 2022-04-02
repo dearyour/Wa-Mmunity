@@ -13,7 +13,7 @@ from flask import Response
 
 # flask 객체 인스턴스 생성
 app = Flask(__name__)
-CORS(app)
+CORS(app, support_credentials=True)
 
 # 접속 url 설정
 @app.route('/')
@@ -75,15 +75,18 @@ def wine_survey():
         # 함수 실행
         result = json.dumps(survey.get_survey(survey=survey_data))
         # 와인 id list(array) 반환
-        res = Response(result, mimetype='application/json')
-        res.headers['Access-Control-Allow-Origin'] = '*'
+        res = Response(result, mimetype="application/json")
+        res.headers["Access-Control-Allow-Origin"] = "*"
+        res.headers["Access-Control-Allow-Methods"] = ["POST, GET, DELETE, PUT"]
+        res.headers["Access-Control-Max-Age"] = "3600"
+        res.headers["Access-Control-Allow-Headers"] = ["x-requested-with, origin, content-type, accept"]
         return res
         
 
 # debug = True 명시해 코드 수정 시 자동 반영
 if __name__ == '__main__':
     app.debug = True
-    app.run(host='0.0.0.0', ssl_context='adhoc')
+    app.run(host='0.0.0.0')
 
 # $ export FLASK_APP = app
 # $ flask run(debug 모드 안켜짐) or $ python app.py(debug 모드 켜짐)
