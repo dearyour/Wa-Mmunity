@@ -251,26 +251,26 @@ function WineDetail(): any {
 
   const [dats, setdats] = useState<any>("");
   // const { data: nowPlayingitemResponse, isLoading } = useNowPlayingitem();
-  // const __GetWineSlider = useCallback(() => {
-  //   return axios({
-  //     method: "GET",
-  //     url: process.env.BACK_EC2 + "wine/recommend/" + wineId,
-  //     // url: "http://j6a101.p.ssafy.io:8080/wine/recommend/" + wineId,
-  //   })
-  //     .then((res) => {
-  //       console.log("###Slider" + res);
-  //       setdatas(res.data);
-  //       // return res.data;
-  //     })
-  //     .catch((err) => {
-  //       return err;
-  //     });
-  // }, []);
+  const __GetWineSlider = useCallback(() => {
+    return axios({
+      method: "GET",
+      url: process.env.BACK_EC2 + "wine/recommend/" + wineId,
+      // url: "http://j6a101.p.ssafy.io:8080/wine/recommend/" + wineId,
+    })
+      .then((res) => {
+        console.log("###Slider" + res);
+        setdatas(res.data);
+        // return res.data;
+      })
+      .catch((err) => {
+        return err;
+      });
+  }, []);
 
-  // useEffect(() => {
-  //   __GetWineSlider();
-  // }, [__GetWineSlider]);
-  //
+  useEffect(() => {
+    __GetWineSlider();
+  }, [__GetWineSlider]);
+
   useEffect(() => {
     console.log(wineId);
     if (!wineId) {
@@ -418,7 +418,11 @@ function WineDetail(): any {
                   <StyleDrawer>도움말</StyleDrawer>
                 </TitlesRapper>
                 <UserStates>
-                  　· 당도 [&nbsp;
+                  　·{" "}
+                  <span className="자" style={{ marginRight: "10px" }}>
+                    당도
+                  </span>{" "}
+                  [&nbsp;
                   {data ? <span> {data.sweet.toFixed(1)}</span> : null}
                   &nbsp;]&nbsp;
                   {data ? (
@@ -433,7 +437,11 @@ function WineDetail(): any {
                       />
                     </OndoProgress>
                   ) : null}
-                  　· 산도&nbsp;[&nbsp;
+                  　·{" "}
+                  <span className="헬스왕" style={{ marginRight: "10px" }}>
+                    산도
+                  </span>
+                  &nbsp;[&nbsp;
                   {data ? <span> {data.acidic.toFixed(1)}</span> : null}
                   &nbsp;]&nbsp;
                   {data ? (
@@ -450,7 +458,11 @@ function WineDetail(): any {
                   ) : null}
                 </UserStates>
                 <UserStates>
-                  　· 바디&nbsp;[&nbsp;
+                  　·{" "}
+                  <span className="환경미화원" style={{ marginRight: "10px" }}>
+                    바디
+                  </span>
+                  &nbsp;[&nbsp;
                   {data ? <span> {data.bold.toFixed(1)}</span> : null}
                   &nbsp;]&nbsp;
                   {data ? (
@@ -465,7 +477,11 @@ function WineDetail(): any {
                       />
                     </OndoProgress>
                   ) : null}
-                  　· 타닌&nbsp;[&nbsp;
+                  　·{" "}
+                  <span className="넓고" style={{ marginRight: "10px" }}>
+                    타닌
+                  </span>
+                  &nbsp;[&nbsp;
                   {data ? <span> {data.tannic.toFixed(1)}</span> : null}
                   &nbsp;]&nbsp;
                   {data ? (
@@ -482,7 +498,11 @@ function WineDetail(): any {
                   ) : null}
                 </UserStates>
                 <UserStates>
-                  　&nbsp;&nbsp;· 도수&nbsp;[&nbsp;
+                  　&nbsp;&nbsp;·{" "}
+                  <span className="공부벌레" style={{ marginRight: "10px" }}>
+                    도수
+                  </span>
+                  &nbsp;[&nbsp;
                   {data ? <span> {data.alcoholContent.toFixed(1)}</span> : null}
                   &nbsp;]&nbsp;
                   {data ? (
@@ -497,7 +517,11 @@ function WineDetail(): any {
                       />
                     </OndoProgress>
                   ) : null}
-                  　· 와인향&nbsp;[&nbsp;
+                  　·{" "}
+                  <span className="바른" style={{ marginRight: "10px" }}>
+                    와인향
+                  </span>
+                  &nbsp;[&nbsp;
                   {data ? <span> {data.driedFruit.toFixed(1)}</span> : null}
                   &nbsp;]&nbsp;
                   {data ? (
