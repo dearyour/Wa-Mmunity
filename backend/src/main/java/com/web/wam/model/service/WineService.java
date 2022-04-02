@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.web.wam.model.dto.wine.WineFilterRequest;
 import com.web.wam.model.dto.wine.WineResponse;
+import com.web.wam.model.dto.wine.WineReviewFlaskResponse;
 import com.web.wam.model.dto.wine.WineReviewPostRequest;
 import com.web.wam.model.dto.wine.WineReviewPutRequest;
 import com.web.wam.model.dto.wine.WineReviewResponse;
@@ -45,5 +46,7 @@ public interface WineService {
 	void recommendWineByReview();
 
 	List<WineReviewResponse> searchAllReview();
+
+	List<WineReviewFlaskResponse> expectWineRateByMemberId(int memberId);
 
 }

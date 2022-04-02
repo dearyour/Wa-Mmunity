@@ -22,10 +22,13 @@ import com.web.wam.model.dto.wine.WineReviewPutRequest;
 import com.web.wam.model.dto.wine.WineReviewResponse;
 import com.web.wam.model.dto.wine.WineSurveyRequest;
 import com.web.wam.model.dto.wine.WineWishlistRequest;
+import com.web.wam.model.entity.ReviewBaseRecomm;
 import com.web.wam.model.entity.Wine;
 import com.web.wam.model.entity.WineReview;
 import com.web.wam.model.entity.WineSurvey;
 import com.web.wam.model.entity.WineWishlist;
+import com.web.wam.model.repository.wine.ReviewBaseRecommRepository;
+import com.web.wam.model.repository.wine.ReviewBaseRecommRepositorySupport;
 import com.web.wam.model.repository.wine.WineRepository;
 import com.web.wam.model.repository.wine.WineRepositorySupport;
 import com.web.wam.model.repository.wine.WineReviewRepository;
@@ -48,6 +51,10 @@ public class WineServiceImpl implements WineService {
 	WineWishlistRepositorySupport wineWishlistRepositorySupport;
 	@Autowired
 	WineSurveyRepository wineSurveyRepository;
+	@Autowired
+	ReviewBaseRecommRepository reviewBaseRecommRepository;
+	@Autowired
+	ReviewBaseRecommRepositorySupport reviewBaseRecommRepositorySupport;
 
 	private void setWineResponse(Wine wine, WineResponse wineResponse) {
 		wineResponse.setWineId(wine.getWineId());
@@ -339,16 +346,27 @@ public class WineServiceImpl implements WineService {
 
 	@Override
 	public void recommendWineByReview() {
+		// review_base_recomm 테이블 안의 값 비우기
+		reviewBaseRecommRepository.truncate();
+
+		// user review 기반으로 예상 평점 계산
 		List<WineReviewFlaskResponse> wineReviews = searchAllReviewForFlask();
+		System.out.println("WineReview = " + wineReviews);
+
+		HttpEntity<List<WineReviewFlaskResponse>> Results = new HttpEntity<>(wineReviews);
+		System.out.println("Results = " + Results);
 
 		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-		HttpEntity<?> entity = new HttpEntity<>(headers);
+		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
 		RestTemplate restTemplate = new RestTemplate();
-		System.out.println(
-				restTemplate.postForObject("http://j6a101.p.ssafy.io:8000/recomm/train-mf", wineReviews, String.class));
+		String result = restTemplate.postForObject("http://j6a101.p.ssafy.io:8000/recomm/train-mf", Results,
+				String.class);
 
+		System.out.println(result);
+
+		// review_base_recomm 테이블에 값 저장하기
+		// reviewBaseRecommRepository.save(entity);
 	}
 
 	private List<WineReviewFlaskResponse> searchAllReviewForFlask() {
@@ -381,6 +399,21 @@ public class WineServiceImpl implements WineService {
 		}
 
 		return reviewList;
+	}
+
+	@Override
+	public List<WineReviewFlaskResponse> expectWineRateByMemberId(int memberId) {
+		List<WineReviewFlaskResponse> wineList = new LinkedList<WineReviewFlaskResponse>();
+
+		List<ReviewBaseRecomm> expects = reviewBaseRecommRepositorySupport.findByMemberId(memberId);
+		for (ReviewBaseRecomm expect : expects) {
+			WineReviewFlaskResponse wineReviewFlaskResponse = new WineReviewFlaskResponse();
+			wineReviewFlaskResponse.setUser(expect.getMemberId());
+			wineReviewFlaskResponse.setWine(expect.getWineId());
+			wineReviewFlaskResponse.setRating(expect.getExpRating());
+			wineList.add(wineReviewFlaskResponse);
+		}
+		return wineList;
 	}
 
 }
