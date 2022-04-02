@@ -1,6 +1,5 @@
 import os
 from flask import Flask, jsonify, request
-import ssl
 from flask_cors import CORS
 import pandas as pd
 from pandas import json_normalize

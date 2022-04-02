@@ -320,19 +320,17 @@ public class WineServiceImpl implements WineService {
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-		HttpEntity<?> entity = new HttpEntity<>(headers);
 
 		RestTemplate restTemplate = new RestTemplate();
 
-		String wines = restTemplate.getForObject("htts://j6a101.p.ssafy.io:8000/recomm/cb/" + wineId, String.class);
-
+		String wines = restTemplate.getForObject("http://j6a101.p.ssafy.io:8000/recomm/cb/" + wineId, String.class);
 		StringTokenizer st = new StringTokenizer(wines.substring(1, wines.length() - 1), ", ");
-
 		List<WineResponse> wineList = new LinkedList<WineResponse>();
 		while (st.hasMoreTokens()) {
 			WineResponse wineResponse = searchWineByWineId(Integer.parseInt(st.nextToken()));
+
 			if (wineResponse.getName() != null) {
-				wineList.add(searchWineByWineId(Integer.parseInt(st.nextToken())));
+				wineList.add(wineResponse);
 			}
 		}
 
@@ -348,8 +346,8 @@ public class WineServiceImpl implements WineService {
 		HttpEntity<?> entity = new HttpEntity<>(headers);
 
 		RestTemplate restTemplate = new RestTemplate();
-		System.out.println(restTemplate.postForObject("https://j6a101.p.ssafy.io:8000/recomm/train-mf", wineReviews,
-				String.class));
+		System.out.println(
+				restTemplate.postForObject("http://j6a101.p.ssafy.io:8000/recomm/train-mf", wineReviews, String.class));
 
 	}
 
