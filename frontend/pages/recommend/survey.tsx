@@ -70,15 +70,16 @@ export default class Survey extends Component {
     })
   }
   // submit
-  handleSubmit = () => {
-    fetch('http://j6a101.p.ssafy.io:8000/recomm/survey', {
-      method: 'POST',
-      body: JSON.stringify({ data: this.state }),
-      headers: { 'Content-Type':'application/json' },
-    })
-    .then(res => console.log(res))
-    .catch(err => console.log(err))
-
+  handleSubmit = async () => {
+    try {
+      console.log(this.state)
+      const res = await axios.post('http://j6a101.p.ssafy.io:8000/recomm/survey',
+      this.state
+      )
+      console.log('res:', res)
+    } catch (err) {
+      console.error(err)
+    }
     // this.setState({
     //   step: 0,
     //   type: '',
