@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.web.wam.model.dto.BaseResponse;
 import com.web.wam.model.dto.wine.WineFilterRequest;
 import com.web.wam.model.dto.wine.WineResponse;
+import com.web.wam.model.dto.wine.WineReviewFlaskResponse;
 import com.web.wam.model.dto.wine.WineReviewPostRequest;
 import com.web.wam.model.dto.wine.WineReviewPutRequest;
 import com.web.wam.model.dto.wine.WineReviewResponse;
@@ -87,6 +88,18 @@ public class WineController {
 	public ResponseEntity<? extends BaseResponse> recommendWineByReview() {
 		wineService.recommendWineByReview();
 		return ResponseEntity.status(200).body(BaseResponse.of(200, "Success"));
+	}
+
+	@GetMapping("/personal/{memberId}")
+	@ApiOperation(value = "나의 와인 예상평점 가져오기", notes = "나의 와인 예상평점 가져오기(내림차순) ")
+	@ApiResponses({ @ApiResponse(code = 200, message = "성공", response = BaseResponse.class),
+			@ApiResponse(code = 401, message = "인증 실패", response = BaseResponse.class),
+			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponse.class) })
+
+	public ResponseEntity<? extends BaseResponse> expectWineRateByMemberId(
+			@ApiParam(value = "멤버 아이디", required = true) @PathVariable("memberId") int memberId) {
+		List<WineReviewFlaskResponse> wineList = wineService.expectWineRateByMemberId(memberId);
+		return ResponseEntity.status(200).body(BaseResponse.of(200, wineList));
 	}
 
 	@GetMapping("/sort/{sortType}")
