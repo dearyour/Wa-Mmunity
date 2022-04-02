@@ -15,6 +15,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
@@ -43,14 +44,27 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 토큰 기반 인증이므로 세션 역시 사용하지
 																							// 않습니다.
 				.and().authorizeRequests() // 요청에 대한 사용권한 체크
+				.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
 //                .antMatchers("/*/signin", "/*/signup","/*/signupConfirm").permitAll() // 가입 및 인증 주소는 누구나 접근가능
 				.antMatchers("*", "/*", "/*/*", "/*/*/*", "/*/*/*/*", "/*/*/*/*/*", "/*/*/*/*/*/*", "/*/*/*/*/*/*/*", "/*/*/*/*/*/*/*/*").permitAll() // 가입 및 인증 주소는 누구나 접근가능
 				.anyRequest().hasRole("USER") // 그외 나머지 요청은 모두 인증된 회원만 접근 가능
 //                .anyRequest().permitAll() // 그외 나머지 요청은 누구나 접근 가능
 				.and().addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
-						UsernamePasswordAuthenticationFilter.class);
+						UsernamePasswordAuthenticationFilter.class)
+				.cors();
 		// JwtAuthenticationFilter를 UsernamePasswordAuthenticationFilter 전에 넣는다
 	}
+
+//	@Override
+//	protected void configure(HttpSecurity http) throws Exception {
+//
+//		http.httpBasic().disable().cors().configurationSource(corsConfig())
+//				.and().csrf().disable().sessionManagement()
+//				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//				.and().addFilter(new JwtAuthenticationFilter(jwtTokenProvider))
+//				.authorizeRequests()
+//				.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+//	}
 
 	@Override
 	public void configure(WebSecurity web) throws Exception {
