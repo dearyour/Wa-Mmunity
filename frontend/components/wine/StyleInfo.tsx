@@ -66,44 +66,44 @@ const StyleDrawer: React.FC = () => {
         <br />
         <div>
           <span className="넓고" style={{ marginRight: "10px" }}>
-            넓고 깊은
+            포도종류
           </span>
-          기타 챌린지 5번 완료
+          기타
         </div>
         <br />
         <div>
           <span className="아이돌" style={{ marginRight: "10px" }}>
             아이돌
           </span>
-          외모관리 챌린지 5번 완료
+          완료
         </div>
         <br />
         <div>
           <span className="따뜻한" style={{ marginRight: "10px" }}>
             따뜻한
           </span>
-          온도 40도 이상
+          이상
         </div>
         <br />
         <div>
           <span className="뜨거운" style={{ marginRight: "10px" }}>
             뜨거운
           </span>
-          온도 60도 이상
+          이상
         </div>
         <br />
         <div>
           <span className="불타오르는" style={{ marginRight: "10px" }}>
-            불타오르는
+            불타
           </span>
-          온도 80도 이상
+          이상
         </div>
         <br />
         <div>
           <span className="태양" style={{ marginRight: "10px" }}>
             태양
           </span>
-          온도 100도 이상
+          이상
         </div>
       </Drawer>
     </>

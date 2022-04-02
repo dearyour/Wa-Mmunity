@@ -202,6 +202,7 @@ const Home = () => {
       {/* Search Bar */}
       <SearchBar
         value={searchInput}
+        data={wines}
         changeInput={(e: any) => setSearchInput(e.target.value)}
       />
       <div className="home_panelList-wrap">

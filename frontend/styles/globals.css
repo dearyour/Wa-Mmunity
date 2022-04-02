@@ -48,6 +48,25 @@ img {
 }
 
 /*BUTTON*/
+.bt {
+  width: 200px;
+  padding: 10px;
+  border: 2px solid #590805;
+  border: 1px solid #333;
+  border-radius: 4px;
+  color: #590805;
+  color: #333;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+  box-sizing: border-box;
+  display: block;
+  transition: 0.4s;
+  background-color: #333;
+  background-color: #590805;
+  color: #fff;
+  margin-left: 20%;
+}
 .btn {
   width: 140px;
   padding: 10px;
