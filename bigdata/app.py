@@ -75,8 +75,11 @@ def wine_survey():
         # 함수 실행
         result = json.dumps(survey.get_survey(survey=survey_data))
         # 와인 id list(array) 반환
-        res = Response(result, mimetype='application/json')
-        res.headers['Access-Control-Allow-Origin'] = '*'
+        res = Response(result, mimetype="application/json")
+        res.headers["Access-Control-Allow-Origin"] = "*"
+        res.headers["Access-Control-Allow-Methods"] = ["POST, GET, DELETE, PUT"]
+        res.headers["Access-Control-Max-Age"] = "3600"
+        res.headers["Access-Control-Allow-Headers"] = ["x-requested-with, origin, content-type, accept"]
         return res
         
 
