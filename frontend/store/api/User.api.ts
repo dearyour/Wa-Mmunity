@@ -1,7 +1,7 @@
 import axios from "axios";
 import { responseSymbol } from "next/dist/server/web/spec-compliant/fetch-event";
 
-const GetUserurl = process.env.BACK_EC2 + "/member/";
+const GetUserurl = process.env.BACK_EC2 + "member/";
 const url = "localhost:8080/auth/kakao/callback";
 const rest_api = "44dad20dedd901c8ca6eb5d6fde58baa";
 export const test =
@@ -23,14 +23,15 @@ export const KakaoLogin = (code: string | null) => {
     });
 };
 
-export const GetUserState = (email: string | null) => {
+export const GetUserState = (email: string | null, token: string | null) => {
+  console.log("#리덕스이메일모지" + email);
   return axios({
     method: "GET",
     url: GetUserurl + email,
-    // url: local,
+    headers: { Authorization: "Bearer " + token },
   })
     .then((res) => {
-      console.log(res);
+      console.log("##리덕스 유저값" + res);
       return res.data;
     })
     .catch((err) => {

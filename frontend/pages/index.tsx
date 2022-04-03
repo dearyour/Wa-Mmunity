@@ -6,8 +6,8 @@ import AppLayout from "../components/layout/AppLayout";
 import Main from "./wineindex";
 import Login from "./login";
 const Home: NextPage = () => {
-  // return <Login></Login>;
-  return <Main></Main>;
+  return <Login></Login>;
+  // return <Main></Main>;
 };
 
 export default Home;

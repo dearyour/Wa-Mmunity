@@ -18,6 +18,8 @@ export const onLogin = async (data: LoginCredentials) => {
     const { data: response } = await Axios.request(requestConfig);
     console.log(response);
     console.log(data.email); //이메일
+    localStorage.setItem("Token", response.object.token);
+    localStorage.setItem("email", data.email);
     Router.push(`/wineindex`);
   } catch (e) {
     console.error(e);

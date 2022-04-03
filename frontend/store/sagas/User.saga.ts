@@ -29,10 +29,11 @@ function* watchGetKakaoKey() {
 
 function* getUserState(email: any) {
   try {
-    // const token = localStorage.getItem("Token");
+    const token = localStorage.getItem("Token");
+    const email = localStorage.getItem("email");
     // if (token) {
     // console.log("유저통신전");
-    const userdata: AxiosResponse = yield call(GetUserState, email);
+    const userdata: AxiosResponse = yield call(GetUserState, email, token);
     // console.log("유저통신후");
     // console.log(userdata);
     yield put(userActions.setuserdata(userdata));
