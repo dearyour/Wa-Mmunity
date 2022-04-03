@@ -566,9 +566,8 @@ function WineDetail(): any {
                           {[...Array(5)].map((star, i) => {
                             const ratingValue = i + 1;
                             return (
-                              <label htmlFor={data.wineId}>
+                              <label>
                                 <Radio
-                                  id={data.wineId}
                                   type="radio"
                                   name="rating"
                                   value={ratingValue}
