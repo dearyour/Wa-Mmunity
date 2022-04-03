@@ -17,6 +17,7 @@
     "@mui/material": "^5.5.2",
     "@mui/styles": "^5.5.1",
     "@reduxjs/toolkit": "^1.7.1",
+    "@types/react-infinite-scroll-component": "^5.0.0",
     "@types/react-redux": "^7.1.22",
     "@types/react-router-redux": "^5.0.21",
     "antd": "^4.18.5",

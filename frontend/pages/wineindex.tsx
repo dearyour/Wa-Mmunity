@@ -6,7 +6,7 @@ import WineLogo2 from "/public/images/wine5.png";
 import WineLogo3 from "/public/images/wine2.png";
 import WineLogo4 from "/public/images/wine1.png";
 import Router from "next/router";
-function wineMain() {
+function WineMain() {
   return (
     <AppLayout>
       <main>
@@ -33,7 +33,6 @@ function wineMain() {
 
               <figure>
                 <Image src={WineLogo} alt="image" />
-                <video src="/public/images/wine4.png" loop muted></video>
               </figure>
             </div>
           </article>
@@ -47,7 +46,6 @@ function wineMain() {
 
               <figure>
                 <Image src={WineLogo3} alt="image" />
-                <video src="vids/vid2.mp4" loop muted></video>
               </figure>
             </div>
           </article>
@@ -61,7 +59,6 @@ function wineMain() {
 
               <figure>
                 <Image src={WineLogo2} alt="image" />
-                <video src="vids/vid3.mp4" loop muted></video>
               </figure>
             </div>
           </article>
@@ -75,7 +72,6 @@ function wineMain() {
 
               <figure>
                 <Image src={WineLogo4} alt="image" />
-                <video src="vids/vid4.mp4" loop muted></video>
               </figure>
             </div>
           </article>
@@ -104,9 +100,7 @@ function wineMain() {
               quos, inventore expedita ea cum ipsa.
             </p>
           </div>
-          <div className="vidBox">
-            <video src="vids/vid1.mp4" loop muted></video>
-          </div>
+          <div className="vidBox"></div>
           <span className="btnClose">close</span>
         </aside>
       </main>
@@ -114,4 +108,4 @@ function wineMain() {
   );
 }
 
-export default wineMain;
+export default WineMain;
