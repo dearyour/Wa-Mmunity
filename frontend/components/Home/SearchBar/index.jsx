@@ -2,7 +2,7 @@ import React from "react";
 // import "./styles.css";
 import SearchIcon from "@material-ui/icons/Search";
 import Router, { useRouter } from "next/router";
-const SearchBar = ({ value, changeInput }) => {
+const SearchBar = ({ value, data, changeInput }) => {
   const __Routing = () => {
     // location.reload();
     Router.push(`/`);
@@ -30,6 +30,7 @@ const SearchBar = ({ value, changeInput }) => {
       >
         검색조건 초기화
       </div>
+      <div className="bt">{data.length}개 검색완료</div>
     </div>
   );
 };

@@ -9,7 +9,9 @@ import Router, { useRouter } from "next/router";
 import { FaStar } from "react-icons/fa";
 import axios from "axios";
 import StyleDrawer from "components/wine/StyleInfo";
+import Rating from "@mui/material/Rating";
 import WineSlider from "components/wineSlider";
+import Card from "components/card/card";
 const Base = styled.div`
   position: relative;
 `;
@@ -43,7 +45,9 @@ const Backdrop = styled.div`
 
 const BackdropImage = styled.div<{ imageUrl: string }>`
   background: url(${({ imageUrl }) => imageUrl}) center center / cover no-repeat;
-  min-width: 100px;
+  min-width: 110px;
+  // min-width: 9em;
+  // height: 14em;
   position: relative;
   top: auto;
   left: auto;
@@ -60,7 +64,7 @@ const PosterWrapper = styled.div`
   height: 300px;
   border: solid 2px #fff;
   // top: -48px;
-  left: -40px;
+  // left: -130px;
   border-radius: 3px;
   box-shadow: 0 0 2px rgb(0 0 0 / 30%);
   background: #fff;
@@ -242,7 +246,9 @@ function WineDetail(): any {
   const router = useRouter();
   const { wineId } = router.query;
   const [data, setdata] = useState<any>("");
-  const [rating, setRating] = useState<Number>(0);
+  const [datas, setdatas] = useState<any>("");
+  const [rating, setRating] = useState<number>(0);
+  const [ratings, setRatings] = useState<number>(0);
   const [hover, setHover] = useState<Number>(0);
 
   const [dats, setdats] = useState<any>("");
@@ -255,8 +261,8 @@ function WineDetail(): any {
     })
       .then((res) => {
         console.log("###Slider" + res);
-        setdata(res.data);
-        return res.data;
+        setdatas(res.data);
+        // return res.data;
       })
       .catch((err) => {
         return err;
@@ -266,7 +272,7 @@ function WineDetail(): any {
   useEffect(() => {
     __GetWineSlider();
   }, [__GetWineSlider]);
-  //
+
   useEffect(() => {
     console.log(wineId);
     if (!wineId) {
@@ -279,6 +285,7 @@ function WineDetail(): any {
       .then((res) => {
         console.log(res.data);
         setdata(res.data.object);
+        setRating(res.data.object.ratingAvg);
         // router.push("/wine/" + wineId);
       })
       .catch((err) => {
@@ -348,38 +355,29 @@ function WineDetail(): any {
                     </StarRate>
                   </Actions>
                 </ContentWrapper>
-
                 <StarRates>
                   <div>
-                    {[...Array(5)].map((star, i) => {
-                      const ratingValue = i + 1;
-                      return (
-                        <label htmlFor={data.wineId}>
-                          <Radio
-                            id={data.wineId}
-                            type="radio"
-                            name="rating"
-                            value={ratingValue}
-                            onClick={() => setRating(ratingValue)}
-                            // onChange={() => setRating(list.ratingAvg)}
-                          />
-                          <SStar
-                            size={30}
-                            color={
-                              ratingValue <= data.ratingAvg
-                                ? "#ffc107"
-                                : "white"
-                            }
-                            onMouseEnter={() => setHover(ratingValue)}
-                            onMouseLeave={() => setHover(0)}
-                          />
-                        </label>
-                        //list.ratingAvg  ===  hover || rating
-                      );
-                    })}
+                    <Rating
+                      name="text-feedback"
+                      value={rating}
+                      readOnly
+                      precision={0.5}
+                      size="large"
+                      // emptyIcon={
+                      //   <StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />
+                      // }
+                    />
                   </div>
                   <StarRateText>✨ 평점 : [ {data.ratingAvg} ]</StarRateText>
                   <StarRateText>최근 리뷰 : [ {data.ratingNum} ]</StarRateText>
+
+                  {/* <CommentCount>
+                    <CommentImg src="/assets/pngwing.com5.png"></CommentImg>
+                    <span>
+                      {" "}
+                      {data && data.comments ? data.comments.length : 0}
+                    </span>
+                  </CommentCount> */}
                 </StarRates>
               </Backdrop>
             </PosterContainer>
@@ -394,7 +392,11 @@ function WineDetail(): any {
                   <StyleDrawer>도움말</StyleDrawer>
                 </TitlesRapper>
                 <UserStates>
-                  　· 당도 [&nbsp;
+                  　·{" "}
+                  <span className="자" style={{ marginRight: "10px" }}>
+                    당도
+                  </span>{" "}
+                  [&nbsp;
                   {data ? <span> {data.sweet.toFixed(1)}</span> : null}
                   &nbsp;]&nbsp;
                   {data ? (
@@ -409,7 +411,11 @@ function WineDetail(): any {
                       />
                     </OndoProgress>
                   ) : null}
-                  　· 산도&nbsp;[&nbsp;
+                  　·{" "}
+                  <span className="헬스왕" style={{ marginRight: "10px" }}>
+                    산도
+                  </span>
+                  &nbsp;[&nbsp;
                   {data ? <span> {data.acidic.toFixed(1)}</span> : null}
                   &nbsp;]&nbsp;
                   {data ? (
@@ -426,7 +432,11 @@ function WineDetail(): any {
                   ) : null}
                 </UserStates>
                 <UserStates>
-                  　· 바디&nbsp;[&nbsp;
+                  　·{" "}
+                  <span className="환경미화원" style={{ marginRight: "10px" }}>
+                    바디
+                  </span>
+                  &nbsp;[&nbsp;
                   {data ? <span> {data.bold.toFixed(1)}</span> : null}
                   &nbsp;]&nbsp;
                   {data ? (
@@ -441,7 +451,11 @@ function WineDetail(): any {
                       />
                     </OndoProgress>
                   ) : null}
-                  　· 타닌&nbsp;[&nbsp;
+                  　·{" "}
+                  <span className="넓고" style={{ marginRight: "10px" }}>
+                    타닌
+                  </span>
+                  &nbsp;[&nbsp;
                   {data ? <span> {data.tannic.toFixed(1)}</span> : null}
                   &nbsp;]&nbsp;
                   {data ? (
@@ -458,7 +472,11 @@ function WineDetail(): any {
                   ) : null}
                 </UserStates>
                 <UserStates>
-                  　&nbsp;&nbsp;· 도수&nbsp;[&nbsp;
+                  　&nbsp;&nbsp;·{" "}
+                  <span className="공부벌레" style={{ marginRight: "10px" }}>
+                    도수
+                  </span>
+                  &nbsp;[&nbsp;
                   {data ? <span> {data.alcoholContent.toFixed(1)}</span> : null}
                   &nbsp;]&nbsp;
                   {data ? (
@@ -473,7 +491,11 @@ function WineDetail(): any {
                       />
                     </OndoProgress>
                   ) : null}
-                  　· 와인향&nbsp;[&nbsp;
+                  　·{" "}
+                  <span className="바른" style={{ marginRight: "10px" }}>
+                    와인향
+                  </span>
+                  &nbsp;[&nbsp;
                   {data ? <span> {data.driedFruit.toFixed(1)}</span> : null}
                   &nbsp;]&nbsp;
                   {data ? (
@@ -499,6 +521,102 @@ function WineDetail(): any {
                   {/* </Poster> */}
                 </PosterWrapper>
                 <ContentWrapper>
+                  <InnerOut>
+                    <Inner>
+                      <CommentCount>
+                        <CommentImg
+                          style={{ backgroundImage: `url(${data.img})` }}
+                        />
+                        <span> {data.name}</span>
+                      </CommentCount>
+
+                      <CommentLine></CommentLine>
+                      <CommentWrap>
+                        {/*댓글렌더*/}
+                        {/* {data &&
+                  [...data.comments].reverse().map((now: any, idx: any) => {
+                    return (
+                      <div key={idx}>
+                        <CommentFeedUser>
+                          <CommentProfile src={now.image}></CommentProfile>
+                          <span>
+                            <CommentUsername>{now.username}</CommentUsername>
+                          </span>
+                        </CommentFeedUser>
+                        <CommentContent>
+                          {now.comment.content}{" "}
+                          {now.flag && (
+                            <CommentDeleteBtn
+                              onClick={() => {
+                                // deleteComment(now.comment.commentId);
+                              }}
+                            >
+                              삭제
+                            </CommentDeleteBtn>
+                          )}
+                        </CommentContent>
+                        <CommentDivider />
+                      </div>
+                    );
+                  })} */}
+                      </CommentWrap>
+                      <CommentLine></CommentLine>
+                      <CommentInputWrap>
+                        <div>
+                          {[...Array(5)].map((star, i) => {
+                            const ratingValue = i + 1;
+                            return (
+                              <label>
+                                <Radio
+                                  type="radio"
+                                  name="rating"
+                                  value={ratingValue}
+                                  onClick={() => setRatings(ratingValue)}
+                                  // onChange={() => setRating(list.ratingAvg)}
+                                />
+                                <SStar
+                                  size={20}
+                                  color={
+                                    ratingValue <= (hover || ratings)
+                                      ? "#ffc107"
+                                      : "white"
+                                  }
+                                  onMouseEnter={() => setHover(ratingValue)}
+                                  onMouseLeave={() => setHover(0)}
+                                />
+                              </label>
+                              //list.ratingAvg  ===  hover || rating
+                            );
+                          })}
+                        </div>
+                        <CommentInput
+                          type="text"
+                          // autoFocus={true}
+                          placeholder="평가를 입력해 주세요"
+                          // ref={CommentRef}
+                          onKeyUp={(e) => {
+                            if (e.key === "Enter") {
+                            }
+                          }}
+                          // onChange={(e) =>
+                          //    setComment(e.target.value)
+                          //   }
+                        ></CommentInput>
+                      </CommentInputWrap>
+                      {/* <DefaultInfo
+                title={data.title}
+                year={year}
+                genres={genres}
+                runtime={data.runtime}
+                overview={data.overview}
+              />
+              <Similar id={id} /> */}
+                      <Slider>
+                        <Card data={data}></Card>
+                      </Slider>
+                    </Inner>
+                    <div>dd</div>
+                  </InnerOut>
                   {/* 기본정보 */}
 
                   <Title>{data.name}</Title>
@@ -555,74 +673,6 @@ function WineDetail(): any {
           <BottomInfo>
             <ContentSectionContainer>
               <span> {data.name}</span>
-              <InnerOut>
-                <Inner>
-                  <CommentCount>
-                    <CommentImg
-                      style={{ backgroundImage: `url(${data.img})` }}
-                    />
-                    <span> {data.name}</span>
-                  </CommentCount>
-
-                  <CommentLine></CommentLine>
-                  <CommentWrap>
-                    {/* {data &&
-                  [...data.comments].reverse().map((now: any, idx: any) => {
-                    return (
-                      <div key={idx}>
-                        <CommentFeedUser>
-                          <CommentProfile src={now.image}></CommentProfile>
-                          <span>
-                            <CommentUsername>{now.username}</CommentUsername>
-                          </span>
-                        </CommentFeedUser>
-                        <CommentContent>
-                          {now.comment.content}{" "}
-                          {now.flag && (
-                            <CommentDeleteBtn
-                              onClick={() => {
-                                // deleteComment(now.comment.commentId);
-                              }}
-                            >
-                              삭제
-                            </CommentDeleteBtn>
-                          )}
-                        </CommentContent>
-                        <CommentDivider />
-                      </div>
-                    );
-                  })} */}
-                  </CommentWrap>
-                  <CommentLine></CommentLine>
-                  <CommentInputWrap>
-                    <CommentInput
-                      type="text"
-                      // autoFocus={true}
-                      placeholder="댓글을 입력해 주세요"
-                      // ref={CommentRef}
-                      onKeyUp={(e) => {
-                        if (e.key === "Enter") {
-                        }
-                      }}
-                      // onChange={(e) =>
-                      //    setComment(e.target.value)
-                      //   }
-                    ></CommentInput>
-                  </CommentInputWrap>
-                  {/* <DefaultInfo
-                title={data.title}
-                year={year}
-                genres={genres}
-                runtime={data.runtime}
-                overview={data.overview}
-              />
-              <Similar id={id} /> */}
-                  {/* <Slider>
-                <Card data={dataList}></Card>
-              </Slider> */}
-                </Inner>
-                <div>dd</div>
-              </InnerOut>
             </ContentSectionContainer>
             {/* <WineSlider /> */}
           </BottomInfo>
@@ -718,9 +768,9 @@ const CommentCount = styled.div`
   padding: 2px;
 `;
 
-const CommentImg = styled.div`
-  width: 3rem;
-  background-position: center;
+const CommentImg = styled.img`
+  width: 2rem;
+  background-positsion: center;
   background-size: cover;
   background-repeat: no-repeat;
 `;
