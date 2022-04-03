@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Link from "next/link"
+import Link from "next/link";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -29,9 +29,9 @@ const SignupPage = () => {
   };
   return (
     <>
-      <Grid container>
+      <Grid container style={{ marginTop: "90px" }}>
         <Grid item xs={8}>
-        <Carousel>
+          <Carousel>
             <div>
               <WineImage
                 src="/img/와인1.png"
@@ -145,7 +145,11 @@ const SignupPage = () => {
               회원가입
             </Button>
           </Box>
-          이미 회원이신가요? <Link href="/"><a>로그인</a></Link> <br />
+          이미 회원이신가요?{" "}
+          <Link href="/login">
+            <a>로그인</a>
+          </Link>{" "}
+          <br />
         </Grid>
       </Grid>
     </>

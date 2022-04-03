@@ -1,4 +1,5 @@
 import Axios, { AxiosRequestConfig } from "axios";
+import { userActions } from "store/slice/user";
 import Router from "next/router";
 export interface LoginCredentials {
   email: string;
@@ -16,6 +17,7 @@ export const onLogin = async (data: LoginCredentials) => {
   try {
     const { data: response } = await Axios.request(requestConfig);
     console.log(response);
+    console.log(data.email); //이메일
     Router.push(`/wineindex`);
   } catch (e) {
     console.error(e);
@@ -40,6 +42,7 @@ export const onSignup = async (data: SignupCredentials) => {
   try {
     const { data: response } = await Axios.request(requestConfig);
     console.log(response);
+    Router.push(`/login`);
   } catch (e) {
     console.error(e);
   }

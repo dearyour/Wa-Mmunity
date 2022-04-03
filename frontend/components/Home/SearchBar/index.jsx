@@ -5,7 +5,7 @@ import Router, { useRouter } from "next/router";
 const SearchBar = ({ value, data, changeInput }) => {
   const __Routing = () => {
     // location.reload();
-    Router.push(`/`);
+    Router.push(`/wineindex`);
     Router.push(`/wine`);
     // setTimeout(() => {
     //   Router.push(`/wine`);
