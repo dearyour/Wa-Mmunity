@@ -36,7 +36,7 @@ function WineMain() {
     dispatch(userActions.getUser(email));
     // console.log(userstate.Object.email);
     // dispatch(userActions.setnickname(userstate));
-  }, []);
+  }, [dispatch]);
   console.log(ondo);
   return (
     <AppLayout title="와인 메인페이지">

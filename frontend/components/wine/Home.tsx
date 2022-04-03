@@ -14,8 +14,8 @@ import styled from "@emotion/styled";
 
 const sortOptionList = [
   { value: "latest", name: "높은 가격 순" },
-  { value: "ratingDesc", name: "높은 평점 순" },
   { value: "oldest", name: "낮은 가격 순" },
+  { value: "ratingDesc", name: "높은 평점 순" },
   { value: "ratingAsc", name: "낮은 평점 순" },
 ];
 
@@ -39,6 +39,7 @@ const ControlMenu = React.memo(({ value, onChange, optionList }: any) => {
     </select>
   );
 });
+ControlMenu.displayName = "ControlMenu";
 
 const Home = () => {
   //인피니티 스크롤
@@ -152,21 +153,26 @@ const Home = () => {
     //   );
     // }
   };
-  const compare = (a: any, b: any) => {
-    if (sortType === "latest") {
-      return parseInt(b.price) - parseInt(a.price);
-    } else if (sortType === "oldest") {
-      return parseInt(a.price) - parseInt(b.price);
-    } else if (sortType === "ratingDesc") {
-      return (
-        parseFloat(b.ratingAvg.toFixed(1)) - parseFloat(a.ratingAvg.toFixed(1))
-      );
-    } else if (sortType === "ratingAsc") {
-      return (
-        parseFloat(a.ratingAvg.toFixed(1)) - parseFloat(b.ratingAvg.toFixed(1))
-      );
-    }
-  };
+  const compare = useCallback(
+    (a: any, b: any) => {
+      if (sortType === "latest") {
+        return parseInt(b.price) - parseInt(a.price);
+      } else if (sortType === "oldest") {
+        return parseInt(a.price) - parseInt(b.price);
+      } else if (sortType === "ratingDesc") {
+        return (
+          parseFloat(b.ratingAvg.toFixed(1)) -
+          parseFloat(a.ratingAvg.toFixed(1))
+        );
+      } else if (sortType === "ratingAsc") {
+        return (
+          parseFloat(a.ratingAvg.toFixed(1)) -
+          parseFloat(b.ratingAvg.toFixed(1))
+        );
+      }
+    },
+    [sortType]
+  );
 
   //////////////////////////////////////////////////////////////////
   const applyFilters = useCallback(() => {
@@ -248,8 +254,7 @@ const Home = () => {
       !updatedList.length ? setResultsFound(false) : setResultsFound(true);
     }
   }, [
-    filter,
-    sortType,
+    compare,
     cuisines,
     regions,
     searchInput,

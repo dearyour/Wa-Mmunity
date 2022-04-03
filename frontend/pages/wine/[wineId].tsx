@@ -10,7 +10,7 @@ import { FaStar } from "react-icons/fa";
 import axios from "axios";
 import StyleDrawer from "components/wine/StyleInfo";
 import Rating from "@mui/material/Rating";
-import WineSlider from "components/wineSlider";
+import WineSlider from "components/WineSlider";
 import Card from "components/card/card";
 const Base = styled.div`
   position: relative;
@@ -267,7 +267,7 @@ function WineDetail(): any {
       .catch((err) => {
         return err;
       });
-  }, []);
+  }, [wineId]);
 
   useEffect(() => {
     __GetWineSlider();
@@ -566,7 +566,7 @@ function WineDetail(): any {
                           {[...Array(5)].map((star, i) => {
                             const ratingValue = i + 1;
                             return (
-                              <label>
+                              <label key={i}>
                                 <Radio
                                   type="radio"
                                   name="rating"
@@ -615,7 +615,6 @@ function WineDetail(): any {
                         <Card data={data}></Card>
                       </Slider>
                     </Inner>
-                    <div>dd</div>
                   </InnerOut>
                   {/* 기본정보 */}
 

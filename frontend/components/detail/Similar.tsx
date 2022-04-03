@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
-import useSimilarMovie from "../useMovieSimilar";
+// import useSimilarMovie from "../useMovieSimilar";
 
 const Base = styled.section`
   padding: 11px 15px;
@@ -104,7 +104,7 @@ const Card: React.FC<MovieProps> = ({ id, posterPath, title, voteAverage }) => {
 };
 
 const Similar: React.FC<Props> = ({ id }) => {
-  const { isLoading, data } = useSimilarMovie(id);
+  // const { isLoading, data } = useSimilarMovie(id);
 
   return (
     <Base>
@@ -114,7 +114,7 @@ const Similar: React.FC<Props> = ({ id }) => {
         </ContentHeader>
       </ContentHeaderWrapper>
       <ContentsWrapper>
-        {isLoading || !data ? (
+        {/* {isLoading || !data ? (
           <div>Loading...</div>
         ) : (
           data.results.map((result) => (
@@ -125,7 +125,7 @@ const Similar: React.FC<Props> = ({ id }) => {
               voteAverage={result.vote_average}
             />
           ))
-        )}
+        )} */}
       </ContentsWrapper>
     </Base>
   );
