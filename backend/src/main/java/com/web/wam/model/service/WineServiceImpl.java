@@ -1,23 +1,34 @@
 package com.web.wam.model.service;
 
+import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
+import java.util.StringTokenizer;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import com.web.wam.model.dto.wine.WineFilterRequest;
 import com.web.wam.model.dto.wine.WineResponse;
+import com.web.wam.model.dto.wine.WineReviewFlaskResponse;
 import com.web.wam.model.dto.wine.WineReviewPostRequest;
 import com.web.wam.model.dto.wine.WineReviewPutRequest;
+import com.web.wam.model.dto.wine.WineReviewResponse;
 import com.web.wam.model.dto.wine.WineSurveyRequest;
 import com.web.wam.model.dto.wine.WineWishlistRequest;
+import com.web.wam.model.entity.ReviewBaseRecomm;
 import com.web.wam.model.entity.Wine;
 import com.web.wam.model.entity.WineReview;
 import com.web.wam.model.entity.WineSurvey;
 import com.web.wam.model.entity.WineWishlist;
+import com.web.wam.model.repository.wine.ReviewBaseRecommRepository;
+import com.web.wam.model.repository.wine.ReviewBaseRecommRepositorySupport;
 import com.web.wam.model.repository.wine.WineRepository;
 import com.web.wam.model.repository.wine.WineRepositorySupport;
 import com.web.wam.model.repository.wine.WineReviewRepository;
@@ -40,6 +51,10 @@ public class WineServiceImpl implements WineService {
 	WineWishlistRepositorySupport wineWishlistRepositorySupport;
 	@Autowired
 	WineSurveyRepository wineSurveyRepository;
+	@Autowired
+	ReviewBaseRecommRepository reviewBaseRecommRepository;
+	@Autowired
+	ReviewBaseRecommRepositorySupport reviewBaseRecommRepositorySupport;
 
 	private void setWineResponse(Wine wine, WineResponse wineResponse) {
 		wineResponse.setWineId(wine.getWineId());
@@ -153,7 +168,7 @@ public class WineServiceImpl implements WineService {
 	}
 
 	@Override
-	public WineResponse searchWindByWindId(int wineId) {
+	public WineResponse searchWineByWineId(int wineId) {
 		WineResponse wineResponse = new WineResponse();
 		Optional<Wine> wine = wineRepository.findById(wineId);
 		wine.ifPresent(selectWine -> {
@@ -259,11 +274,146 @@ public class WineServiceImpl implements WineService {
 		}
 	}
 
-	// TODO : 필터 구현 로직 생각해야함,,,
 	@Override
-	public List<WineResponse> searchWineByFilter(Map filter) {
-		// key : vaule 형태로 넘어옴
-		return null;
+	public List<WineResponse> searchWineByFilter(WineFilterRequest filter) {
+		List<WineResponse> wineList = new LinkedList<WineResponse>();
+		List<Wine> wines = wineRepositorySupport.findByFilter(filter);
+		for (Wine wine : wines) {
+			WineResponse wineResponse = new WineResponse();
+			setWineResponse(wine, wineResponse);
+			wineList.add(wineResponse);
+		}
+		return wineList;
+	}
+
+	@Override
+	public List<WineReviewResponse> searchReviewByMemberId(int memberId) {
+		List<WineReviewResponse> reviewList = new LinkedList<WineReviewResponse>();
+		List<WineReview> reviews = wineReviewRepository.findByMemberId(memberId);
+		for (WineReview review : reviews) {
+			WineReviewResponse wineReviewResponse = new WineReviewResponse();
+			wineReviewResponse.setId(review.getId());
+			wineReviewResponse.setMemberId(review.getMemberId());
+			wineReviewResponse.setWineId(review.getWineId());
+			wineReviewResponse.setRating(review.getRating());
+			wineReviewResponse.setContent(review.getContent());
+			wineReviewResponse.setRegtime(review.getRegtime());
+			reviewList.add(wineReviewResponse);
+		}
+
+		return reviewList;
+	}
+
+	@Override
+	public List<WineReviewResponse> searchReviewByWineId(int wineId) {
+		List<WineReviewResponse> reviewList = new LinkedList<WineReviewResponse>();
+		List<WineReview> reviews = wineReviewRepository.findByWineId(wineId);
+		for (WineReview review : reviews) {
+			WineReviewResponse wineReviewResponse = new WineReviewResponse();
+			wineReviewResponse.setId(review.getId());
+			wineReviewResponse.setMemberId(review.getMemberId());
+			wineReviewResponse.setWineId(review.getWineId());
+			wineReviewResponse.setRating(review.getRating());
+			wineReviewResponse.setContent(review.getContent());
+			wineReviewResponse.setRegtime(review.getRegtime());
+			reviewList.add(wineReviewResponse);
+		}
+
+		return reviewList;
+	}
+
+	@Override
+	public List<WineResponse> recommendWineByWineId(int wineId) {
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+		RestTemplate restTemplate = new RestTemplate();
+
+		String wines = restTemplate.getForObject("http://j6a101.p.ssafy.io:8000/recomm/cb/" + wineId, String.class);
+		StringTokenizer st = new StringTokenizer(wines.substring(1, wines.length() - 1), ", ");
+		List<WineResponse> wineList = new LinkedList<WineResponse>();
+		while (st.hasMoreTokens()) {
+			WineResponse wineResponse = searchWineByWineId(Integer.parseInt(st.nextToken()));
+
+			if (wineResponse.getName() != null) {
+				wineList.add(wineResponse);
+			}
+		}
+
+		return wineList;
+	}
+
+	@Override
+	public void recommendWineByReview() {
+		// review_base_recomm 테이블 안의 값 비우기
+		reviewBaseRecommRepository.truncate();
+
+		// user review 기반으로 예상 평점 계산
+		List<WineReviewFlaskResponse> wineReviews = searchAllReviewForFlask();
+		System.out.println("WineReview = " + wineReviews);
+
+		HttpEntity<List<WineReviewFlaskResponse>> Results = new HttpEntity<>(wineReviews);
+		System.out.println("Results = " + Results);
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+		RestTemplate restTemplate = new RestTemplate();
+		String result = restTemplate.postForObject("http://j6a101.p.ssafy.io:8000/recomm/train-mf", Results,
+				String.class);
+
+		System.out.println(result);
+
+		// review_base_recomm 테이블에 값 저장하기
+		// reviewBaseRecommRepository.save(entity);
+	}
+
+	private List<WineReviewFlaskResponse> searchAllReviewForFlask() {
+		List<WineReviewFlaskResponse> reviewList = new LinkedList<WineReviewFlaskResponse>();
+		List<WineReview> reviews = wineReviewRepository.findAll();
+		for (WineReview review : reviews) {
+			WineReviewFlaskResponse wineReviewFlaskResponse = new WineReviewFlaskResponse();
+			wineReviewFlaskResponse.setUser(review.getMemberId());
+			wineReviewFlaskResponse.setWine(review.getWineId());
+			wineReviewFlaskResponse.setRating(review.getRating());
+			reviewList.add(wineReviewFlaskResponse);
+		}
+
+		return reviewList;
+	}
+
+	@Override
+	public List<WineReviewResponse> searchAllReview() {
+		List<WineReviewResponse> reviewList = new LinkedList<WineReviewResponse>();
+		List<WineReview> reviews = wineReviewRepository.findAll();
+		for (WineReview review : reviews) {
+			WineReviewResponse wineReviewResponse = new WineReviewResponse();
+			wineReviewResponse.setId(review.getId());
+			wineReviewResponse.setMemberId(review.getMemberId());
+			wineReviewResponse.setWineId(review.getWineId());
+			wineReviewResponse.setRating(review.getRating());
+			wineReviewResponse.setContent(review.getContent());
+			wineReviewResponse.setRegtime(review.getRegtime());
+			reviewList.add(wineReviewResponse);
+		}
+
+		return reviewList;
+	}
+
+	@Override
+	public List<WineReviewFlaskResponse> expectWineRateByMemberId(int memberId) {
+		List<WineReviewFlaskResponse> wineList = new LinkedList<WineReviewFlaskResponse>();
+
+		List<ReviewBaseRecomm> expects = reviewBaseRecommRepositorySupport.findByMemberId(memberId);
+		for (ReviewBaseRecomm expect : expects) {
+			WineReviewFlaskResponse wineReviewFlaskResponse = new WineReviewFlaskResponse();
+			wineReviewFlaskResponse.setUser(expect.getMemberId());
+			wineReviewFlaskResponse.setWine(expect.getWineId());
+			wineReviewFlaskResponse.setRating(expect.getExpRating());
+			wineList.add(wineReviewFlaskResponse);
+		}
+		return wineList;
 	}
 
 }
