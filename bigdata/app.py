@@ -12,7 +12,7 @@ from flask import Response
 
 # flask 객체 인스턴스 생성
 app = Flask(__name__)
-CORS(app, support_credentials=True)
+CORS(app, supports_credentials=True)
 
 # 접속 url 설정
 @app.route('/')
