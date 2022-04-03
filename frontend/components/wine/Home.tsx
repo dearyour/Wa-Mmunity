@@ -70,11 +70,13 @@ const Home = () => {
   const __GetWineState = useCallback(() => {
     return axios({
       method: "GET",
+      // url: process.env.BACK_EC2 + "wine",
       url: process.env.BACK_EC2 + "wine",
+      // url: "https://localhost:8080/api/wine",
       // url: "http://j6a101.p.ssafy.io:8080/api/wine",
     })
       .then((res) => {
-        console.log(res);
+        console.log("wineList##" + res);
         setWines(res.data.object);
         return res.data;
       })
