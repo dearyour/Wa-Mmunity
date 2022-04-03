@@ -8,12 +8,12 @@ from models import matrix_factorization
 def load(path):
     return pickle.load(open(path, "rb"))
 
-def recommend(R_train, R_predicted, item_ids, output_path):
+def recommend(R_train, R_predicted, output_path):
     # write train ratings
     with open(output_path + '/train_ratings.txt', 'w') as f:
         rows, cols = R_train.nonzero()
         for row, col in zip(rows, cols):
-            f.write('%d::%s::%.1f\n' % (row, item_ids[col], R_train[row, col]))
+            f.write('%d::%s::%.1f\n' % (row, col, R_train[row, col]))
             # remove train data from recommendation
             R_predicted[row, col] = 0
     # write recommend ratings
@@ -22,10 +22,10 @@ def recommend(R_train, R_predicted, item_ids, output_path):
         for i in range(R_predicted.shape[0]):
             for j in range(R_predicted.shape[1]):
                 if R_predicted[i, j] > 1:
-                    f.write('%d::%s""%.3f\n' % (i, item_ids[j], R_predicted[i, j]))
+                    f.write('%d::%s""%.3f\n' % (i, j, R_predicted[i, j]))
                     tmp_dict = {
                         'user': int(i),
-                        'wine': int(item_ids[j]),
+                        'wine': int(j),
                         'est_rating': float(R_predicted[i, j])
                     }
                     # print(tmp_dict)
@@ -55,7 +55,6 @@ if __name__ == '__main__':
 
     R_train = load(input_path + '/R_train.pkl')
     R_valid = load(input_path + '/R_valid.pkl')
-    item_ids = load(input_path + '/item_ids.pkl')
 
     alg = args.algorithm
     if alg == 0:
@@ -75,6 +74,6 @@ if __name__ == '__main__':
         print("\n\t start training MF")
         R_predicted = matrix_factorization.train(res_dir=output_path, R_train=R_train, R_valid=R_valid,
                                    max_iter=max_iter, lambda_u=lambda_u, lambda_v=lambda_v, dimension=d, theta=theta)
-        recommend(R_train, R_predicted, item_ids, './data/output')
+        recommend(R_train, R_predicted, './data/output')
     else:
         print("select algorithm from 0 to 2")
