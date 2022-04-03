@@ -5,27 +5,22 @@ import Step from '@mui/material/Step'
 import StepLabel from '@mui/material/StepLabel'
 import { Row, Col, Steps, Typography, Button } from 'antd'
 import WineType from '../../components/recomm/WineType'
-import WineBody from '../../components/recomm/WineBody'
+import WineTaste from 'components/recomm/WineTaste'
 import WinePrice from '../../components/recomm/WinePrice'
-import WineTannin from 'components/recomm/WineTannin'
-import WineSweetness from 'components/recomm/WineSweetness'
-import WineAcidity from 'components/recomm/WineAcidity'
-import WineFlavour from 'components/recomm/WineFlavour'
-import WineFoods from 'components/recomm/WineFoods'
+import WineFlavour from '../../components/recomm/WineFlavour'
+import WineFoods from '../../components/recomm/WineFoods'
 import axios from 'axios'
 import { submitSurvey } from './api'
+
+axios.defaults.withCredentials = true
 
 // const { Step } = Steps
 const { Title, Paragraph, Text, Link } = Typography;
 
 function getSteps() {
   return [
-    'start',
     'type',
-    'winebody',
-    'tannin',
-    'sweetness',
-    'acidity',
+    'winetaste',
     'flavour',
     'foods',
     'price',
@@ -74,12 +69,8 @@ export default class Survey extends Component {
     try {
       console.log(this.state)
       const res = await axios.post('http://j6a101.p.ssafy.io:8000/recomm/survey',
-      // {
-      //   type: 'redwine',
-      //   for: 'party'
-      // }
-      this.state
-      )
+      this.state,
+      { withCredentials: true })
       console.log('res:', res)
     } catch (err) {
       console.error(err)
@@ -115,57 +106,34 @@ export default class Survey extends Component {
   getStepContent(stepIndex: number, values: any) {
     switch (stepIndex) {
       case 0:
-        return '설문'
-      case 1:
         return (
           <WineType
             handleChangeCheckbox={this.handleChangeCheckbox}
             values={ values }
           />
         )
-      case 2:
+      case 1:
         return (
-          <WineBody
+          <WineTaste
             handleChange={this.handleChange}
             values={ values }
           />
         )
-      case 3:
-        return (
-          <WineTannin
-          handleChange={this.handleChange}
-            values={ values }
-            />
-        )
-      case 4:
-        return (
-          <WineSweetness
-          handleChange={this.handleChange}
-            values={ values }
-            />
-        )
-      case 5:
-        return (
-          <WineAcidity
-          handleChange={this.handleChange}
-            values={ values }
-            />
-        )
-      case 6:
+      case 2:
         return (
           <WineFlavour
             handleChangeCheckbox={this.handleChangeCheckbox}
             values={ values }
           />
         )
-      case 7:
+      case 3:
         return (
           <WineFoods
             handleChangeCheckbox={this.handleChangeCheckbox}
             values={ values }
           />
         )
-      case 8:
+      case 4:
         return (
           <WinePrice
             handleChangeSlider={this.handleChangeSlider}

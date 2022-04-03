@@ -18,6 +18,9 @@ const WineType = ({ handleChangeCheckbox, values}: SurveyProps) => {
 
   return (
     <div>
+      <Row>
+        <h1>와인 종류</h1>
+      </Row>
       <Row justify="center">
         <Col>
           <Checkbox.Group

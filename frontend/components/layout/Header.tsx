@@ -88,14 +88,22 @@ function Header(): JSX.Element {
               </div>
             </li>
             <li className="item">
-              <div className="item__name">와인 추천</div>
+              <div className="item__name">
+                <Link href="/recommend/survey" passHref>
+                  <a>와인 추천</a>
+                </Link>
+              </div>
               <div className="item__contents">
                 <div className="contents__menu">
                   <ul className="inner">
                     <li>
                       <h4>나의 취향 분석</h4>
                       <ul>
-                        <li>분석 하러가기</li>
+                        <li>
+                        <Link href="/recommend/survey" passHref>
+                          <a>분석 하러가기</a>
+                        </Link>
+                        </li>
                       </ul>
                     </li>
                     <li>
