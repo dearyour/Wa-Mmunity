@@ -74,6 +74,10 @@ export default class Survey extends Component {
     try {
       console.log(this.state)
       const res = await axios.post('http://j6a101.p.ssafy.io:8000/recomm/survey',
+      // {
+      //   type: 'redwine',
+      //   for: 'party'
+      // }
       this.state
       )
       console.log('res:', res)
