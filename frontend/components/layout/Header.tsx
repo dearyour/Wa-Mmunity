@@ -88,28 +88,30 @@ function Header(): JSX.Element {
               </div>
             </li>
             <li className="item">
-              <div className="item__name">
-                <Link href="/recommend/survey" passHref>
-                  <a>와인 추천</a>
-                </Link>
+              <div
+                className="item__name"
+                onClick={() => {
+                  Router.push(`/recommend`)}}
+              >
+                와인 추천
               </div>
               <div className="item__contents">
                 <div className="contents__menu">
                   <ul className="inner">
                     <li>
-                      <h4>나의 취향 분석</h4>
+                      <h4
+                        onClick={() => {
+                          Router.push(`/recommend`)
+                        }}
+                      >와인 추천</h4>
                       <ul>
-                        <li>
-                        <Link href="/recommend/survey" passHref>
-                          <a>분석 하러가기</a>
-                        </Link>
+                        <li
+                          onClick={() => {
+                            Router.push(`/recommend/survey`)
+                          }}
+                        >
+                          취향분석하러가기
                         </li>
-                      </ul>
-                    </li>
-                    <li>
-                      <h4>오늘의 추천</h4>
-                      <ul>
-                        <li>분석 하러가기</li>
                       </ul>
                     </li>
                   </ul>
