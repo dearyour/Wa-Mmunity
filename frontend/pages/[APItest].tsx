@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useCallback, useEffect } from "react";
 import styled from "styled-components";
 import Link from "next/link";
 import { Button, Radio, Form, Input, Menu, Dropdown } from "antd";
 import { test } from "../store/api/User.api";
 import { DownloadOutlined } from "@ant-design/icons";
+import axios from "axios";
 
 // function handleMenuClick(e) {
 //   console.log("click", e);
@@ -17,6 +18,63 @@ import { DownloadOutlined } from "@ant-design/icons";
 // );
 
 const Login: any = () => {
+  useEffect(() => {
+    axios({
+      method: "get",
+      url: process.env.BACK_EC2 + "wine/" + 271,
+    })
+      .then((res) => {
+        console.log(res.data);
+        // router.push("/wine/" + wineId);
+      })
+      .catch((err) => {
+        // Router.push("/404");
+      });
+  }, []);
+  ////////////////리뷰데이터
+  useEffect(() => {
+    axios({
+      method: "GET",
+      // url: process.env.BACK_EC2 + "wine/wineReview/" + "271",
+      url: "https://localhost:8080/api/" + "wine/wineReview/" + "271",
+      // url: "http://localhost:8080" + "/feed",
+    })
+      .then((res) => {
+        // console.log(res.data);
+        // dispatch(layoutAction.updateDetailData(props.dto));
+        // dispatch(layoutAction.updateDetailData(commentData));
+
+        // setCommentData(makeArray(res.data));
+        console.log(res.data);
+      })
+      .catch((err) => {
+        // console.log(err);
+      });
+  }, []);
+  const loadComments = () => {
+    //평점 업로드 또는 불러올때 계속 새로고침
+    // const feedsId = detailData.feed.feedId;
+    axios({
+      method: "GET",
+      // url: process.env.BACK_EC2 + "wine/wineReview/" + "271",
+      url: "https://localhost:8080/api/" + "wine/wineReview/" + "271",
+      // url: "http://localhost:8080" + "/feed",
+    })
+      .then((res) => {
+        // console.log(res.data);
+        // dispatch(layoutAction.updateDetailData(props.dto));
+        // dispatch(layoutAction.updateDetailData(commentData));
+
+        // setCommentData(makeArray(res.data));
+        console.log(res.data);
+      })
+      .catch((err) => {
+        // console.log(err);
+      });
+  };
+  useEffect(() => {
+    loadComments();
+  });
   return (
     <LoginForm>
       <div className="btn" style={{ marginBottom: "10px" }}>
