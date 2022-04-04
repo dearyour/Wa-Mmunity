@@ -1328,6 +1328,11 @@
     "path-type" "^4.0.0"
     "yaml" "^1.7.2"
 
+"cropperjs@^1.5.12":
+  "integrity" "sha512-re7UdjE5UnwdrovyhNzZ6gathI4Rs3KGCBSc8HCIjUo5hO42CtzyblmWLj6QWVw7huHyDMfpKxhiO2II77nhDw=="
+  "resolved" "https://registry.npmjs.org/cropperjs/-/cropperjs-1.5.12.tgz"
+  "version" "1.5.12"
+
 "cross-spawn@^7.0.2", "cross-spawn@^7.0.3":
   "integrity" "sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w=="
   "resolved" "https://registry.npmjs.org/cross-spawn/-/cross-spawn-7.0.3.tgz"

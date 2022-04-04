@@ -28,13 +28,10 @@ const PosterContainer = styled.div`
   width: 100%;
   height: 100%;
   background: #eae0da;
-  padding: 14px 16px 50px;
-`;
-
-const Backdrop = styled.div`
+  padding: 14px 16px 30px;
   display: flex;
-  width: 100%;
-  height: 394px;
+  // width: 100%;
+  height: 450px;
   margin-top: 20px;
   // background-image: linear-gradient(
   //   -180deg,
@@ -43,8 +40,10 @@ const Backdrop = styled.div`
   //   rgba(0, 0, 0, 0.5) 100%
   // );
   // background-color: #fff;
-  overflow: hidden;
+  // overflow: hidden;
 `;
+
+const Backdrop = styled.div``;
 
 const BackdropImage = styled.div<{ imageUrl: string }>`
   background: url(${({ imageUrl }) => imageUrl}) center center / cover no-repeat;
@@ -107,7 +106,7 @@ const Containers = styled.div`
 `;
 
 const ContentWrapper = styled.div`
-  margin: 30px 0px 0px 100px;
+  margin: 10px 0px 0px 100px;
   text-align: left;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 `;
@@ -290,7 +289,6 @@ function WineDetail(): any {
     }
   }, [wineId, data]);
   // 평점 작성
-
   const __uploadComment = useCallback(
     (e) => {
       e.preventDefault();
@@ -322,6 +320,41 @@ function WineDetail(): any {
     },
     [data, userId, wineId, ratings, comment, commentRef, __loadComments]
   );
+  //좋아요
+  const __updateLike = useCallback(
+    () => {
+      const data = {
+        windId: wineId,
+        memberId: userId,
+      };
+      return axios({
+        method: "post",
+        url: process.env.BACK_EC2 + "/wine/wishlist",
+        data: data,
+        // url: GetFeedurl,
+      })
+        .then((res) => {
+          console.log(res);
+          // if (res.data === "ok") {
+          //   setLikeCount(likeCount + 1);
+          //   setLikeState(res.data);
+          //   // dispatch(layoutAction.likeList(res.data));
+          // } else {
+          //   setLikeCount(likeCount - 1);
+          //   setLikeState(res.data);
+          //   // dispatch(layoutAction.likeList(res.data));
+          // }
+          // dispatch(feedAction.getFeed());
+        })
+        .catch((err) => {
+          return err;
+        });
+    },
+    [
+      // likelist, layout, detailData, likeCount
+    ]
+  );
+
   // const __GetWineSlider = useCallback(() => {
   //   return axios({
   //     method: "GET",
@@ -371,86 +404,86 @@ function WineDetail(): any {
             {/* 포스터 영역 */}
 
             <PosterContainer>
-              <Backdrop>
-                <BackdropImage imageUrl={data.img}></BackdropImage>
-                <ContentWrapper>
-                  <Title>{data.name}</Title>
+              {/* <Backdrop> */}
+              <BackdropImage imageUrl={data.img}></BackdropImage>
+              <ContentWrapper>
+                <Title>{data.name}</Title>
 
-                  <AverageRate className="태양">
-                    · 와인 스타일 : {data.cat1}
-                  </AverageRate>
-                  <AverageRate>· 원산지 : {data.country}</AverageRate>
-                  <AverageRate>· 지역 : {data.region1}</AverageRate>
-                  <AverageRate>· 제조 회사 : {data.winery}</AverageRate>
-                  <AverageRate>· 숙성 기간 : {data.ageing} 년</AverageRate>
-                  <AverageRate>· 포도 품종 : {data.grape1}</AverageRate>
-                  <Keyword>
-                    · 해외 평균가 : ₩
-                    {data
-                      ? data.price
-                          .toString()
-                          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                      : ""}
-                  </Keyword>
-                  <Actions>
-                    {/* <Divider /> */}
-                    {/* 액션 버튼 */}
+                <AverageRate className="태양">
+                  · 와인 스타일 : {data.cat1}
+                </AverageRate>
+                <AverageRate>· 원산지 : {data.country}</AverageRate>
+                <AverageRate>· 지역 : {data.region1}</AverageRate>
+                <AverageRate>· 제조 회사 : {data.winery}</AverageRate>
+                <AverageRate>· 숙성 기간 : {data.ageing} 년</AverageRate>
+                <AverageRate>· 포도 품종 : {data.grape1}</AverageRate>
+                <Keyword>
+                  · 해외 평균가 : ₩
+                  {data
+                    ? data.price
+                        .toString()
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    : ""}
+                </Keyword>
+                <Actions>
+                  {/* <Divider /> */}
+                  {/* 액션 버튼 */}
 
-                    <ActionButtonContainer>
-                      <ActionButton>
-                        <ImgWrap>
-                          <Like>
-                            <LikeImg src="/assets/pngwing.com2.png"></LikeImg>
-                            {/* <LikeBaseImg className={likeState.like ? "likeanimated" : 'unlikeanimated'} onClick={DoLike} src="/assets/feed/pngwing.com2.png"></LikeBaseImg>
+                  <ActionButtonContainer>
+                    <ActionButton>
+                      <ImgWrap onClick={__updateLike}>
+                        <Like>
+                          <LikeImg src="/assets/pngwing.com2.png"></LikeImg>
+                          {/* <LikeBaseImg className={likeState.like ? "likeanimated" : 'unlikeanimated'} onClick={DoLike} src="/assets/feed/pngwing.com2.png"></LikeBaseImg>
                     <LikeBase src="/assets/feed/pngwing.com.png" onClick={DoLike}></LikeBase>
 
                     <span> {data ? likeState.count : 0}</span> */}
-                            {/* <LikeBaseImg className={likeState.like ? "likeanimated" : 'unlikeanimated'} onClick={DoLike} src="/assets/feed/pngwing.com2.png"></LikeBaseImg> */}
-                          </Like>
-                          {/* <CommentCount>
+                          {/* <LikeBaseImg className={likeState.like ? "likeanimated" : 'unlikeanimated'} onClick={DoLike} src="/assets/feed/pngwing.com2.png"></LikeBaseImg> */}
+                        </Like>
+                        {/* <CommentCount>
                     <CommentImg src="/assets/feed/pngwing.com5.png"></CommentImg>
                     <span> {data && data.comments ? data.comments.length : 0}</span>
                   </CommentCount> */}
-                        </ImgWrap>
-                        <PP>위시리스트</PP>
-                      </ActionButton>
-                    </ActionButtonContainer>
-                    <StarRate>
-                      <StarRateText>
-                        {/* ✨ 평점 : [ {data.ratingAvg} ] */}
-                      </StarRateText>
+                      </ImgWrap>
+                      <PP>위시리스트</PP>
+                    </ActionButton>
+                  </ActionButtonContainer>
+                  <StarRate>
+                    <StarRateText>
+                      {/* ✨ 평점 : [ {data.ratingAvg} ] */}
+                    </StarRateText>
 
-                      <RatingWrapper>
-                        {/* <Rating size="large" /> */}
-                      </RatingWrapper>
-                    </StarRate>
-                  </Actions>
-                </ContentWrapper>
-                <StarRates>
-                  <div>
-                    <Rating
-                      name="text-feedback"
-                      value={rating}
-                      readOnly
-                      precision={0.5}
-                      size="large"
-                      // emptyIcon={
-                      //   <StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />
-                      // }
-                    />
-                  </div>
-                  <StarRateText>✨ 평점 : [ {data.ratingAvg} ]</StarRateText>
-                  <StarRateText>최근 리뷰 : [ {data.ratingNum} ]</StarRateText>
+                    <RatingWrapper>
+                      {/* <Rating size="large" /> */}
+                    </RatingWrapper>
+                  </StarRate>
+                </Actions>
+              </ContentWrapper>
+              <StarRates>
+                <div>
+                  <Rating
+                    name="text-feedback"
+                    value={rating}
+                    readOnly
+                    precision={0.5}
+                    size="large"
+                    // emptyIcon={
+                    //   <StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />
+                    // }
+                  />
+                </div>
+                <StarRateText>✨ 평점 : [ {data.ratingAvg} ]</StarRateText>
+                <StarRateText>최근 리뷰 : [ {data.ratingNum} ]</StarRateText>
 
-                  {/* <CommentCount>
+                {/* <CommentCount>
                     <CommentImg src="/assets/pngwing.com5.png"></CommentImg>
                     <span>
                       {" "}
                       {data && data.comments ? data.comments.length : 0}
                     </span>
                   </CommentCount> */}
-                </StarRates>
-              </Backdrop>
+              </StarRates>
+              {/* </Backdrop> */}
             </PosterContainer>
 
             {/* 메인 */}
@@ -664,7 +697,7 @@ function WineDetail(): any {
                           type="text"
                           autoFocus={true}
                           placeholder="평가를 입력해 주세요"
-                          ref={commentRef}
+                          // ref={commentRef}
                           onKeyUp={(e) => {
                             if (e.key === "Enter") {
                               {
@@ -684,12 +717,12 @@ function WineDetail(): any {
               />
               <Similar id={id} /> */}
                       <NowPlayingSection />
-                      <Slider>
-                        {/* {data.map((item: any) => {
+                      {/* <Slider>
+                        {data.slice(0, 20).map((item: any) => {
                           <Card data={item} />;
-                        })} */}
+                        })}
                         <Card data={data} />
-                      </Slider>
+                      </Slider> */}
                     </Inner>
                   </InnerOut>
                   {/* 기본정보 */}
