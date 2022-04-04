@@ -5,6 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
+import com.web.wam.model.entity.*;
+import com.web.wam.model.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,10 +17,6 @@ import com.web.wam.model.dto.wine.WineReviewPutRequest;
 import com.web.wam.model.dto.wine.WineReviewResponse;
 import com.web.wam.model.dto.wine.WineSurveyRequest;
 import com.web.wam.model.dto.wine.WineWishlistRequest;
-import com.web.wam.model.entity.Wine;
-import com.web.wam.model.entity.WineReview;
-import com.web.wam.model.entity.WineSurvey;
-import com.web.wam.model.entity.WineWishlist;
 import com.web.wam.model.repository.wine.WineRepository;
 import com.web.wam.model.repository.wine.WineRepositorySupport;
 import com.web.wam.model.repository.wine.WineReviewRepository;
@@ -41,6 +39,9 @@ public class WineServiceImpl implements WineService {
 	WineWishlistRepositorySupport wineWishlistRepositorySupport;
 	@Autowired
 	WineSurveyRepository wineSurveyRepository;
+
+	@Autowired
+	MemberRepository memberRepository;
 
 	private void setWineResponse(Wine wine, WineResponse wineResponse) {
 		wineResponse.setWineId(wine.getWineId());
@@ -302,6 +303,13 @@ public class WineServiceImpl implements WineService {
 			wineReviewResponse.setRating(review.getRating());
 			wineReviewResponse.setContent(review.getContent());
 			wineReviewResponse.setRegtime(review.getRegtime());
+
+			Optional<Member> member = memberRepository.findById(review.getMemberId());
+			member.ifPresent(selectedMember -> {
+					wineReviewResponse.setMemberName(selectedMember.getNickname());
+					wineReviewResponse.setMemberEmail(selectedMember.getEmail());
+			});
+
 			reviewList.add(wineReviewResponse);
 		}
 
