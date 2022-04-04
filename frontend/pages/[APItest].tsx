@@ -73,8 +73,8 @@ const Login: any = () => {
   `;
   return (
     <TT>
-      {/* <NowPlayingSection /> */}
-      <HotChallenge top10={data}></HotChallenge>
+      <NowPlayingSection />
+      {/* <HotChallenge top10={data}></HotChallenge> */}
     </TT>
     // <LoginForm>
     //   <div className="btn" style={{ marginBottom: "10px" }}>
