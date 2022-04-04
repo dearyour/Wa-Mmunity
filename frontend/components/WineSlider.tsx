@@ -8,6 +8,8 @@ import axios from "axios";
 
 const Base = styled.div`
   margin-bottom: 42px;
+  // position: relative;
+  // display: flex;
 `;
 
 const Title = styled.h4`
@@ -28,7 +30,7 @@ const UpcomingitemSection: React.FC = () => {
       // url: process.env.BACK_EC2 + "wine/recommend/" + wineId,
       // url: "http://j6a101.p.ssafy.io:8080/api/wine",
       // url: "https://localhost:8080/api/wine",
-      url: process.env.BACK_EC2 + "wine/review" + wineId,
+      url: process.env.BACK_EC2 + "wine",
     })
       .then((res) => {
         console.log(res);
@@ -52,10 +54,10 @@ const UpcomingitemSection: React.FC = () => {
 
       {data && (
         <Slider>
-          {data.map((item: any) => (
+          {data.slice(0, 5).map((item: any) => (
             <Card
               key={item.windId}
-              linkUrl={`/wine/${wineId}`}
+              linkUrl={`/wine/${item.wineId}`}
               title={item.name}
               posterPath={item.img}
               voteAverage={item.ratingAvg}

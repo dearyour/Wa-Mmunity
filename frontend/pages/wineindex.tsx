@@ -13,11 +13,14 @@ import { RootState } from "../store/module";
 function WineMain() {
   const { ondo } = useSelector((state: RootState) => state.user.users);
   const dispatch = useDispatch();
-  const __GetUserState = (token: string | null, email: string | null) => {
+  const __GetUserState = (token: any | null, email: string | null) => {
     return axios({
       method: "GET",
       url: process.env.BACK_EC2 + "member/" + email,
-      headers: { Authorization: "Bearer " + token },
+      // headers: { Authorization: "Bearer" + token },
+      // headers: { Authorization: "X-AUTH" + token },
+      headers: { "X-AUTH-TOKEN": token },
+      // headers: { Authorization: "X-Auth-Token" + token },
     })
       .then((res) => {
         console.log(res);
