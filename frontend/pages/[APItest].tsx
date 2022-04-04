@@ -6,7 +6,7 @@ import { test } from "../store/api/User.api";
 import { DownloadOutlined } from "@ant-design/icons";
 import axios from "axios";
 import NowPlayingSection from "components/WineSlider";
-import HotChallenge from "components/HotChallenge";
+import TestCarousel from "components/TestCarousel";
 
 const Login: any = () => {
   const [data, setdata] = useState<any>(""); // 와인디테일데이터
@@ -73,7 +73,8 @@ const Login: any = () => {
   `;
   return (
     <TT>
-      <NowPlayingSection />
+      {/* <NowPlayingSection /> */}
+      <TestCarousel />
       {/* <HotChallenge top10={data}></HotChallenge> */}
     </TT>
     // <LoginForm>

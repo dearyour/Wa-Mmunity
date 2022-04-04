@@ -2,7 +2,7 @@ import React from "react";
 import styled from "@emotion/styled";
 import Link from "next/link";
 import { AiFillStar } from "react-icons/ai";
-
+import Rating from "@mui/material/Rating";
 interface Props {
   linkUrl: string;
   title: string;
@@ -25,8 +25,10 @@ const Base = styled.div`
 `;
 
 const ImageWrapper = styled.div`
-  width: 100%;
-  height: 300px;
+  width: 30%;
+  // height: 300px;
+  margin-left: 35%;
+  cursor: pointer;
 `;
 
 const Image = styled.img`
@@ -50,7 +52,9 @@ const Title = styled.h4`
   line-height: 22px;
   margin-bottom: 3px;
   white-space: nowrap;
-  max-width: 200px;
+  // max-width: 200px;
+  text-align: center;
+  margin-top: 15px;
 `;
 
 const Keyword = styled.div`
@@ -59,6 +63,7 @@ const Keyword = styled.div`
   font-size: 14px;
   font-weight: 400;
   line-height: 21px;
+  text-align: center;
 `;
 
 const Average = styled.div`
@@ -66,8 +71,9 @@ const Average = styled.div`
   font-size: 13px;
   font-weight: 400;
   margin-top: 5px;
-  display: flex;
+  padding-bottom: 15px;
   align-items: center;
+  text-align: center;
 `;
 
 const Card: React.FC<Props> = ({
@@ -84,14 +90,26 @@ const Card: React.FC<Props> = ({
       </ImageWrapper>
       <Info>
         <Title>{title}</Title>
-        <Keyword>{year}</Keyword>
+        <Keyword>최근 리뷰 : {year}</Keyword>
         <Average>
-          <span>평균</span>
           <span>
             &nbsp;
-            <AiFillStar />
+            <div>
+              <Rating
+                name="text-feedback"
+                value={Number(voteAverage.toFixed(1))}
+                readOnly
+                precision={0.5}
+                size="large"
+                // emptyIcon={
+                //   <StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />
+                // }
+              />
+            </div>
+            {/* <AiFillStar /> */}
           </span>
-          <span>{voteAverage}</span>
+          <span>평점</span>
+          <span>{voteAverage.toFixed(1)}</span>
         </Average>
       </Info>
     </Base>
