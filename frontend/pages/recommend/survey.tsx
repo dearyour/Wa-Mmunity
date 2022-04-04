@@ -6,18 +6,77 @@ import StepLabel from '@mui/material/StepLabel'
 import { Row, Col, Steps, Typography, Button, Space } from 'antd'
 import WineType from '../../components/recomm/WineType'
 import WineTaste from 'components/recomm/WineTaste'
-import WinePrice from '../../components/recomm/WinePrice'
 import WineFlavour from '../../components/recomm/WineFlavour'
 import WineFoods from '../../components/recomm/WineFoods'
 import axios from 'axios'
+import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector'
 import { styled } from '@mui/material/styles'
-import { makeStyles } from '@material-ui/core'
-import { unstable_styleFunctionSx } from '@mui/system'
+import { StepIconProps } from '@mui/material/StepIcon'
+import WineBarIcon from '@mui/icons-material/WineBar';
 
 axios.defaults.withCredentials = true
-
-// const { Step } = Steps
 const { Title, Paragraph, Text, Link } = Typography;
+
+const QontoConnector = styled(StepConnector)(({ theme }) => ({
+  [`&.${stepConnectorClasses.alternativeLabel}`]: {
+    top: 10,
+    left: 'calc(-50% + 16px)',
+    right: 'calc(50% + 16px)',
+  },
+  [`&.${stepConnectorClasses.active}`]: {
+    [`& .${stepConnectorClasses.line}`]: {
+      borderColor: '#590805',
+    },
+  },
+  [`&.${stepConnectorClasses.completed}`]: {
+    [`& .${stepConnectorClasses.line}`]: {
+      borderColor: '#590805',
+    },
+  },
+  [`& .${stepConnectorClasses.line}`]: {
+    borderColor: theme.palette.mode === 'dark' ? theme.palette.grey[800] : '#eaeaf0',
+    borderTopWidth: 3,
+    borderRadius: 1,
+  },
+}));
+
+const QontoStepIconRoot = styled('div')<{ ownerState: { active?: boolean } }>(
+  ({ theme, ownerState }) => ({
+    color: theme.palette.mode === 'dark' ? theme.palette.grey[700] : '#eaeaf0',
+    display: 'flex',
+    height: 22,
+    alignItems: 'center',
+    ...(ownerState.active && {
+      color: '#590805',
+    }),
+    '& .QontoStepIcon-completedIcon': {
+      color: '#590805',
+      zIndex: 1,
+      fontSize: 18,
+    },
+    '& .QontoStepIcon-circle': {
+      width: 8,
+      height: 8,
+      borderRadius: '50%',
+      backgroundColor: 'currentColor',
+    },
+  }),
+);
+
+function QontoStepIcon(props: StepIconProps) {
+  const { active, completed, className } = props;
+
+  return (
+    <QontoStepIconRoot ownerState={{ active }} className={className}>
+      {completed ? (
+        <WineBarIcon className="QontoStepIcon-completedIcon" />
+      ) : (
+        <div className="QontoStepIcon-circle" />
+      )}
+    </QontoStepIconRoot>
+  );
+}
+
 
 function getSteps() {
   return [
@@ -25,7 +84,6 @@ function getSteps() {
     'winetaste',
     'flavour',
     'foods',
-    // 'price',
   ]
 }
 
@@ -39,7 +97,6 @@ export default class Survey extends Component {
     acidity: '',
     flavour: '',
     foods: '',
-    // price: [10000, 200000],
   }
 
   // go back to previous step
@@ -63,7 +120,6 @@ export default class Survey extends Component {
       acidity: '',
       flavour: '',
       foods: '',
-      // price: [10000, 200000],
     })
   }
   // submit
@@ -97,10 +153,6 @@ export default class Survey extends Component {
   handleChangeCheckbox = (input: any) => (checkedValues: any) => {
     this.setState({ [input]: checkedValues });
   }
-  // handle Slider change
-  // handleChangeSlider = (input: any) => (value: any) => {
-  //   this.setState({ [input]: value });
-  // }
   handleChangeSlider = (input: any) => (e: any) => {
     this.setState({ [input]: e.target.value });
   }
@@ -135,13 +187,6 @@ export default class Survey extends Component {
             values={ values }
           />
         )
-      // case 4:
-      //   return (
-      //     <WinePrice
-      //       handleChangeSlider={this.handleChangeSlider}
-      //       values={ values }
-      //       />
-      //   )
       default:
         return '설문 끝'
     }
@@ -156,10 +201,10 @@ export default class Survey extends Component {
     return (
     <AppLayout>
       <Row style={{ marginBottom: 10 }}></Row>
-      <Stepper activeStep={step} alternativeLabel>
+      <Stepper activeStep={step} alternativeLabel connector={<QontoConnector />}>
         {steplabels.map((label) => (
           <Step key={label}>
-            <StepLabel>{label}</StepLabel>
+            <StepLabel StepIconComponent={QontoStepIcon}>{label}</StepLabel>
           </Step>
         ))}
       </Stepper>

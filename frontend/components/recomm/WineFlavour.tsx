@@ -7,7 +7,7 @@ type SurveyProps = {
   values: any;
 }
 
-const WineType = ({ handleChangeCheckbox, values}: SurveyProps) => {
+const WineFlavour = ({ handleChangeCheckbox, values}: SurveyProps) => {
 
   const options = [
     { label: '흙, 자연', value: 'earthy leather smoke' },
@@ -46,4 +46,4 @@ const WineType = ({ handleChangeCheckbox, values}: SurveyProps) => {
   )
 }
 
-export default WineType
+export default WineFlavour
