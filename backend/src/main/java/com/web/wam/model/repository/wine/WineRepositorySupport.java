@@ -105,4 +105,8 @@ public class WineRepositorySupport {
 		return wines;
 	}
 
+	public Wine findByWineId(int wineId) {
+		return jpaQueryFactory.select(qWine).from(qWine).where(qWine.wineId.eq(wineId)).fetchFirst();
+	}
+
 }
