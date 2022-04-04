@@ -67,10 +67,10 @@ const PosterWrapper = styled.div`
   width: 200px;
   height: 300px;
   border: solid 2px #fff;
-  // top: -48px;
-  // left: -130px;
+  top: 83px;
+  left: -30px;
   border-radius: 3px;
-  box-shadow: 0 0 2px rgb(0 0 0 / 30%);
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   background: #fff;
 `;
 
@@ -130,7 +130,9 @@ const Titless = styled.h1`
   font-weight: 700;
   line-height: 40px;
   display: flex;
-  margin-left: 20px;
+  margin-left: 60px;
+  margin-top: 15px;
+  margin-bottom: 30px;
 `;
 
 const Keyword = styled.div`
@@ -259,7 +261,7 @@ function WineDetail(): any {
   const [data, setdata] = useState<any>(""); // 와인디테일데이터
   const [datas, setdatas] = useState<any>("");
   const [rating, setRating] = useState<number>(0); //따로 와인평가점수
-  const [ratings, setRatings] = useState<number>(0); // 리뷰 쓰는 별점
+  const [ratings, setRatings] = useState<number>(3); // 리뷰 쓰는 별점
   const [hover, setHover] = useState<Number>(0);
   const [commentData, setCommentData] = useState([]);
   const [dats, setdats] = useState<any>("");
@@ -267,49 +269,35 @@ function WineDetail(): any {
   const [comment, setComment] = useState(""); // 평점작성
   const userId = useSelector((state: RootState) => state.user.users.id);
   console.log(userId);
-  console.log(commentData);
-  const loadComments = () => {
-    //평점 업로드 또는 불러올때 계속 새로고침
-    // const feedsId = detailData.feed.feedId;
-    axios({
-      method: "GET",
-      // url: process.env.BACK_EC2 + "wine/wineReview/" + "271",
-      url: "https://localhost:8080/api/" + "wine/wineReview/" + "271",
-      // url: "http://localhost:8080" + "/feed",
-    })
-      .then((res) => {
-        // console.log(res.data);
-        // dispatch(layoutAction.updateDetailData(props.dto));
-        // dispatch(layoutAction.updateDetailData(commentData));
-
-        // setCommentData(makeArray(res.data));
-        console.log(res.data.object);
-        setCommentData(res.data.object);
-      })
-      .catch((err) => {
-        // console.log(err);
-      });
-  };
-  useEffect(() => {
-    loadComments();
-  }, []);
-  ///
+  const __deleteComment = useCallback(
+    (id) => {
+      if (commentData) {
+        const token = localStorage.getItem("Token");
+        axios({
+          method: "DELETE",
+          url: process.env.BACK_EC2 + "wine/review/" + id,
+        })
+          .then((res) => {
+            __loadComments(); // 로드 comment 다시 부른다
+          })
+          .catch((err) => {});
+      }
+    },
+    [commentData, useCallback]
+  );
   const __loadComments = useCallback(() => {
     //평점 업로드 또는 불러올때 계속 새로고침
     // const feedsId = detailData.feed.feedId;
     axios({
       method: "GET",
-      url: process.env.BACK_EC2 + "wine/wineReview/" + String(wineId),
-      // url: "http://localhost:8080" + "/feed",
+      url: process.env.BACK_EC2 + "wine/wineReview/" + wineId,
+      // url: "https://localhost:8080/api/" + "wine/wineReview/" + wineId,
     })
       .then((res) => {
         // console.log(res.data);
-        // dispatch(layoutAction.updateDetailData(props.dto));
-        // dispatch(layoutAction.updateDetailData(commentData));
-
         // setCommentData(makeArray(res.data));
-        console.log(res.data);
-        setCommentData(res.data.reverse());
+        console.log(res.data.object);
+        setCommentData(res.data.object.reverse());
       })
       .catch((err) => {
         // console.log(err);
@@ -317,13 +305,13 @@ function WineDetail(): any {
   }, []);
   useEffect(() => {
     __loadComments();
-  }, []);
+  }, [__loadComments]);
   // 평점 작성
-  const __uploadComment = () => {
+  const __uploadComment = useCallback(() => {
     if (comment.length > 0 && comment.trim()) {
       if (data) {
         const data = {
-          windId: Number(wineId),
+          wineId: Number(wineId),
           content: comment,
           memberId: userId,
           rating: ratings,
@@ -345,7 +333,7 @@ function WineDetail(): any {
           });
       }
     }
-  };
+  }, [comment, commentRef, __loadComments]);
   //좋아요
   const __updateLike = useCallback(
     () => {
@@ -380,7 +368,12 @@ function WineDetail(): any {
       // likelist, layout, detailData, likeCount
     ]
   );
-
+  const deleteComment: any = (Id: number) => {
+    axios({
+      method: "DELETE",
+      url: process.env.BACK_EC2 + "/comment/delete/" + String(wineId),
+    }).then((res) => {});
+  };
   // const __GetWineSlider = useCallback(() => {
   //   return axios({
   //     method: "GET",
@@ -664,9 +657,9 @@ function WineDetail(): any {
 
                       {/* <CommentLine></CommentLine> */}
                       <CommentWrap>
-                        {/*댓글렌더*/}
+                        {/*리뷰렌더*/}
                         {commentData &&
-                          commentData.reverse().map((now: any, idx: any) => {
+                          commentData.map((now: any, idx: any) => {
                             return (
                               <div key={idx}>
                                 <CommentFeedUser>
@@ -694,14 +687,16 @@ function WineDetail(): any {
                                 </CommentFeedUser>
                                 <CommentContent>
                                   {now.content}
-                                  {now.flag && (
+                                  {userId === now.memberId ? (
                                     <CommentDeleteBtn
                                       onClick={() => {
-                                        // deleteComment(now.comment.commentId);
+                                        __deleteComment(now.id);
                                       }}
                                     >
                                       삭제
                                     </CommentDeleteBtn>
+                                  ) : (
+                                    <></>
                                   )}
                                 </CommentContent>
                                 <CommentDivider />
@@ -728,7 +723,7 @@ function WineDetail(): any {
                                   color={
                                     ratingValue <= (hover || ratings)
                                       ? "#ffc107"
-                                      : "white"
+                                      : "black"
                                   }
                                   onMouseEnter={() => setHover(ratingValue)}
                                   onMouseLeave={() => setHover(0)}
@@ -740,9 +735,9 @@ function WineDetail(): any {
                         </div>
                         <CommentInput
                           type="text"
-                          autoFocus={true}
+                          // autoFocus={true}
                           placeholder="평가를 입력해 주세요"
-                          // ref={commentRef}
+                          ref={commentRef}
                           onKeyUp={(e) => {
                             if (e.key === "Enter") {
                               {
@@ -898,11 +893,11 @@ const InnerOut = styled.div`
 `;
 const Inner = styled.div`
   /* margin-left: 20px; */
-  width: 50%;
+  width: 65%;
   padding-top: 10px;
   // border-left: 1px solid gray;
   // overflow: hidden;
-  margin-left: 100px;
+  margin-left: 120px;
 `;
 
 const CommentFeedUser = styled.div`
