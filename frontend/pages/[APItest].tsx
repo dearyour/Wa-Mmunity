@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import Link from "next/link";
 import { Button, Radio, Form, Input, Menu, Dropdown } from "antd";
@@ -6,14 +6,17 @@ import { test } from "../store/api/User.api";
 import { DownloadOutlined } from "@ant-design/icons";
 import axios from "axios";
 import NowPlayingSection from "components/WineSlider";
+import HotChallenge from "components/HotChallenge";
 
 const Login: any = () => {
+  const [data, setdata] = useState<any>(""); // 와인디테일데이터
   useEffect(() => {
     axios({
       method: "get",
       url: process.env.BACK_EC2 + "wine/" + 271,
     })
       .then((res) => {
+        setdata(res);
         console.log(res.data);
         // router.push("/wine/" + wineId);
       })
@@ -55,7 +58,7 @@ const Login: any = () => {
         // dispatch(layoutAction.updateDetailData(props.dto));
         // dispatch(layoutAction.updateDetailData(commentData));
 
-        // setCommentData(makeArray(res.data));
+        // setdata(res.data.obejct);
         console.log(res.data);
       })
       .catch((err) => {
@@ -66,11 +69,12 @@ const Login: any = () => {
     loadComments();
   });
   const TT = styled.div`
-    display: block;
+    // display: block;
   `;
   return (
     <TT>
       <NowPlayingSection />
+      {/* <HotChallenge top10={data}></HotChallenge> */}
     </TT>
     // <LoginForm>
     //   <div className="btn" style={{ marginBottom: "10px" }}>

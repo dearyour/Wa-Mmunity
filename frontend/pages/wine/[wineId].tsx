@@ -270,22 +270,6 @@ function WineDetail(): any {
   const userId = useSelector((state: RootState) => state.user.users.id);
   console.log(userId);
 
-  const __deleteComment = useCallback(
-    (id) => {
-      if (commentData) {
-        const token = localStorage.getItem("Token");
-        axios({
-          method: "DELETE",
-          url: process.env.BACK_EC2 + "wine/review/" + id,
-        })
-          .then((res) => {
-            __loadComments(); // 로드 comment 다시 부른다
-          })
-          .catch((err) => {});
-      }
-    },
-    [commentData, useCallback]
-  );
   const __loadComments = useCallback(() => {
     //평점 업로드 또는 불러올때 계속 새로고침
     // const feedsId = detailData.feed.feedId;
@@ -303,7 +287,7 @@ function WineDetail(): any {
       .catch((err) => {
         // console.log(err);
       });
-  }, []);
+  }, [wineId]);
   useEffect(() => {
     __loadComments();
   }, [__loadComments]);
@@ -334,41 +318,56 @@ function WineDetail(): any {
           });
       }
     }
-  }, [comment, commentRef, __loadComments]);
-  //좋아요
-  const __updateLike = useCallback(
-    () => {
-      const data = {
-        windId: Number(wineId),
-        memberId: userId,
-      };
-      return axios({
-        method: "post",
-        url: process.env.BACK_EC2 + "wine/wishlist",
-        data: data,
-        // url: GetFeedurl,
-      })
-        .then((res) => {
-          console.log(res);
-          // if (res.data === "ok") {
-          //   setLikeCount(likeCount + 1);
-          //   setLikeState(res.data);
-          //   // dispatch(layoutAction.likeList(res.data));
-          // } else {
-          //   setLikeCount(likeCount - 1);
-          //   setLikeState(res.data);
-          //   // dispatch(layoutAction.likeList(res.data));
-          // }
-          // dispatch(feedAction.getFeed());
+  }, [comment, commentRef, userId, data, ratings, wineId, __loadComments]);
+  const __deleteComment = useCallback(
+    (id) => {
+      if (commentData) {
+        const token = localStorage.getItem("Token");
+        axios({
+          method: "DELETE",
+          url: process.env.BACK_EC2 + "wine/review/" + id,
         })
-        .catch((err) => {
-          return err;
-        });
+          .then((res) => {
+            __loadComments(); // 로드 comment 다시 부른다
+          })
+          .catch((err) => {});
+      }
     },
-    [
-      // likelist, layout, detailData, likeCount
-    ]
+    [commentData, __loadComments]
   );
+  //좋아요
+  const __updateLike = useCallback(() => {
+    const data = {
+      windId: Number(wineId),
+      memberId: userId,
+    };
+    return axios({
+      method: "post",
+      url: process.env.BACK_EC2 + "wine/wishlist",
+      data: data,
+      // url: GetFeedurl,
+    })
+      .then((res) => {
+        console.log(res);
+        // if (res.data === "ok") {
+        //   setLikeCount(likeCount + 1);
+        //   setLikeState(res.data);
+        //   // dispatch(layoutAction.likeList(res.data));
+        // } else {
+        //   setLikeCount(likeCount - 1);
+        //   setLikeState(res.data);
+        //   // dispatch(layoutAction.likeList(res.data));
+        // }
+        // dispatch(feedAction.getFeed());
+      })
+      .catch((err) => {
+        return err;
+      });
+  }, [
+    userId,
+    wineId,
+    // likelist, layout, detailData, likeCount
+  ]);
   const deleteComment: any = (Id: number) => {
     axios({
       method: "DELETE",

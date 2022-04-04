@@ -84,7 +84,7 @@ function WineMain() {
             </div>
           </article>
 
-          <article>
+          {/* <article>
             <div className="inner">
               <div className="txt">
                 <h2>03</h2>
@@ -95,13 +95,13 @@ function WineMain() {
                 <Image src={WineLogo2} alt="image" />
               </figure>
             </div>
-          </article>
+          </article> */}
 
           <article>
             <div className="inner">
               <div className="txt">
-                <h2>04</h2>
-                <p>자유 게시판</p>
+                <h2>03</h2>
+                <p>리뷰 게시판</p>
               </div>
 
               <figure>

@@ -40,7 +40,7 @@ const UpcomingitemSection: React.FC = () => {
       .catch((err) => {
         return err;
       });
-  }, [wineId]);
+  }, []);
 
   useEffect(() => {
     __GetWineSlider();

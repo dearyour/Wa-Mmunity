@@ -13,10 +13,10 @@ import styled from "@emotion/styled";
 // import "./styles.css";
 
 const sortOptionList = [
-  { value: "latest", name: "높은 가격 순" },
-  { value: "oldest", name: "낮은 가격 순" },
   { value: "ratingDesc", name: "높은 평점 순" },
   { value: "ratingAsc", name: "낮은 평점 순" },
+  { value: "latest", name: "높은 가격 순" },
+  { value: "oldest", name: "낮은 가격 순" },
 ];
 
 const filterOptionList = [
