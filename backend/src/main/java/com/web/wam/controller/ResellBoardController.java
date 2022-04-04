@@ -21,7 +21,7 @@ import java.util.Map;
 
 @RestController
 @Api(value = "리셀게시판 API", tags = { "resellboard" })
-@CrossOrigin(origins = { "*" }, methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE} , maxAge = 6000)
+@CrossOrigin(origins = { "*" }, methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS} , maxAge = 6000)
 @RequestMapping("/api/resellboard")
 public class ResellBoardController {
 
