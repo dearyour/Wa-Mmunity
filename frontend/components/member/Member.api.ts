@@ -10,7 +10,8 @@ export const onLogin = async (data: LoginCredentials) => {
   const requestConfig: AxiosRequestConfig = {
     method: "post",
     // url: "https://j6a101.p.ssafy.io/api/member/signin",
-    url: "https://localhost:8080/api/member/signin",
+    // url: "https://localhost:8080/api/member/signin",
+    url: process.env.BACK_EC2 + "member/signin",
     data,
   };
 
@@ -37,7 +38,8 @@ export const onSignup = async (data: SignupCredentials) => {
   const requestConfig: AxiosRequestConfig = {
     method: "post",
     // url: "https://j6a101.p.ssafy.io/api/member/signup",
-    url: "https://localhost:8080/api/member/signup",
+    // url: "https://localhost:8080/api/member/signup",
+    url: process.env.BACK_EC2 + "member/signup",
     data,
   };
 

@@ -24,15 +24,14 @@ export const KakaoLogin = (code: string | null) => {
 };
 
 export const GetUserState = (email: string | null, token: string | null) => {
-  console.log("#리덕스이메일모지" + email);
   return axios({
     method: "GET",
     url: GetUserurl + email,
     headers: { Authorization: "Bearer " + token },
   })
     .then((res) => {
-      console.log("##리덕스 유저값" + res);
-      return res.data;
+      console.log(res.data.object.member);
+      return res.data.object.member;
     })
     .catch((err) => {
       return err;
