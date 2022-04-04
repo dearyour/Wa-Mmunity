@@ -1,5 +1,5 @@
 import os
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, Response
 from flask_cors import CORS
 import pandas as pd
 from pandas import json_normalize
@@ -8,7 +8,6 @@ import random
 import pickle
 import json
 from models import related_wine, survey
-from flask import Response
 
 # flask 객체 인스턴스 생성
 app = Flask(__name__)
@@ -53,7 +52,7 @@ def mf():
         os.system('python train.py -i data/input -o data/output -a 1 -d 3')
 
         # 6. json파일 불러오기
-        with open('./recomm.json', 'r') as rcm_json:
+        with open('./data/output/recomm.json', 'r') as rcm_json:
             recomm = json.load(rcm_json)
 
         return recomm
