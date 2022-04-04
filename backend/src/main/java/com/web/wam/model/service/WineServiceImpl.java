@@ -302,6 +302,13 @@ public class WineServiceImpl implements WineService {
 			wineReviewResponse.setRating(review.getRating());
 			wineReviewResponse.setContent(review.getContent());
 			wineReviewResponse.setRegtime(review.getRegtime());
+
+			Optional<Member> member = memberRepository.findById(review.getMemberId());
+			member.ifPresent(selectedMember -> {
+				wineReviewResponse.setMemberName(selectedMember.getNickname());
+				wineReviewResponse.setMemberEmail(selectedMember.getEmail());
+			});
+
 			reviewList.add(wineReviewResponse);
 		}
 
@@ -439,6 +446,13 @@ public class WineServiceImpl implements WineService {
 			wineReviewResponse.setRating(review.getRating());
 			wineReviewResponse.setContent(review.getContent());
 			wineReviewResponse.setRegtime(review.getRegtime());
+
+			Optional<Member> member = memberRepository.findById(review.getMemberId());
+			member.ifPresent(selectedMember -> {
+				wineReviewResponse.setMemberName(selectedMember.getNickname());
+				wineReviewResponse.setMemberEmail(selectedMember.getEmail());
+			});
+
 			reviewList.add(wineReviewResponse);
 		}
 
