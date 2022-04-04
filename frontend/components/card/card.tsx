@@ -1,69 +1,97 @@
-import React, { memo } from "react";
-import styles from "./card.module.css";
-import styled from "styled-components";
-import { Rate } from "antd";
-import Image from "next/image";
+import React from "react";
+import styled from "@emotion/styled";
+import Link from "next/link";
+import { AiFillStar } from "react-icons/ai";
 const DEFAULT_IMAGE = "/images/wine2.png";
-const desc = ["1.0", "2.0", "3.0", "4.0", "5.0"];
+interface Props {
+  // linkUrl: string;
+  // title: string;
+  // year: string;
+  // posterPath: string;
+  // voteAverage: number;
+  data: any;
+}
 
-const Card = () => {
-  // const { name, company, title, email, message, theme, fileURL } = card;
-  const url =
-    // fileURL ||
-    DEFAULT_IMAGE;
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  display: block;
+  margin-inline: 10px;
+`;
 
-  // let state = {
-  //   value: 3,
-  // };
+const Base = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+`;
 
-  // let handleChange = (value) => {
-  //   setState({ value });
-  // };
+const ImageWrapper = styled.div`
+  width: 100%;
+  height: 300px;
+`;
 
-  // let { value } = state;
+const Image = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 4px;
+`;
 
-  const CategoryIcon = styled(Image)`
-    width: 14em;
-    height: 14em;
-    padding: 1em;
-    margin-left: 0.5em;
-    margin-right: 1em;
-    cursor: pointer;
-  `;
+const Info = styled.div`
+  text-align: left;
+  width: 100%;
+`;
 
-  return (
-    <li
-      className={`${styles.card} 
-    `}
-    >
-      {/* <li className={styles.avatar}>
-      </li> */}
-      <CategoryIcon src={url} alt="wineImage" width={400} height={400} />
-      {/* <img className={styles.avatar} src={url} alt="wineImage" /> */}
-      <div className={styles.info}>
-        <h1 className={styles.name}>페폴리 키안티 클라시코</h1>
-        <h1 className={styles.names}>Pèppoli Chianti Classico</h1>
-        <p className={styles.company}>안티노리 (Antinori)</p>
-        <p className={styles.title}>이태리 · 키안티 클라시코</p>
-        <p className={styles.message}>해외 평균가 : ₩25,892</p>
-      </div>
-      <div className={styles.right}>
-        <h1 className={styles.name}></h1>
-        <p className={styles.star}>
-          {/* <span>
-            <Rate tooltips={desc} onChange={handleChange} value={value} />
-            {value ? (
-              <span className="ant-rate-text" style={{}}>
-                　　　 {desc[value - 1]}
-              </span>
-            ) : (
-              ""
-            )}
-          </span> */}
-        </p>
-      </div>
-    </li>
-  );
-};
+const Title = styled.h4`
+  color: #292a32;
+  font-size: 16px;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 22px;
+  margin-bottom: 3px;
+  white-space: nowrap;
+  max-width: 200px;
+`;
+
+const Keyword = styled.div`
+  color: #292a32;
+  padding-bottom: 1px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 21px;
+`;
+
+const Average = styled.div`
+  color: #74747b;
+  font-size: 13px;
+  font-weight: 400;
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+`;
+
+const Card: React.FC<Props> = (data: any) => (
+  <StyledLink href={DEFAULT_IMAGE} passHref>
+    <Base>
+      <ImageWrapper>
+        <Image src={DEFAULT_IMAGE} alt={"image"} />
+      </ImageWrapper>
+      <Info>
+        <Title>와인이름</Title>
+        <Keyword>ss</Keyword>
+        <Average>
+          <span>평균</span>
+          <span>
+            &nbsp;
+            <AiFillStar />
+          </span>
+          <span>{}</span>
+        </Average>
+      </Info>
+    </Base>
+  </StyledLink>
+);
 
 export default Card;
+// export {};

@@ -13,6 +13,7 @@ const useStyles = makeStyles({
   toggle: {
     fontFamily: `'Raleway', sans-serif`,
     fontSize: ".8rem",
+    color: "#000",
     border: "1px solid rgba(0, 0, 0, 0.12)",
     borderRadius: "10px",
     "&.MuiToggleButtonGroup-groupedHorizontal:not(:last-child)": {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import AppLayout from "../components/layout/AppLayout";
 import Image from "next/image";
 import WineLogo from "/public/images/wine4.png";
@@ -6,9 +6,40 @@ import WineLogo2 from "/public/images/wine5.png";
 import WineLogo3 from "/public/images/wine2.png";
 import WineLogo4 from "/public/images/wine1.png";
 import Router from "next/router";
+import axios from "axios";
+import { userActions } from "store/slice/user";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../store/module";
 function WineMain() {
+  const { ondo } = useSelector((state: RootState) => state.user.users);
+  const dispatch = useDispatch();
+  const __GetUserState = (token: string | null, email: string | null) => {
+    return axios({
+      method: "GET",
+      url: process.env.BACK_EC2 + "member/" + email,
+      headers: { Authorization: "Bearer " + token },
+    })
+      .then((res) => {
+        console.log(res);
+        // console.log(res.data);
+        return res.data;
+      })
+      .catch((err) => {
+        return err;
+      });
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem("Token");
+    const email = localStorage.getItem("email");
+    __GetUserState(token, email);
+    dispatch(userActions.getUser(email));
+    // console.log(userstate.Object.email);
+    // dispatch(userActions.setnickname(userstate));
+  }, [dispatch]);
+  console.log(ondo);
   return (
-    <AppLayout>
+    <AppLayout title="와인 메인페이지">
       <main>
         <header>
           <h1>

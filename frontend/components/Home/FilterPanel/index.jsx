@@ -39,7 +39,7 @@ const FilterPanel = ({
         ))}
       </div>
       <div className="input-groupr">
-        <p className="label">지역</p>
+        <p className="label">포도 품종</p>
         {regions.map((region) => (
           <CheckboxProtons
             key={region.id}
