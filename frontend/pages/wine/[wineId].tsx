@@ -665,36 +665,49 @@ function WineDetail(): any {
                       {/* <CommentLine></CommentLine> */}
                       <CommentWrap>
                         {/*댓글렌더*/}
-                        {/* {commentData &&
+                        {commentData &&
                           commentData.reverse().map((now: any, idx: any) => {
                             return (
                               <div key={idx}>
                                 <CommentFeedUser>
-                                  <CommentProfile src={data.img}>
-                                    {now.rating}
-                                  </CommentProfile>
+                                  {/* <CommentProfile
+                                    src={data.img}
+                                  ></CommentProfile> */}
                                   <span>
                                     <CommentUsername>
-                                      {now.memberId}
+                                      {/* {now.rating} */}
+                                      <Rating
+                                        name="text-feedback"
+                                        value={now.rating}
+                                        readOnly
+                                        precision={0.5}
+                                        size="small"
+                                        // emptyIcon={
+                                        //   <StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />
+                                        // }
+                                      />
+                                    </CommentUsername>
+                                    <CommentUsername>
+                                      유저명 : {now.memberId}
                                     </CommentUsername>
                                   </span>
                                 </CommentFeedUser>
                                 <CommentContent>
-                                  {now.content} {now.wineId}
+                                  {now.content}
                                   {now.flag && (
-                                      <CommentDeleteBtn
-                                        onClick={() => {
-                                          // deleteComment(now.comment.commentId);
-                                        }}
-                                      >
-                                        삭제
-                                      </CommentDeleteBtn>
-                                    )}
+                                    <CommentDeleteBtn
+                                      onClick={() => {
+                                        // deleteComment(now.comment.commentId);
+                                      }}
+                                    >
+                                      삭제
+                                    </CommentDeleteBtn>
+                                  )}
                                 </CommentContent>
                                 <CommentDivider />
                               </div>
                             );
-                          })} */}
+                          })}
                       </CommentWrap>
                       <CommentLine></CommentLine>
                       <CommentInputWrap>
@@ -906,6 +919,7 @@ const CommentUsername = styled.span`
 `;
 const CommentCount = styled.div`
   padding: 2px;
+  margin-left: 140px;
 `;
 
 const CommentImg = styled.img`
@@ -938,6 +952,7 @@ const CommentInputWrap = styled.div`
 const CommentContent = styled.div`
   padding: 10px 4px;
   display: flex;
+  margin-left: 20px;
   justify-content: space-between;
 `;
 
