@@ -29,8 +29,12 @@ const PosterContainer = styled.div`
   height: 100%;
   background: #eae0da;
   padding: 14px 16px 30px;
+  // display: flex;
+`;
+
+const Backdrop = styled.div`
   display: flex;
-  // width: 100%;
+  width: 100%;
   height: 450px;
   margin-top: 20px;
   // background-image: linear-gradient(
@@ -40,10 +44,8 @@ const PosterContainer = styled.div`
   //   rgba(0, 0, 0, 0.5) 100%
   // );
   // background-color: #fff;
-  // overflow: hidden;
+  overflow: hidden;
 `;
-
-const Backdrop = styled.div``;
 
 const BackdropImage = styled.div<{ imageUrl: string }>`
   background: url(${({ imageUrl }) => imageUrl}) center center / cover no-repeat;
@@ -170,7 +172,7 @@ const StarRates = styled.div`
   width: 30%;
   height: 57px;
   margin: 0;
-  margin-top: 300px;
+  margin-top: 325px;
   // margin-left: 100px;
   text-align: center;
   // border-right: 1px solid white;
@@ -204,7 +206,7 @@ const ActionButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: -5px;
+  margin-top: 30px;
 `;
 
 const ActionButton = styled.button`
@@ -272,7 +274,7 @@ function WineDetail(): any {
       // const feedsId = detailData.feed.feedId;
       axios({
         method: "GET",
-        url: process.env.BACK_EC2 + "/wine/review" + wineId,
+        url: process.env.BACK_EC2 + "wine/review" + wineId,
         // url: "http://localhost:8080" + "/feed",
       })
         .then((res) => {
@@ -303,7 +305,7 @@ function WineDetail(): any {
           const token = localStorage.getItem("Token");
           axios({
             method: "POST",
-            url: process.env.BACK_EC2 + "/wine/review",
+            url: process.env.BACK_EC2 + "wine/review",
             data: data,
           })
             .then((res) => {
@@ -404,86 +406,88 @@ function WineDetail(): any {
             {/* 포스터 영역 */}
 
             <PosterContainer>
-              {/* <Backdrop> */}
-              <BackdropImage imageUrl={data.img}></BackdropImage>
-              <ContentWrapper>
-                <Title>{data.name}</Title>
+              <Backdrop>
+                <BackdropImage imageUrl={data.img}></BackdropImage>
+                <ContentWrapper>
+                  <Title>{data.name}</Title>
 
-                <AverageRate className="태양">
-                  · 와인 스타일 : {data.cat1}
-                </AverageRate>
-                <AverageRate>· 원산지 : {data.country}</AverageRate>
-                <AverageRate>· 지역 : {data.region1}</AverageRate>
-                <AverageRate>· 제조 회사 : {data.winery}</AverageRate>
-                <AverageRate>· 숙성 기간 : {data.ageing} 년</AverageRate>
-                <AverageRate>· 포도 품종 : {data.grape1}</AverageRate>
-                <Keyword>
-                  · 해외 평균가 : ₩
-                  {data
-                    ? data.price
-                        .toString()
-                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                    : ""}
-                </Keyword>
-                <Actions>
-                  {/* <Divider /> */}
-                  {/* 액션 버튼 */}
+                  <AverageRate className="태양">
+                    · 와인 스타일 : {data.cat1}
+                  </AverageRate>
+                  <AverageRate>· 원산지 : {data.country}</AverageRate>
+                  <AverageRate>· 지역 : {data.region1}</AverageRate>
+                  <AverageRate>· 제조 회사 : {data.winery}</AverageRate>
+                  <AverageRate>· 숙성 기간 : {data.ageing} 년</AverageRate>
+                  <AverageRate>· 포도 품종 : {data.grape1}</AverageRate>
+                  <Keyword>
+                    · 해외 평균가 : ₩
+                    {data
+                      ? data.price
+                          .toString()
+                          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                      : ""}
+                  </Keyword>
+                  <Actions>
+                    {/* <Divider /> */}
+                    {/* 액션 버튼 */}
 
-                  <ActionButtonContainer>
-                    <ActionButton>
-                      <ImgWrap onClick={__updateLike}>
-                        <Like>
-                          <LikeImg src="/assets/pngwing.com2.png"></LikeImg>
-                          {/* <LikeBaseImg className={likeState.like ? "likeanimated" : 'unlikeanimated'} onClick={DoLike} src="/assets/feed/pngwing.com2.png"></LikeBaseImg>
+                    <ActionButtonContainer>
+                      <ActionButton>
+                        <ImgWrap onClick={__updateLike}>
+                          <Like>
+                            <LikeImg src="/assets/pngwing.com2.png"></LikeImg>
+                            {/* <LikeBaseImg className={likeState.like ? "likeanimated" : 'unlikeanimated'} onClick={DoLike} src="/assets/feed/pngwing.com2.png"></LikeBaseImg>
                     <LikeBase src="/assets/feed/pngwing.com.png" onClick={DoLike}></LikeBase>
 
                     <span> {data ? likeState.count : 0}</span> */}
-                          {/* <LikeBaseImg className={likeState.like ? "likeanimated" : 'unlikeanimated'} onClick={DoLike} src="/assets/feed/pngwing.com2.png"></LikeBaseImg> */}
-                        </Like>
-                        {/* <CommentCount>
+                            {/* <LikeBaseImg className={likeState.like ? "likeanimated" : 'unlikeanimated'} onClick={DoLike} src="/assets/feed/pngwing.com2.png"></LikeBaseImg> */}
+                          </Like>
+                          {/* <CommentCount>
                     <CommentImg src="/assets/feed/pngwing.com5.png"></CommentImg>
                     <span> {data && data.comments ? data.comments.length : 0}</span>
                   </CommentCount> */}
-                      </ImgWrap>
-                      <PP>위시리스트</PP>
-                    </ActionButton>
-                  </ActionButtonContainer>
-                  <StarRate>
-                    <StarRateText>
-                      {/* ✨ 평점 : [ {data.ratingAvg} ] */}
-                    </StarRateText>
+                        </ImgWrap>
+                        <PP>위시리스트</PP>
+                      </ActionButton>
+                    </ActionButtonContainer>
+                    <StarRate>
+                      <StarRateText>
+                        {/* ✨ 평점 : [ {data.ratingAvg} ] */}
+                      </StarRateText>
 
-                    <RatingWrapper>
-                      {/* <Rating size="large" /> */}
-                    </RatingWrapper>
-                  </StarRate>
-                </Actions>
-              </ContentWrapper>
-              <StarRates>
-                <div>
-                  <Rating
-                    name="text-feedback"
-                    value={rating}
-                    readOnly
-                    precision={0.5}
-                    size="large"
-                    // emptyIcon={
-                    //   <StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />
-                    // }
-                  />
-                </div>
-                <StarRateText>✨ 평점 : [ {data.ratingAvg} ]</StarRateText>
-                <StarRateText>최근 리뷰 : [ {data.ratingNum} ]</StarRateText>
+                      <RatingWrapper>
+                        {/* <Rating size="large" /> */}
+                      </RatingWrapper>
+                    </StarRate>
+                  </Actions>
+                </ContentWrapper>
+                <StarRates>
+                  <div>
+                    <Rating
+                      name="text-feedback"
+                      value={rating}
+                      readOnly
+                      precision={0.5}
+                      size="large"
+                      // emptyIcon={
+                      //   <StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />
+                      // }
+                    />
+                  </div>
+                  <StarRateText>
+                    ✨ 평점 : [ {data ? data.ratingAvg.toFixed(1) : null}]
+                  </StarRateText>
+                  <StarRateText>최근 리뷰 : [ {data.ratingNum} ]</StarRateText>
 
-                {/* <CommentCount>
+                  {/* <CommentCount>
                     <CommentImg src="/assets/pngwing.com5.png"></CommentImg>
                     <span>
                       {" "}
                       {data && data.comments ? data.comments.length : 0}
                     </span>
                   </CommentCount> */}
-              </StarRates>
-              {/* </Backdrop> */}
+                </StarRates>
+              </Backdrop>
             </PosterContainer>
 
             {/* 메인 */}
@@ -855,7 +859,7 @@ const Inner = styled.div`
   /* margin-left: 20px; */
   width: 50%;
   padding-top: 10px;
-  border-left: 1px solid gray;
+  // border-left: 1px solid gray;
   // overflow: hidden;
   margin-left: 100px;
 `;
