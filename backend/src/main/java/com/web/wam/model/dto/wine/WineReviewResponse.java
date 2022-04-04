@@ -26,4 +26,10 @@ public class WineReviewResponse {
 
 	@ApiModelProperty(name = "regtime", example = "123")
 	private LocalDateTime regtime;
+
+	@ApiModelProperty(name = "member Name", example = "123")
+	private String memberName;
+
+	@ApiModelProperty(name = "member Email", example = "123")
+	private String memberEmail;
 }

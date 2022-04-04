@@ -7,6 +7,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.StringTokenizer;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -22,11 +26,7 @@ import com.web.wam.model.dto.wine.WineReviewPutRequest;
 import com.web.wam.model.dto.wine.WineReviewResponse;
 import com.web.wam.model.dto.wine.WineSurveyRequest;
 import com.web.wam.model.dto.wine.WineWishlistRequest;
-import com.web.wam.model.entity.ReviewBaseRecomm;
-import com.web.wam.model.entity.Wine;
-import com.web.wam.model.entity.WineReview;
-import com.web.wam.model.entity.WineSurvey;
-import com.web.wam.model.entity.WineWishlist;
+import com.web.wam.model.entity.*;
 import com.web.wam.model.repository.wine.ReviewBaseRecommRepository;
 import com.web.wam.model.repository.wine.ReviewBaseRecommRepositorySupport;
 import com.web.wam.model.repository.wine.WineRepository;
@@ -35,6 +35,7 @@ import com.web.wam.model.repository.wine.WineReviewRepository;
 import com.web.wam.model.repository.wine.WineSurveyRepository;
 import com.web.wam.model.repository.wine.WineWishlistRepository;
 import com.web.wam.model.repository.wine.WineWishlistRepositorySupport;
+import com.web.wam.model.repository.MemberRepository;
 
 @Service("wineService")
 public class WineServiceImpl implements WineService {
@@ -55,6 +56,9 @@ public class WineServiceImpl implements WineService {
 	ReviewBaseRecommRepository reviewBaseRecommRepository;
 	@Autowired
 	ReviewBaseRecommRepositorySupport reviewBaseRecommRepositorySupport;
+
+	@Autowired
+	MemberRepository memberRepository;
 
 	private void setWineResponse(Wine wine, WineResponse wineResponse) {
 		wineResponse.setWineId(wine.getWineId());
@@ -127,21 +131,21 @@ public class WineServiceImpl implements WineService {
 		List<WineResponse> wineList = new LinkedList<WineResponse>();
 		List<Wine> wines = new LinkedList<Wine>();
 		switch (sortType) {
-		case 1:
-			wines = wineRepositorySupport.sortByRatingAvg();
-			break;
+			case 1:
+				wines = wineRepositorySupport.sortByRatingAvg();
+				break;
 
-		case 2:
-			wines = wineRepositorySupport.sortByLowPrice();
-			break;
+			case 2:
+				wines = wineRepositorySupport.sortByLowPrice();
+				break;
 
-		case 3:
-			wines = wineRepositorySupport.sortByHighPrice();
-			break;
+			case 3:
+				wines = wineRepositorySupport.sortByHighPrice();
+				break;
 
-		case 4:
-			wines = wineRepositorySupport.sortByRatingNum();
-			break;
+			case 4:
+				wines = wineRepositorySupport.sortByRatingNum();
+				break;
 		}
 
 		for (Wine wine : wines) {
@@ -298,6 +302,13 @@ public class WineServiceImpl implements WineService {
 			wineReviewResponse.setRating(review.getRating());
 			wineReviewResponse.setContent(review.getContent());
 			wineReviewResponse.setRegtime(review.getRegtime());
+
+			Optional<Member> member = memberRepository.findById(review.getMemberId());
+			member.ifPresent(selectedMember -> {
+				wineReviewResponse.setMemberName(selectedMember.getNickname());
+				wineReviewResponse.setMemberEmail(selectedMember.getEmail());
+			});
+
 			reviewList.add(wineReviewResponse);
 		}
 
@@ -316,6 +327,13 @@ public class WineServiceImpl implements WineService {
 			wineReviewResponse.setRating(review.getRating());
 			wineReviewResponse.setContent(review.getContent());
 			wineReviewResponse.setRegtime(review.getRegtime());
+
+			Optional<Member> member = memberRepository.findById(review.getMemberId());
+			member.ifPresent(selectedMember -> {
+				wineReviewResponse.setMemberName(selectedMember.getNickname());
+				wineReviewResponse.setMemberEmail(selectedMember.getEmail());
+			});
+
 			reviewList.add(wineReviewResponse);
 		}
 
@@ -331,11 +349,12 @@ public class WineServiceImpl implements WineService {
 		RestTemplate restTemplate = new RestTemplate();
 
 		String wines = restTemplate.getForObject("http://j6a101.p.ssafy.io:8000/recomm/cb/" + wineId, String.class);
+
 		StringTokenizer st = new StringTokenizer(wines.substring(1, wines.length() - 1), ", ");
 		List<WineResponse> wineList = new LinkedList<WineResponse>();
 		while (st.hasMoreTokens()) {
-			WineResponse wineResponse = searchWineByWineId(Integer.parseInt(st.nextToken()));
-
+			int wine = Integer.parseInt(st.nextToken());
+			WineResponse wineResponse = searchWineByWineId(wine);
 			if (wineResponse.getName() != null) {
 				wineList.add(wineResponse);
 			}
@@ -351,22 +370,54 @@ public class WineServiceImpl implements WineService {
 
 		// user review 기반으로 예상 평점 계산
 		List<WineReviewFlaskResponse> wineReviews = searchAllReviewForFlask();
-		System.out.println("WineReview = " + wineReviews);
+		String reviews = "{ \"Results\" : [";
+		for (WineReviewFlaskResponse review : wineReviews) {
+			String s = "{ \"user\" : " + review.getUser() + ", \"wine\" : " + review.getWine() + ", \"rating\" : "
+					+ review.getRating() + "},";
 
-		HttpEntity<List<WineReviewFlaskResponse>> Results = new HttpEntity<>(wineReviews);
-		System.out.println("Results = " + Results);
+			reviews += s;
+		}
+
+		reviews = reviews.substring(0, reviews.length() - 1);
+		reviews += "] }";
 
 		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+				+ "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36");
+
+		HttpEntity<String> entity = new HttpEntity<String>(reviews, headers);
 
 		RestTemplate restTemplate = new RestTemplate();
-		String result = restTemplate.postForObject("http://j6a101.p.ssafy.io:8000/recomm/train-mf", Results,
+
+		String result = restTemplate.postForObject("http://j6a101.p.ssafy.io:8000/recomm/train-mf", entity,
 				String.class);
+		System.out.println(result.substring(11, result.length() - 2));
 
-		System.out.println(result);
+		JSONParser parser = new JSONParser();
+		Object obj = null;
 
-		// review_base_recomm 테이블에 값 저장하기
-		// reviewBaseRecommRepository.save(entity);
+		try {
+			obj = parser.parse(result.substring(11, result.length() - 2));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+		JSONArray jsonArr = (JSONArray) obj;
+
+		if (jsonArr.size() > 0) {
+			for (int i = 0; i < jsonArr.size(); i++) {
+				JSONObject jsonObj = (JSONObject) jsonArr.get(i);
+
+				// review_base_recomm 테이블에 값 저장하기
+				ReviewBaseRecomm expect = new ReviewBaseRecomm();
+				expect.setExpRating(Double.parseDouble(jsonObj.get("est_rating").toString()));
+				expect.setMemberId(Integer.parseInt(jsonObj.get("user").toString()));
+				expect.setWineId(Integer.parseInt(jsonObj.get("wine").toString()));
+				reviewBaseRecommRepository.save(expect);
+			}
+		}
+
 	}
 
 	private List<WineReviewFlaskResponse> searchAllReviewForFlask() {
@@ -395,6 +446,13 @@ public class WineServiceImpl implements WineService {
 			wineReviewResponse.setRating(review.getRating());
 			wineReviewResponse.setContent(review.getContent());
 			wineReviewResponse.setRegtime(review.getRegtime());
+
+			Optional<Member> member = memberRepository.findById(review.getMemberId());
+			member.ifPresent(selectedMember -> {
+				wineReviewResponse.setMemberName(selectedMember.getNickname());
+				wineReviewResponse.setMemberEmail(selectedMember.getEmail());
+			});
+
 			reviewList.add(wineReviewResponse);
 		}
 
