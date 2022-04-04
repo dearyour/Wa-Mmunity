@@ -20,7 +20,7 @@ function WineMain() {
       headers: { Authorization: "Bearer " + token },
     })
       .then((res) => {
-        console.log("##로그인정보" + JSON.stringify(res));
+        console.log(res);
         // console.log(res.data);
         return res.data;
       })

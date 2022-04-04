@@ -20,17 +20,19 @@ const Title = styled.h4`
 const UpcomingitemSection: React.FC = () => {
   const router = useRouter();
   const { wineId } = router.query;
-  const [data, setdata] = useState<any>("");
+  const [data, setdata] = useState<any>();
   // const { data: nowPlayingitemResponse, isLoading } = useNowPlayingitem();
   const __GetWineSlider = useCallback(() => {
     return axios({
       method: "GET",
-      url: process.env.BACK_EC2 + "wine/recommend/" + wineId,
+      // url: process.env.BACK_EC2 + "wine/recommend/" + wineId,
       // url: "http://j6a101.p.ssafy.io:8080/api/wine",
+      // url: "https://localhost:8080/api/wine",
+      url: process.env.BACK_EC2 + "wine/review" + wineId,
     })
       .then((res) => {
-        console.log("###Slider" + res);
-        setdata(res.data);
+        console.log(res);
+        setdata(res.data.object);
         return res.data;
       })
       .catch((err) => {
@@ -42,23 +44,22 @@ const UpcomingitemSection: React.FC = () => {
     __GetWineSlider();
   }, [__GetWineSlider]);
 
-  const getYear = (release_date: string) => release_date.split("-")[0] || "";
+  // const getYear = (release_date: string) => release_date.split("-")[0] || "";
 
   return (
     <Base>
       <Title>유사한 와인 추천</Title>
-      {data ? (
-        <div>Loading...</div>
-      ) : (
+
+      {data && (
         <Slider>
-          {data?.map((item: any) => (
+          {data.map((item: any) => (
             <Card
-              key={item.id}
+              key={item.windId}
               linkUrl={`/wine/${wineId}`}
-              title={item.title}
+              title={item.name}
               posterPath={item.img}
-              voteAverage={item.vote_average}
-              year={getYear(item.release_date)}
+              voteAverage={item.ratingAvg}
+              year={item.ratingNum}
             />
           ))}
         </Slider>
