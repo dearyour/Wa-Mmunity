@@ -1,8 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Slider from "@material-ui/core/Slider";
+import styled from "@emotion/styled";
 
+const VV = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
 const useStyles = makeStyles({
   root: {
     width: "100%",
@@ -36,6 +41,16 @@ const SliderProton = ({ value, changePrice }) => {
           track: classes.track,
         }}
       />
+      <VV>
+        <div>
+          최저 가격 : [&nbsp;
+          {value[0].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}&nbsp;]
+        </div>
+        <div>
+          최대 가격 : [&nbsp;
+          {value[1].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}&nbsp;]
+        </div>
+      </VV>
     </div>
   );
 };

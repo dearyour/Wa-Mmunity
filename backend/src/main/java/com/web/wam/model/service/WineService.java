@@ -1,11 +1,13 @@
 package com.web.wam.model.service;
 
 import java.util.List;
-import java.util.Map;
 
+import com.web.wam.model.dto.wine.WineFilterRequest;
 import com.web.wam.model.dto.wine.WineResponse;
+import com.web.wam.model.dto.wine.WineReviewFlaskResponse;
 import com.web.wam.model.dto.wine.WineReviewPostRequest;
 import com.web.wam.model.dto.wine.WineReviewPutRequest;
+import com.web.wam.model.dto.wine.WineReviewResponse;
 import com.web.wam.model.dto.wine.WineSurveyRequest;
 import com.web.wam.model.dto.wine.WineWishlistRequest;
 
@@ -17,7 +19,7 @@ public interface WineService {
 
 	List<WineResponse> searchWineByKeyword(String keyword);
 
-	WineResponse searchWindByWindId(int wineId);
+	WineResponse searchWineByWineId(int wineId);
 
 	void createReview(WineReviewPostRequest wineReviewInfo);
 
@@ -33,6 +35,18 @@ public interface WineService {
 
 	void saveWineSurvey(WineSurveyRequest wineSurveyRequest);
 
-	List<WineResponse> searchWineByFilter(Map filter);
+	List<WineResponse> searchWineByFilter(WineFilterRequest filter);
+
+	List<WineReviewResponse> searchReviewByMemberId(int memberId);
+
+	List<WineReviewResponse> searchReviewByWineId(int wineId);
+
+	List<WineResponse> recommendWineByWineId(int wineId);
+
+	void recommendWineByReview();
+
+	List<WineReviewResponse> searchAllReview();
+
+	List<WineReviewFlaskResponse> expectWineRateByMemberId(int memberId);
 
 }
