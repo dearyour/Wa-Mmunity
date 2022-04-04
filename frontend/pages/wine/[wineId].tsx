@@ -274,7 +274,7 @@ function WineDetail(): any {
       // const feedsId = detailData.feed.feedId;
       axios({
         method: "GET",
-        url: process.env.BACK_EC2 + "wine/review" + wineId,
+        url: process.env.BACK_EC2 + "wine/wineReview/" + wineId,
         // url: "http://localhost:8080" + "/feed",
       })
         .then((res) => {
@@ -331,7 +331,7 @@ function WineDetail(): any {
       };
       return axios({
         method: "post",
-        url: process.env.BACK_EC2 + "/wine/wishlist",
+        url: process.env.BACK_EC2 + "wine/wishlist",
         data: data,
         // url: GetFeedurl,
       })

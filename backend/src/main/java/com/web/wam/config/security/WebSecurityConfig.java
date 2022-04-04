@@ -54,7 +54,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 						, "/api/member/ismember/**"
 						, "/api/member/password"
 						, "/api/member/idcheck/**"
-//						, "/api/member/{email}"
+						, "/api/member/{email}"
 						, "/api/wine"
 						, "/api/wine/**"
 						, "/api/freeboard/**"
