@@ -46,7 +46,7 @@ const Home = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState<boolean>(false);
   const [nowFeedsnum, setNowFeedsNum] = useState(10);
-  const [sortType, setSortType] = useState<String>("latest");
+  const [sortType, setSortType] = useState<String>("ratingDesc");
   const [filter, setFilter] = useState<String>("latests");
 
   const loadmoredata = () => {
