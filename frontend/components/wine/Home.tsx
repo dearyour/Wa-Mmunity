@@ -5,17 +5,50 @@ import List from "../../components/Home/List";
 import SearchBar from "../../components/Home/SearchBar";
 import { dataList } from "../../constants";
 import axios from "axios";
-import Card from "../card/card";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch, useSelector } from "react-redux";
 import { feedAction } from "store/slice/feed";
 import { RootState } from "../../store/module";
+import styled from "@emotion/styled";
 // import "./styles.css";
+
+const sortOptionList = [
+  { value: "latest", name: "높은 가격 순" },
+  { value: "oldest", name: "낮은 가격 순" },
+  { value: "ratingDesc", name: "높은 평점 순" },
+  { value: "ratingAsc", name: "낮은 평점 순" },
+];
+
+const filterOptionList = [
+  { value: "latests", name: "높은평점 순서" },
+  { value: "oldests", name: "낮은평점 순서" },
+];
+
+const ControlMenu = React.memo(({ value, onChange, optionList }: any) => {
+  return (
+    <select
+      className="ControlMenu"
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+    >
+      {optionList.map((it: any, idx: number) => (
+        <option key={idx} value={it.value}>
+          {it.name}
+        </option>
+      ))}
+    </select>
+  );
+});
+ControlMenu.displayName = "ControlMenu";
+
 const Home = () => {
   //인피니티 스크롤
   const dispatch = useDispatch();
   const [loading, setLoading] = useState<boolean>(false);
   const [nowFeedsnum, setNowFeedsNum] = useState(10);
+  const [sortType, setSortType] = useState<String>("latest");
+  const [filter, setFilter] = useState<String>("latests");
+
   const loadmoredata = () => {
     if (loading) {
       return;
@@ -38,11 +71,13 @@ const Home = () => {
   const __GetWineState = useCallback(() => {
     return axios({
       method: "GET",
+      // url: process.env.BACK_EC2 + "wine",
       url: process.env.BACK_EC2 + "wine",
+      // url: "https://localhost:8080/api/wine",
       // url: "http://j6a101.p.ssafy.io:8080/api/wine",
     })
       .then((res) => {
-        console.log(res);
+        console.log("wineList##" + res);
         setWines(res.data.object);
         return res.data;
       })
@@ -59,19 +94,19 @@ const Home = () => {
   const [cuisines, setCuisines] = useState<any[]>([
     { id: 1, checked: false, label: "France" },
     { id: 2, checked: false, label: "Italy" },
-    { id: 3, checked: false, label: "Hungary" },
-    { id: 4, checked: false, label: "Portugal" },
+    { id: 3, checked: false, label: "Spain" },
+    { id: 4, checked: false, label: "Chile" },
     { id: 5, checked: false, label: "Germany" },
-    { id: 6, checked: false, label: "Spain" },
+    { id: 6, checked: false, label: "Argentina" },
   ]);
 
   const [regions, setRegions] = useState<any[]>([
-    { id: 1, checked: false, label: "Duriense" },
-    { id: 2, checked: false, label: "Central Valley" },
-    { id: 3, checked: false, label: "Vin de Pays" },
-    { id: 4, checked: false, label: "Mendoza" },
-    { id: 5, checked: false, label: "Piemonte" },
-    { id: 6, checked: false, label: "South Australia" },
+    { id: 1, checked: false, label: "Cabernet Sauvignon" },
+    { id: 2, checked: false, label: "Shiraz/Syrah" },
+    { id: 3, checked: false, label: "Pinot Noir" },
+    { id: 4, checked: false, label: "Chardonnay" },
+    { id: 5, checked: false, label: "Riesling" },
+    { id: 6, checked: false, label: "Sauvignon Blanc" },
   ]);
 
   const [resultsFound, setResultsFound] = useState(true);
@@ -101,6 +136,44 @@ const Home = () => {
   const handleChangePrice = (event: Event, value: any) => {
     setSelectedPrice(value);
   };
+
+  const filterCallBack = (item: any) => {
+    if (filter === "good") {
+      return parseInt(item.ratingAvg) <= 723;
+    } else if (filter === "bad") {
+      return parseInt(item.ratingAvg) > 723;
+    }
+    // if (filter === "latests") {
+    //   return (
+    //     parseFloat(b.ratingAvg.toFixed(1)) - parseFloat(a.ratingAvg.toFixed(1))
+    //   );
+    // } else {
+    //   return (
+    //     parseFloat(a.ratingAvg.toFixed(1)) - parseFloat(b.ratingAvg.toFixed(1))
+    //   );
+    // }
+  };
+  const compare = useCallback(
+    (a: any, b: any) => {
+      if (sortType === "latest") {
+        return parseInt(b.price) - parseInt(a.price);
+      } else if (sortType === "oldest") {
+        return parseInt(a.price) - parseInt(b.price);
+      } else if (sortType === "ratingDesc") {
+        return (
+          parseFloat(b.ratingAvg.toFixed(1)) -
+          parseFloat(a.ratingAvg.toFixed(1))
+        );
+      } else if (sortType === "ratingAsc") {
+        return (
+          parseFloat(a.ratingAvg.toFixed(1)) -
+          parseFloat(b.ratingAvg.toFixed(1))
+        );
+      }
+    },
+    [sortType]
+  );
+
   //////////////////////////////////////////////////////////////////
   const applyFilters = useCallback(() => {
     if (feedstate) {
@@ -149,7 +222,7 @@ const Home = () => {
 
       if (regionsChecked.length) {
         updatedList = updatedList.filter((item: any) =>
-          regionsChecked.includes(item.region1.toLowerCase())
+          regionsChecked.includes(item.grape1.toLowerCase())
         );
       }
 
@@ -165,18 +238,23 @@ const Home = () => {
       // Price Filter
       const minPrice = selectedPrice[0];
       const maxPrice = selectedPrice[1];
-
       updatedList = updatedList.filter(
         (item: any) => item.price >= minPrice && item.price <= maxPrice
       );
-
+      //가격순 평점순 정렬
+      // const newFilter = filter;
+      // updatedList = updatedList.filter((it: any) => filterCallBack(it));
+      // updatedList = updatedList.sort(filterCallBack);
+      updatedList = updatedList.sort(compare);
       // setList(updatedList);
       setWines(updatedList);
+      // setWines(updatedListr);
       console.log(updatedList);
 
       !updatedList.length ? setResultsFound(false) : setResultsFound(true);
     }
   }, [
+    compare,
     cuisines,
     regions,
     searchInput,
@@ -203,6 +281,7 @@ const Home = () => {
       {/* Search Bar */}
       <SearchBar
         value={searchInput}
+        data={wines}
         changeInput={(e: any) => setSearchInput(e.target.value)}
       />
       <div className="home_panelList-wrap">
@@ -220,6 +299,20 @@ const Home = () => {
             changeCheckeds={handleChangeCheckeds}
             changePrice={handleChangePrice}
           />
+          <div className="menu_wrapper">
+            <div className="left_col">
+              <ControlMenu
+                value={sortType}
+                onChange={setSortType}
+                optionList={sortOptionList}
+              />
+              {/* <ControlMenu
+                value={filter}
+                onChange={setFilter}
+                optionList={filterOptionList}
+              /> */}
+            </div>
+          </div>
         </div>
         {/* List & Empty View */}
         <div className="home_list-wrap">
@@ -256,4 +349,7 @@ const Home = () => {
   );
 };
 
+const SearchWrapper = styled.div`
+  display: flex;
+`;
 export default Home;

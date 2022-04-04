@@ -27,6 +27,11 @@ body {
   /* scrollbar-width: none; Firefox */
 }
 
+.ant-rate-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .emptyView-wrap {
   display: flex;
   justify-content: center;
@@ -75,7 +80,7 @@ body {
   font-size: 1.2rem;
   outline: none;
   border: none;
-  width: 30%;
+  width: 25%;
 }
 
 .searchBar-wrap input::placeholder {
@@ -94,7 +99,7 @@ body {
   margin-bottom: 2rem;
 }
 .input-groups {
-  margin-bottom: 2rem;
+  margin-bottom: 0.5rem;
   display: flex;
   /* justify-content: center; */
 }
@@ -109,6 +114,7 @@ body {
 } */
 .label-range {
   margin-bottom: 2.5rem;
+  font-weight: 600;
 }
 .listItem-wrap img {
   width: 100%;
@@ -138,4 +144,27 @@ body {
 .listItem-wrap footer p:first-child span {
   color: rgba(0, 0, 0, 0.26);
   font-weight: 600;
+}
+.menu_wrapper .left_col {
+  margin-top: 20px;
+  margin-bottom: 30px;
+
+  display: flex;
+  justify-content: center;
+}
+.ControlMenu {
+  margin-top: -10px;
+  margin-right: 18px;
+  border: none;
+  border-radius: 5px;
+  background-color: whitesmoke;
+
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
+
+  cursor: pointer;
+  font-family: "Raleway", sans-serif;
+  font-size: 15px;
 }

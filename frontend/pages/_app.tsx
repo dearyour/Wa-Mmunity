@@ -1,4 +1,5 @@
 import "../styles/globals.css";
+import "../styles/globalss.css";
 import type { AppProps } from "next/app";
 import wrapper from "../store";
 import "antd/dist/antd.css";
