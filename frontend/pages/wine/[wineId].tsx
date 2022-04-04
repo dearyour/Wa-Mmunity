@@ -15,6 +15,7 @@ import WineSlider from "components/WineSlider";
 import Card from "components/card/card";
 import NowPlayingSection from "components/WineSlider";
 import { RootState } from "store/module";
+import TestCarousel from "components/TestCarousel";
 const Base = styled.div`
   position: relative;
 `;
@@ -129,8 +130,8 @@ const Titless = styled.h1`
   font-size: 22px;
   font-weight: 700;
   line-height: 40px;
-  display: flex;
-  margin-left: 60px;
+  // display: flex;
+  margin-left: 90px;
   margin-top: 15px;
   margin-bottom: 30px;
 `;
@@ -759,7 +760,8 @@ function WineDetail(): any {
                 overview={data.overview}
               />
               <Similar id={id} /> */}
-                      <NowPlayingSection />
+                      {/* <NowPlayingSection /> */}
+                      <TestCarousel />
                       {/* <Slider>
                         {data.slice(0, 20).map((item: any) => {
                           <Card data={item} />;
@@ -768,51 +770,23 @@ function WineDetail(): any {
                       </Slider> */}
                     </Inner>
                   </InnerOut>
-                  {/* 기본정보 */}
 
-                  <Title>{data.name}</Title>
-                  <Keyword>{/* {year} ・ {genres} */}</Keyword>
-                  <AverageRate>
-                    평균 ★{/* {data.vote_average} ({data.vote_count}명) */}
-                  </AverageRate>
-                  <AverageRate>
-                    평균 ★{/* {data.vote_average} ({data.vote_count}명) */}
-                  </AverageRate>
-                  <AverageRate>
-                    평균 ★{/* {data.vote_average} ({data.vote_count}명) */}
-                  </AverageRate>
-                  <AverageRate>
-                    평균 ★{/* {data.vote_average} ({data.vote_count}명) */}
-                  </AverageRate>
+                  {/* 패딩전용  */}
                   <Actions>
                     <StarRate>
-                      <StarRateText>평가하기</StarRateText>
                       <RatingWrapper>
                         {/* <Rating size="large" /> */}
                       </RatingWrapper>
                     </StarRate>
                     <Divider />
-
-                    {/* 액션 버튼 */}
-
-                    <ActionButtonContainer>
-                      <ActionButton>
-                        {/* <AiOutlinePlus /> */}
-                        위시리스트
-                      </ActionButton>
-                      <ActionButton>
-                        {/* <FaPen /> */}
-                        코멘트
-                      </ActionButton>
-                      <ActionButton>
-                        {/* <AiFillEye /> */}
-                        보는중
-                      </ActionButton>
-                      <ActionButton>
-                        {/* <FiMoreHorizontal /> */}
-                        더보기
-                      </ActionButton>
-                    </ActionButtonContainer>
+                  </Actions>
+                  <Actions>
+                    <StarRate>
+                      <RatingWrapper>
+                        {/* <Rating size="large" /> */}
+                      </RatingWrapper>
+                    </StarRate>
+                    <Divider />
                   </Actions>
                 </ContentWrapper>
               </Containers>
@@ -820,13 +794,6 @@ function WineDetail(): any {
           </TopInfo>
 
           {/* 리뷰 정보 */}
-
-          <BottomInfo>
-            <ContentSectionContainer>
-              <span> {data.name}</span>
-            </ContentSectionContainer>
-            {/* <WineSlider /> */}
-          </BottomInfo>
         </>
       </Base>
     </AppLayout>
@@ -896,11 +863,10 @@ const InnerOut = styled.div`
 `;
 const Inner = styled.div`
   /* margin-left: 20px; */
-  width: 65%;
+  width: 70%;
   padding-top: 10px;
-  // border-left: 1px solid gray;
   // overflow: hidden;
-  margin-left: 120px;
+  margin-left: 125px;
 `;
 
 const CommentFeedUser = styled.div`
@@ -969,6 +935,10 @@ const CommentWrap = styled.div`
   padding-right: 10px;
   height: 23vh;
   width: 100%;
+  // border-left: 1px solid gray;
+  // border-top: 1px solid gray;
+  // border-right: 1px solid gray;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   &::-webkit-scrollbar-track {
     background-color: palevioletred;
   }
