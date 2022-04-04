@@ -26,11 +26,7 @@ import com.web.wam.model.dto.wine.WineReviewPutRequest;
 import com.web.wam.model.dto.wine.WineReviewResponse;
 import com.web.wam.model.dto.wine.WineSurveyRequest;
 import com.web.wam.model.dto.wine.WineWishlistRequest;
-import com.web.wam.model.entity.ReviewBaseRecomm;
-import com.web.wam.model.entity.Wine;
-import com.web.wam.model.entity.WineReview;
-import com.web.wam.model.entity.WineSurvey;
-import com.web.wam.model.entity.WineWishlist;
+import com.web.wam.model.entity.*;
 import com.web.wam.model.repository.wine.ReviewBaseRecommRepository;
 import com.web.wam.model.repository.wine.ReviewBaseRecommRepositorySupport;
 import com.web.wam.model.repository.wine.WineRepository;
@@ -39,6 +35,7 @@ import com.web.wam.model.repository.wine.WineReviewRepository;
 import com.web.wam.model.repository.wine.WineSurveyRepository;
 import com.web.wam.model.repository.wine.WineWishlistRepository;
 import com.web.wam.model.repository.wine.WineWishlistRepositorySupport;
+import com.web.wam.model.repository.MemberRepository;
 
 @Service("wineService")
 public class WineServiceImpl implements WineService {
@@ -59,6 +56,9 @@ public class WineServiceImpl implements WineService {
 	ReviewBaseRecommRepository reviewBaseRecommRepository;
 	@Autowired
 	ReviewBaseRecommRepositorySupport reviewBaseRecommRepositorySupport;
+
+	@Autowired
+	MemberRepository memberRepository;
 
 	private void setWineResponse(Wine wine, WineResponse wineResponse) {
 		wineResponse.setWineId(wine.getWineId());
@@ -131,21 +131,21 @@ public class WineServiceImpl implements WineService {
 		List<WineResponse> wineList = new LinkedList<WineResponse>();
 		List<Wine> wines = new LinkedList<Wine>();
 		switch (sortType) {
-		case 1:
-			wines = wineRepositorySupport.sortByRatingAvg();
-			break;
+			case 1:
+				wines = wineRepositorySupport.sortByRatingAvg();
+				break;
 
-		case 2:
-			wines = wineRepositorySupport.sortByLowPrice();
-			break;
+			case 2:
+				wines = wineRepositorySupport.sortByLowPrice();
+				break;
 
-		case 3:
-			wines = wineRepositorySupport.sortByHighPrice();
-			break;
+			case 3:
+				wines = wineRepositorySupport.sortByHighPrice();
+				break;
 
-		case 4:
-			wines = wineRepositorySupport.sortByRatingNum();
-			break;
+			case 4:
+				wines = wineRepositorySupport.sortByRatingNum();
+				break;
 		}
 
 		for (Wine wine : wines) {
@@ -320,6 +320,13 @@ public class WineServiceImpl implements WineService {
 			wineReviewResponse.setRating(review.getRating());
 			wineReviewResponse.setContent(review.getContent());
 			wineReviewResponse.setRegtime(review.getRegtime());
+
+			Optional<Member> member = memberRepository.findById(review.getMemberId());
+			member.ifPresent(selectedMember -> {
+				wineReviewResponse.setMemberName(selectedMember.getNickname());
+				wineReviewResponse.setMemberEmail(selectedMember.getEmail());
+			});
+
 			reviewList.add(wineReviewResponse);
 		}
 
