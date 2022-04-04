@@ -17,10 +17,10 @@ function WineMain() {
     return axios({
       method: "GET",
       url: process.env.BACK_EC2 + "member/" + email,
-      // headers: { Authorization: "Bearer " + token },
+      // headers: { Authorization: "Bearer" + token },
       // headers: { Authorization: "X-AUTH" + token },
-      // headers: { "X-Auth-Token": token },
-      headers: { Authorization: "X-Auth-Token" + token },
+      headers: { "X-AUTH-TOKEN": token },
+      // headers: { Authorization: "X-Auth-Token" + token },
     })
       .then((res) => {
         console.log(res);

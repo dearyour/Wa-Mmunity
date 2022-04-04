@@ -269,6 +269,7 @@ function WineDetail(): any {
   const [comment, setComment] = useState(""); // 평점작성
   const userId = useSelector((state: RootState) => state.user.users.id);
   console.log(userId);
+
   const __deleteComment = useCallback(
     (id) => {
       if (commentData) {
@@ -681,8 +682,11 @@ function WineDetail(): any {
                                       />
                                     </CommentUsername>
                                     <CommentUsername>
-                                      유저명 : {now.memberId}
+                                      {now.memberName}
                                     </CommentUsername>
+                                    <CommentUsernames>
+                                      {now.regtime}
+                                    </CommentUsernames>
                                   </span>
                                 </CommentFeedUser>
                                 <CommentContent>
@@ -910,7 +914,11 @@ const CommentProfile = styled.img`
   margin-top: 5px;
 `;
 const CommentUsername = styled.span`
-  margin-left: 10px;
+  margin-left: 12px;
+`;
+const CommentUsernames = styled.span`
+  font-size: 0.8em;
+  margin-left: 20px;
 `;
 const CommentCount = styled.div`
   padding: 2px;
