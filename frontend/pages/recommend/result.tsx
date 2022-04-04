@@ -45,7 +45,7 @@ const Recommend = () => {
             </Typography>
           </CardContent>
           <CardActions>
-            <Button size="large" type="primary">
+            <Button size="large">
               <strong
               onClick={() => {
                 Router.push(`/recommend/survey`)

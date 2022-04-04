@@ -1,5 +1,6 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import AppLayout from "../../components/layout/AppLayout";
+import { useSelector, useDispatch } from "react-redux";
 import { Progress } from "antd";
 import Slider from "../../components/Slider";
 import styled from "@emotion/styled";
@@ -12,6 +13,8 @@ import StyleDrawer from "components/wine/StyleInfo";
 import Rating from "@mui/material/Rating";
 import WineSlider from "components/WineSlider";
 import Card from "components/card/card";
+import NowPlayingSection from "components/WineSlider";
+import { RootState } from "store/module";
 const Base = styled.div`
   position: relative;
 `;
@@ -104,7 +107,7 @@ const Containers = styled.div`
 `;
 
 const ContentWrapper = styled.div`
-  margin: 0px 0px 0px 100px;
+  margin: 30px 0px 0px 100px;
   text-align: left;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 `;
@@ -120,6 +123,13 @@ const Titles = styled.h1`
   font-weight: 700;
   line-height: 40px;
   display: flex;
+`;
+const Titless = styled.h1`
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 40px;
+  display: flex;
+  margin-left: 20px;
 `;
 
 const Keyword = styled.div`
@@ -245,33 +255,94 @@ const SStar = styled(FaStar)`
 function WineDetail(): any {
   const router = useRouter();
   const { wineId } = router.query;
-  const [data, setdata] = useState<any>("");
+  const [data, setdata] = useState<any>(""); // 와인디테일데이터
   const [datas, setdatas] = useState<any>("");
-  const [rating, setRating] = useState<number>(0);
-  const [ratings, setRatings] = useState<number>(0);
+  const [rating, setRating] = useState<number>(0); //따로 와인평가점수
+  const [ratings, setRatings] = useState<number>(0); // 리뷰 쓰는 별점
   const [hover, setHover] = useState<Number>(0);
-
+  const [commentData, setCommentData] = useState([]);
   const [dats, setdats] = useState<any>("");
-  // const { data: nowPlayingitemResponse, isLoading } = useNowPlayingitem();
-  const __GetWineSlider = useCallback(() => {
-    return axios({
-      method: "GET",
-      url: process.env.BACK_EC2 + "wine/recommend/" + wineId,
-      // url: "http://j6a101.p.ssafy.io:8080/wine/recommend/" + wineId,
-    })
-      .then((res) => {
-        console.log("###Slider" + res);
-        setdatas(res.data);
-        // return res.data;
+  const commentRef: any = useRef(null);
+  const [comment, setComment] = useState(""); // 평점작성
+  const userId = useSelector((state: RootState) => state.user.users.id);
+  console.log(userId);
+  const __loadComments = useCallback(() => {
+    //평점 업로드 또는 불러올때 계속 새로고침
+    if (data) {
+      const token = localStorage.getItem("Token");
+      // const feedsId = detailData.feed.feedId;
+      axios({
+        method: "GET",
+        url: process.env.BACK_EC2 + "/wine/review" + wineId,
+        // url: "http://localhost:8080" + "/feed",
       })
-      .catch((err) => {
-        return err;
-      });
-  }, [wineId]);
+        .then((res) => {
+          // console.log(res.data);
+          // dispatch(layoutAction.updateDetailData(props.dto));
+          // dispatch(layoutAction.updateDetailData(commentData));
 
-  useEffect(() => {
-    __GetWineSlider();
-  }, [__GetWineSlider]);
+          // setCommentData(makeArray(res.data));
+          setCommentData(res.data.reverse());
+        })
+        .catch((err) => {
+          // console.log(err);
+        });
+    }
+  }, [wineId, data]);
+  // 평점 작성
+
+  const __uploadComment = useCallback(
+    (e) => {
+      e.preventDefault();
+      if (comment.length > 0 && comment.trim()) {
+        if (data) {
+          const data = {
+            windId: wineId,
+            content: comment,
+            memberId: userId,
+            rating: ratings,
+          };
+          const token = localStorage.getItem("Token");
+          axios({
+            method: "POST",
+            url: process.env.BACK_EC2 + "/wine/review",
+            data: data,
+          })
+            .then((res) => {
+              // console.log(res);
+              commentRef.current.value = "";
+              setComment("");
+              __loadComments();
+            })
+            .catch((err) => {
+              // console.log(err);
+            });
+        }
+      }
+    },
+    [data, userId, wineId, ratings, comment, commentRef, __loadComments]
+  );
+  // const __GetWineSlider = useCallback(() => {
+  //   return axios({
+  //     method: "GET",
+  //     // url: process.env.BACK_EC2 + "wine/recommend/" + wineId,
+  //     // url: "http://j6a101.p.ssafy.io:8080/api/wine",
+  //     // url: "https://localhost:8080/api/wine",
+  //     url: process.env.BACK_EC2 + "wine",
+  //   })
+  //     .then((res) => {
+  //       console.log("###Slider" + res);
+  //       setdatas(res.data);
+  //       return res.data;
+  //     })
+  //     .catch((err) => {
+  //       return err;
+  //     });
+  // }, [wineId]);
+
+  // useEffect(() => {
+  //   __GetWineSlider();
+  // }, [__GetWineSlider]);
 
   useEffect(() => {
     console.log(wineId);
@@ -527,10 +598,10 @@ function WineDetail(): any {
                         <CommentImg
                           style={{ backgroundImage: `url(${data.img})` }}
                         />
-                        <span> {data.name}</span>
+                        <Titless>와인 리뷰</Titless>
                       </CommentCount>
 
-                      <CommentLine></CommentLine>
+                      {/* <CommentLine></CommentLine> */}
                       <CommentWrap>
                         {/*댓글렌더*/}
                         {/* {data &&
@@ -591,16 +662,17 @@ function WineDetail(): any {
                         </div>
                         <CommentInput
                           type="text"
-                          // autoFocus={true}
+                          autoFocus={true}
                           placeholder="평가를 입력해 주세요"
-                          // ref={CommentRef}
+                          ref={commentRef}
                           onKeyUp={(e) => {
                             if (e.key === "Enter") {
+                              {
+                                __uploadComment(e);
+                              }
                             }
                           }}
-                          // onChange={(e) =>
-                          //    setComment(e.target.value)
-                          //   }
+                          onChange={(e) => setComment(e.target.value)}
                         ></CommentInput>
                       </CommentInputWrap>
                       {/* <DefaultInfo
@@ -611,8 +683,12 @@ function WineDetail(): any {
                 overview={data.overview}
               />
               <Similar id={id} /> */}
+                      <NowPlayingSection />
                       <Slider>
-                        <Card data={data}></Card>
+                        {/* {data.map((item: any) => {
+                          <Card data={item} />;
+                        })} */}
+                        <Card data={data} />
                       </Slider>
                     </Inner>
                   </InnerOut>

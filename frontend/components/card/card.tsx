@@ -71,7 +71,7 @@ const Average = styled.div`
   align-items: center;
 `;
 
-const Card: React.FC<Props> = (data) => (
+const Card: React.FC<Props> = (data: any) => (
   <StyledLink href={DEFAULT_IMAGE} passHref>
     <Base>
       <ImageWrapper>
