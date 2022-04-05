@@ -10,7 +10,6 @@ export const GetFeedState = () => {
     // url: "http://j6a101.p.ssafy.io:8080/api/wine",
   })
     .then((res) => {
-      console.log("##redux" + res);
       return res.data.object;
     })
     .catch((err) => {

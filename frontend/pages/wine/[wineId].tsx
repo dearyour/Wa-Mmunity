@@ -241,8 +241,10 @@ const ContentSectionContainer = styled.div`
   background: #fff;
   border-color: #e3e3e3;
 `;
-const PP = styled.div`
+const WishText = styled.div`
   font-size: 1.2rem;
+  margin-left: 10px;
+  margin-top: 25px;
 `;
 
 const Radio = styled.input`
@@ -267,6 +269,9 @@ function WineDetail(): any {
   const commentRef: any = useRef(null);
   const [comment, setComment] = useState(""); // 평점작성
   const userId = useSelector((state: RootState) => state.user.users.id);
+  const [likeState, setLikeState] = useState("delete"); //
+  const [likeCount, setLikeCount] = useState(0);
+  const [wishNumber, setWishNumber] = useState(0);
   // console.log(userId);
 
   const __loadComments = useCallback(() => {
@@ -336,61 +341,97 @@ function WineDetail(): any {
     },
     [commentData, __loadComments]
   );
-  //좋아요
+  //위시리스트
+  const __deleteLike = useCallback(() => {
+    if (likeState === "ok") {
+      console.log("##delete성공");
+      setLikeState("delete");
+      return axios({
+        method: "post",
+        url: process.env.BACK_EC2 + "wine/wishlist" + wishNumber,
+        data: data,
+        // url: GetFeedurl,
+      })
+        .then((res) => {
+          setLikeCount(res.data.object.length);
+          setLikeState("delete");
+          // __loadLike();
+        })
+        .catch((err) => {
+          return err;
+        });
+    } else {
+      __updateLike();
+    }
+  }, [
+    userId,
+    wineId,
+    likeState,
+    // likelist, layout, detailData, likeCount
+  ]);
+
   const __updateLike = useCallback(() => {
-    const data = {
-      windId: Number(wineId),
-      memberId: userId,
-    };
+    if (likeState === "delete") {
+      const data = {
+        wineId: Number(wineId),
+        memberId: userId,
+      };
+      return axios({
+        method: "post",
+        url: process.env.BACK_EC2 + "wine/wishlist",
+        data: data,
+        // url: GetFeedurl,
+      })
+        .then((res) => {
+          console.log("##ok성공");
+          setLikeCount(res.data.object.length);
+          setLikeState("ok");
+          // __loadLike();
+        })
+        .catch((err) => {
+          return err;
+        });
+    } else {
+      __deleteLike();
+    }
+  }, [
+    userId,
+    wineId,
+    likeState,
+    // likelist, layout, detailData, likeCount
+  ]);
+
+  const __loadLike = useCallback(() => {
     return axios({
-      method: "post",
-      url: process.env.BACK_EC2 + "wine/wishlist",
-      data: data,
+      method: "GET",
+      url: process.env.BACK_EC2 + "wine/wishlist/" + userId,
       // url: GetFeedurl,
     })
       .then((res) => {
-        console.log(res);
-        // if (res.data === "ok") {
-        //   setLikeCount(likeCount + 1);
-        //   setLikeState(res.data);
-        //   // dispatch(layoutAction.likeList(res.data));
-        // } else {
-        //   setLikeCount(likeCount - 1);
-        //   setLikeState(res.data);
-        //   // dispatch(layoutAction.likeList(res.data));
-        // }
-        // dispatch(feedAction.getFeed());
+        console.log(res.data);
+        if (res.data.object.includes(Number(wineId))) {
+          console.log("##여기통과하나");
+          setLikeCount(res.data.object.length);
+          setLikeState("ok");
+          let temp = res.data.object.filter((item: any) => {
+            item.wineId === Number(wineId);
+          });
+          setWishNumber(temp.id);
+        } else {
+          setLikeCount(res.data.object.length);
+          setLikeState("delete");
+        }
       })
       .catch((err) => {
         return err;
       });
-  }, [
-    userId,
-    wineId,
-    // likelist, layout, detailData, likeCount
-  ]);
+  }, [userId]);
+  console.log(likeState);
+  console.log(likeCount);
 
-  // const __GetWineSlider = useCallback(() => {
-  //   return axios({
-  //     method: "GET",
-  //     // url: process.env.BACK_EC2 + "wine/recommend/" + wineId,
-  //     // url: "http://j6a101.p.ssafy.io:8080/api/wine",
-  //     // url: "https://localhost:8080/api/wine",
-  //     url: process.env.BACK_EC2 + "wine",
-  //   })
-  //     .then((res) => {
-  //       console.log("###Slider" + res);
-  //       setdatas(res.data);
-  //       return res.data;
-  //     })
-  //     .catch((err) => {
-  //       return err;
-  //     });
-  // }, [wineId]);
-
-  // useEffect(() => {
-  //   __GetWineSlider();
-  // }, [__GetWineSlider]);
+  useEffect(() => {
+    __loadLike();
+  }, [__loadLike]);
 
   const __GetWineDetail = useCallback(() => {
     return axios({
@@ -469,20 +510,33 @@ function WineDetail(): any {
                       <ActionButton>
                         <ImgWrap onClick={__updateLike}>
                           <Like>
-                            <LikeImg src="/assets/pngwing.com2.png"></LikeImg>
-                            {/* <LikeBaseImg className={likeState.like ? "likeanimated" : 'unlikeanimated'} onClick={DoLike} src="/assets/feed/pngwing.com2.png"></LikeBaseImg>
-                    <LikeBase src="/assets/feed/pngwing.com.png" onClick={DoLike}></LikeBase>
+                            {/* <LikeImg src="/assets/pngwing.com2.png"></LikeImg> */}
+                            <LikeBaseImg
+                              className={
+                                likeState === "ok"
+                                  ? "likeanimated"
+                                  : "unlikeanimated"
+                              }
+                              onClick={
+                                // likeState === "ok" ? __deleteLike :
+                                __updateLike
+                              }
+                              src="/assets/pngwing.com2.png"
+                            ></LikeBaseImg>
+                            <LikeBase
+                              src="/assets/pngwing.com.png"
+                              onClick={__updateLike}
+                            ></LikeBase>
 
-                    <span> {data ? likeState.count : 0}</span> */}
-                            {/* <LikeBaseImg className={likeState.like ? "likeanimated" : 'unlikeanimated'} onClick={DoLike} src="/assets/feed/pngwing.com2.png"></LikeBaseImg> */}
+                            {/* <span> {data ? likeCount : 0}</span> */}
                           </Like>
                           {/* <CommentCount>
                     <CommentImg src="/assets/feed/pngwing.com5.png"></CommentImg>
                     <span> {data && data.comments ? data.comments.length : 0}</span>
                   </CommentCount> */}
                         </ImgWrap>
-                        <PP>위시리스트</PP>
                       </ActionButton>
+                      <WishText>위시리스트</WishText>
                     </ActionButtonContainer>
                     <StarRate>
                       <StarRateText>
@@ -836,6 +890,9 @@ const Like = styled.div`
   padding: 2px;
   margin-right: 5px;
   position: relative;
+  &:active {
+    animation: box-ani 0.05s linear forwards;
+  }
 `;
 
 const LikeImg = styled.img`
@@ -845,16 +902,14 @@ const LikeImg = styled.img`
 `;
 
 const LikeBase = styled.img`
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 2rem;
   position: absolute;
   top: 0;
   left: 0;
 `;
 const LikeBaseImg = styled.img`
   transition: all 1s ease-out;
-  height: 1.5rem;
-  width: 1.5rem;
+  width: 2rem;
   position: absolute;
   top: 0;
   left: 0;
