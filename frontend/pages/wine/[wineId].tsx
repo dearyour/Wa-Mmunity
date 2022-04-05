@@ -267,7 +267,7 @@ function WineDetail(): any {
   const commentRef: any = useRef(null);
   const [comment, setComment] = useState(""); // 평점작성
   const userId = useSelector((state: RootState) => state.user.users.id);
-  console.log(userId);
+  // console.log(userId);
 
   const __loadComments = useCallback(() => {
     //평점 업로드 또는 불러올때 계속 새로고침
@@ -329,6 +329,7 @@ function WineDetail(): any {
         })
           .then((res) => {
             __loadComments(); // 로드 comment 다시 부른다
+            __GetWineDetail();
           })
           .catch((err) => {});
       }
@@ -368,12 +369,7 @@ function WineDetail(): any {
     wineId,
     // likelist, layout, detailData, likeCount
   ]);
-  const deleteComment: any = (Id: number) => {
-    axios({
-      method: "DELETE",
-      url: process.env.BACK_EC2 + "/comment/delete/" + String(wineId),
-    }).then((res) => {});
-  };
+
   // const __GetWineSlider = useCallback(() => {
   //   return axios({
   //     method: "GET",
