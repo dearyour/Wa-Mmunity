@@ -2,19 +2,12 @@ package com.web.wam.controller;
 
 import java.util.List;
 
+import com.web.wam.model.dto.wine.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.web.wam.model.dto.BaseResponse;
-import com.web.wam.model.dto.wine.WineFilterRequest;
-import com.web.wam.model.dto.wine.WineResponse;
-import com.web.wam.model.dto.wine.WineReviewFlaskResponse;
-import com.web.wam.model.dto.wine.WineReviewPostRequest;
-import com.web.wam.model.dto.wine.WineReviewPutRequest;
-import com.web.wam.model.dto.wine.WineReviewResponse;
-import com.web.wam.model.dto.wine.WineSurveyRequest;
-import com.web.wam.model.dto.wine.WineWishlistRequest;
 import com.web.wam.model.service.WineService;
 
 import io.swagger.annotations.Api;
@@ -224,7 +217,7 @@ public class WineController {
 
 	public ResponseEntity<? extends BaseResponse> searchWishlistByMemberId(
 			@ApiParam(value = "회원 아이디 정보", required = true) @PathVariable("memberId") int memberId) {
-		List<Integer> wishlist = wineService.searchWishlistByMemberId(memberId);
+		List<WineWishlistResponse> wishlist = wineService.searchWishlistByMemberId(memberId);
 		return ResponseEntity.status(200).body(BaseResponse.of(200, wishlist));
 	}
 

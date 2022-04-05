@@ -3,12 +3,15 @@ import sys
 import pickle
 import numpy as np
 import json
-from models import matrix_factorization
+import matrix_factorization
 
 def load(path):
     return pickle.load(open(path, "rb"))
 
 def recommend(R_train, R_predicted, output_path):
+    idx_user = load('./data/idx_user.pkl')
+    idx_wine = load('./data/idx_wine.pkl')
+
     # write train ratings
     with open(output_path + '/train_ratings.txt', 'w') as f:
         rows, cols = R_train.nonzero()
@@ -16,6 +19,7 @@ def recommend(R_train, R_predicted, output_path):
             f.write('%d::%s::%.1f\n' % (row, col, R_train[row, col]))
             # remove train data from recommendation
             R_predicted[row, col] = 0
+    
     # write recommend ratings
     recomm_dict = { 'Results': [] }
     with open(output_path + '/recommend_ratings.txt', 'w') as f:
@@ -24,13 +28,14 @@ def recommend(R_train, R_predicted, output_path):
                 if R_predicted[i, j] > 1:
                     f.write('%d::%s""%.3f\n' % (i, j, R_predicted[i, j]))
                     tmp_dict = {
-                        'user': int(i),
-                        'wine': int(j),
+                        'user': idx_user[int(i)],
+                        'wine': idx_wine[int(j)],
                         'est_rating': float(R_predicted[i, j])
                     }
                     # print(tmp_dict)
                     recomm_dict['Results'].append(tmp_dict)
-    with open(output_path + 'recomm.json','w') as f:
+
+    with open(output_path + '/recomm.json','w') as f:
         json.dump(recomm_dict,f)
 
 if __name__ == '__main__':
@@ -57,13 +62,7 @@ if __name__ == '__main__':
     R_valid = load(input_path + '/R_valid.pkl')
 
     alg = args.algorithm
-    if alg == 0:
-        # KNN
-        # k = args.k
-        # R_predicted = knn.predict(R_train, k)
-        # recommend(R_train, R_predicted, item_ids, '.')
-        pass
-    elif alg == 1:
+    if alg == 1:
         d = args.dim
         lambda_u = args.lambda_u
         lambda_v = args.lambda_v
@@ -76,4 +75,4 @@ if __name__ == '__main__':
                                    max_iter=max_iter, lambda_u=lambda_u, lambda_v=lambda_v, dimension=d, theta=theta)
         recommend(R_train, R_predicted, './data/output')
     else:
-        print("select algorithm from 0 to 2")
+        print("not correct algorithm number")
