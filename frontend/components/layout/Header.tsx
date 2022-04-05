@@ -20,6 +20,11 @@ import styled from "@emotion/styled";
 //   // border: solid 2px fff;
 //   // background-color: #eae0da;
 // `;
+const Logout = () => {
+  localStorage.removeItem("Token");
+  Router.push("/");
+};
+const MenuLink = styled.div``;
 function Header(): JSX.Element {
   const [searchInput, setSearchInput] = useState("");
   return (
@@ -52,8 +57,8 @@ function Header(): JSX.Element {
               changeInput={(e: any) => setSearchInput(e.target.value)}
             /> */}
             <div className="search">
-              <input type="text" />
-              <SearchOutlined />
+              {/* <input type="text" />
+              <SearchOutlined /> */}
               <span className="material-icons"> </span>
             </div>
             <ul className="menu">
@@ -63,9 +68,9 @@ function Header(): JSX.Element {
                 </Link>
               </li>
               <li>
-                <Link href="/" passHref>
+                <MenuLink onClick={Logout}>
                   <a>Log out</a>
-                </Link>
+                </MenuLink>
               </li>
             </ul>
           </div>

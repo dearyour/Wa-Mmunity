@@ -13,11 +13,14 @@ import { RootState } from "../store/module";
 function WineMain() {
   const { ondo } = useSelector((state: RootState) => state.user.users);
   const dispatch = useDispatch();
-  const __GetUserState = (token: string | null, email: string | null) => {
+  const __GetUserState = (token: any | null, email: string | null) => {
     return axios({
       method: "GET",
       url: process.env.BACK_EC2 + "member/" + email,
-      headers: { Authorization: "Bearer " + token },
+      // headers: { Authorization: "Bearer" + token },
+      // headers: { Authorization: "X-AUTH" + token },
+      headers: { "X-AUTH-TOKEN": token },
+      // headers: { Authorization: "X-Auth-Token" + token },
     })
       .then((res) => {
         console.log(res);
@@ -81,7 +84,7 @@ function WineMain() {
             </div>
           </article>
 
-          <article>
+          {/* <article>
             <div className="inner">
               <div className="txt">
                 <h2>03</h2>
@@ -92,13 +95,13 @@ function WineMain() {
                 <Image src={WineLogo2} alt="image" />
               </figure>
             </div>
-          </article>
+          </article> */}
 
           <article>
             <div className="inner">
               <div className="txt">
-                <h2>04</h2>
-                <p>자유 게시판</p>
+                <h2>03</h2>
+                <p>리뷰 게시판</p>
               </div>
 
               <figure>

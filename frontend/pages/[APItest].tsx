@@ -1,64 +1,123 @@
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import Link from "next/link";
 import { Button, Radio, Form, Input, Menu, Dropdown } from "antd";
 import { test } from "../store/api/User.api";
 import { DownloadOutlined } from "@ant-design/icons";
-
-// function handleMenuClick(e) {
-//   console.log("click", e);
-// }
-// const menu = (
-//   <Menu onClick={handleMenuClick}>
-//     <Menu.Item key="1">1st item</Menu.Item>
-//     <Menu.Item key="2">2nd item</Menu.Item>
-//     <Menu.Item key="3">3rd item</Menu.Item>
-//   </Menu>
-// );
+import axios from "axios";
+import NowPlayingSection from "components/WineSlider";
+import TestCarousel from "components/TestCarousel";
 
 const Login: any = () => {
-  return (
-    <LoginForm>
-      <div className="btn" style={{ marginBottom: "10px" }}>
-        button
-      </div>
-      <div className="btn btn--brown" style={{ marginBottom: "10px" }}>
-        button
-      </div>
-      <div className="btn btn--reverse" style={{ marginBottom: "10px" }}>
-        button
-      </div>
-      <div className="btn btn--gold" style={{ marginBottom: "10px" }}>
-        button
-      </div>
-      <Button type="primary">Primary Button</Button>
-      <Button>Default Button</Button>
-      <Button type="dashed">Dashed Button</Button>
-      <br />
-      <Button type="text">Text Button</Button>
-      <Button type="link">Link Button</Button>
-      {/* <Dropdown.Button overlay={menu}>Actions</Dropdown.Button> */}
+  const [data, setdata] = useState<any>(""); // 와인디테일데이터
+  useEffect(() => {
+    axios({
+      method: "get",
+      url: process.env.BACK_EC2 + "wine/" + 271,
+    })
+      .then((res) => {
+        setdata(res);
+        console.log(res.data);
+        // router.push("/wine/" + wineId);
+      })
+      .catch((err) => {
+        // Router.push("/404");
+      });
+  }, []);
+  ////////////////리뷰데이터
+  useEffect(() => {
+    axios({
+      method: "GET",
+      // url: process.env.BACK_EC2 + "wine/wineReview/" + "271",
+      url: "https://localhost:8080/api/" + "wine/wineReview/" + "271",
+      // url: "http://localhost:8080" + "/feed",
+    })
+      .then((res) => {
+        // console.log(res.data);
+        // dispatch(layoutAction.updateDetailData(props.dto));
+        // dispatch(layoutAction.updateDetailData(commentData));
 
-      {/* <LoginDiv>
-        <LoginLabel htmlFor="user-id">이메일</LoginLabel>
-        <LoginInput name="user-id" required />
-      </LoginDiv>
-      <LoginDiv>
-        <LoginLabel htmlFor="user-password">비밀번호</LoginLabel>
-        <LoginInput name="user-password" type="password" required />
-      </LoginDiv>
-      <LoginButton>로그인</LoginButton>
-      <div>
-        <Link href="">
-          <a>비밀번호 찾기 </a>
-        </Link>
-        |
-        <Link href="">
-          <a> 회원가입</a>
-        </Link>
-        <a href={test}>카카오 테스트</a>
-      </div> */}
-    </LoginForm>
+        // setCommentData(makeArray(res.data));
+        console.log(res.data);
+      })
+      .catch((err) => {
+        // console.log(err);
+      });
+  }, []);
+  const loadComments = () => {
+    //평점 업로드 또는 불러올때 계속 새로고침
+    // const feedsId = detailData.feed.feedId;
+    axios({
+      method: "GET",
+      // url: process.env.BACK_EC2 + "wine/wineReview/" + "271",
+      url: "https://localhost:8080/api/" + "wine/wineReview/" + "271",
+      // url: "http://localhost:8080" + "/feed",
+    })
+      .then((res) => {
+        // console.log(res.data);
+        // dispatch(layoutAction.updateDetailData(props.dto));
+        // dispatch(layoutAction.updateDetailData(commentData));
+
+        // setdata(res.data.obejct);
+        console.log(res.data);
+      })
+      .catch((err) => {
+        // console.log(err);
+      });
+  };
+  useEffect(() => {
+    loadComments();
+  });
+  const TT = styled.div`
+    // display: block;
+  `;
+  return (
+    <TT>
+      {/* <NowPlayingSection /> */}
+      <TestCarousel />
+      {/* <HotChallenge top10={data}></HotChallenge> */}
+    </TT>
+    // <LoginForm>
+    //   <div className="btn" style={{ marginBottom: "10px" }}>
+    //     button
+    //   </div>
+    //   <div className="btn btn--brown" style={{ marginBottom: "10px" }}>
+    //     button
+    //   </div>
+    //   <div className="btn btn--reverse" style={{ marginBottom: "10px" }}>
+    //     button
+    //   </div>
+    //   <div className="btn btn--gold" style={{ marginBottom: "10px" }}>
+    //     button
+    //   </div>
+    //   <Button type="primary">Primary Button</Button>
+    //   <Button>Default Button</Button>
+    //   <Button type="dashed">Dashed Button</Button>
+    //   <br />
+    //   <Button type="text">Text Button</Button>
+    //   <Button type="link">Link Button</Button>
+    //   {/* <Dropdown.Button overlay={menu}>Actions</Dropdown.Button> */}
+
+    //   {/* <LoginDiv>
+    //     <LoginLabel htmlFor="user-id">이메일</LoginLabel>
+    //     <LoginInput name="user-id" required />
+    //   </LoginDiv>
+    //   <LoginDiv>
+    //     <LoginLabel htmlFor="user-password">비밀번호</LoginLabel>
+    //     <LoginInput name="user-password" type="password" required />
+    //   </LoginDiv>
+    //   <LoginButton>로그인</LoginButton>
+    //   <div>
+    //     <Link href="">
+    //       <a>비밀번호 찾기 </a>
+    //     </Link>
+    //     |
+    //     <Link href="">
+    //       <a> 회원가입</a>
+    //     </Link>
+    //     <a href={test}>카카오 테스트</a>
+    //   </div> */}
+    // </LoginForm>
   );
 };
 const LoginInput = styled(Input)`
