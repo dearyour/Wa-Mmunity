@@ -347,7 +347,7 @@ function WineDetail(): any {
       console.log("##delete성공");
       setLikeState("delete");
       return axios({
-        method: "post",
+        method: "delete",
         url: process.env.BACK_EC2 + "wine/wishlist" + wishNumber,
         data: data,
         // url: GetFeedurl,
