@@ -311,6 +311,7 @@ function WineDetail(): any {
             commentRef.current.value = "";
             setComment("");
             __loadComments();
+            __GetWineDetail();
           })
           .catch((err) => {
             // console.log(err);
@@ -395,25 +396,46 @@ function WineDetail(): any {
   //   __GetWineSlider();
   // }, [__GetWineSlider]);
 
-  useEffect(() => {
-    console.log(wineId);
-    if (!wineId) {
-      return;
-    }
-    axios({
-      method: "get",
+  const __GetWineDetail = useCallback(() => {
+    return axios({
+      method: "GET",
       url: process.env.BACK_EC2 + "wine/" + wineId,
+      // url: "https://localhost:8080/api/wine",
+      // url: "http://j6a101.p.ssafy.io:8080/api/wine",
     })
       .then((res) => {
-        console.log(res.data);
         setdata(res.data.object);
         setRating(res.data.object.ratingAvg);
-        // router.push("/wine/" + wineId);
+        return res.data;
       })
       .catch((err) => {
-        // Router.push("/404");
+        return err;
       });
   }, [wineId]);
+
+  useEffect(() => {
+    __GetWineDetail();
+  }, [__GetWineDetail]);
+  //유즈이펙트로 곧바로 부르기
+  // useEffect(() => {
+  //   console.log(wineId);
+  //   if (!wineId) {
+  //     return;
+  //   }
+  //   axios({
+  //     method: "get",
+  //     url: process.env.BACK_EC2 + "wine/" + wineId,
+  //   })
+  //     .then((res) => {
+  //       console.log(res.data);
+  //       setdata(res.data.object);
+  //       setRating(res.data.object.ratingAvg);
+  //       // router.push("/wine/" + wineId);
+  //     })
+  //     .catch((err) => {
+  //       // Router.push("/404");
+  //     });
+  // }, [wineId]);
   return (
     <AppLayout>
       <Base>
