@@ -2,11 +2,9 @@ package com.web.wam.model.service;
 
 import java.nio.charset.Charset;
 import java.time.LocalDateTime;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
-import java.util.StringTokenizer;
+import java.util.*;
 
+import com.web.wam.model.dto.wine.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -18,14 +16,6 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.web.wam.model.dto.wine.WineFilterRequest;
-import com.web.wam.model.dto.wine.WineResponse;
-import com.web.wam.model.dto.wine.WineReviewFlaskResponse;
-import com.web.wam.model.dto.wine.WineReviewPostRequest;
-import com.web.wam.model.dto.wine.WineReviewPutRequest;
-import com.web.wam.model.dto.wine.WineReviewResponse;
-import com.web.wam.model.dto.wine.WineSurveyRequest;
-import com.web.wam.model.dto.wine.WineWishlistRequest;
 import com.web.wam.model.entity.*;
 import com.web.wam.model.repository.wine.ReviewBaseRecommRepository;
 import com.web.wam.model.repository.wine.ReviewBaseRecommRepositorySupport;
@@ -233,9 +223,18 @@ public class WineServiceImpl implements WineService {
 	}
 
 	@Override
-	public List<Integer> searchWishlistByMemberId(int memberId) {
-		List<Integer> wishlist = wineWishlistRepositorySupport.searchWishlistByMemberId(memberId);
-		return wishlist;
+	public List<WineWishlistResponse> searchWishlistByMemberId(int memberId) {
+		List<WineWishlist> wishlist = wineWishlistRepository.findByMemberId(memberId);
+		List<WineWishlistResponse> responseList = new ArrayList<WineWishlistResponse>();
+		for (WineWishlist wish:
+			 wishlist) {
+			WineWishlistResponse res = new WineWishlistResponse();
+			res.setMemberId(wish.getMemberId());
+			res.setWineId(wish.getWineId());
+			res.setId(wish.getId());
+			responseList.add(res);
+		}
+		return responseList;
 	}
 
 	@Override
