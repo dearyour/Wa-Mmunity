@@ -34,11 +34,6 @@
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/recommend/survey.js"
-    ],
-    "/wineindex": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/wineindex.js"
     ]
   },
   "ampFirstPages": []

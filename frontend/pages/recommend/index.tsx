@@ -9,6 +9,7 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Router from "next/router";
 import Grid from '@mui/material/Grid';
+import WineCardList from '../../components/recomm/WineCardList'
 
 const theme = createTheme({
   palette: {
@@ -27,6 +28,7 @@ const theme = createTheme({
 
 
 const Recommend = () => {
+  const res = [55,44,33,22,11]
   return (
     <AppLayout>
       <ThemeProvider theme={theme}>
@@ -55,7 +57,7 @@ const Recommend = () => {
         </Card>
         </Grid>
         <Grid item xs={8} justifyContent="center">
-          <div>내용</div>
+          <WineCardList res={res}></WineCardList>
         </Grid>
       </Grid>
       </ThemeProvider>
