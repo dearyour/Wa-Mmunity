@@ -63,6 +63,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 						, "/api/resellboard"
 						, "/api/bigdata/**"
 						, "/api/bigdata"
+						, "/v2/api-docs", "/configuration/ui", "/swagger-resources/**",
+						"/configuration/security", "/swagger-ui.html", "/webjars/**"
 						//"*", "/*", "/*/*", "/*/*/*", "/*/*/*", "/*/*/*/*", "/*/*/*/*/*", "/*/*/*/*/*/*", "/*/*/*/*/*/*/*", "/*/*/*/*/*/*/*/*"
 				).permitAll() // 가입 및 인증 주소는 누구나 접근가능
 				.anyRequest().hasRole("USER") // 그외 나머지 요청은 모두 인증된 회원만 접근 가능
