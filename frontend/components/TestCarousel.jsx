@@ -57,7 +57,7 @@ function TestCarousel() {
 
   return (
     <>
-      <HStyle style={{ textAlign: "center" }}>추천 제품</HStyle>
+      <HStyle style={{ textAlign: "center" }}>추천 와인</HStyle>
       <div className="star">
         <Carousel breakPoints={breakPoints}>
           {data &&

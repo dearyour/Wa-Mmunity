@@ -493,7 +493,7 @@ function WineDetail(): any {
                     />
                   </div>
                   <StarRateText>
-                    ✨ 평점 : [ {data ? data.ratingAvg.toFixed(1) : null}]
+                    ✨ 평점 : [ {data ? data.ratingAvg.toFixed(1) : null} ]
                   </StarRateText>
                   <StarRateText>최근 리뷰 : [ {data.ratingNum} ]</StarRateText>
 

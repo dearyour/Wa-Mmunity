@@ -34,7 +34,7 @@ function Header(): JSX.Element {
           <div
             className="logo"
             onClick={() => {
-              Router.push(`/`);
+              Router.push(`/wineindex`);
             }}
           >
             {/* <Link href="/" passHref> */}
@@ -46,7 +46,7 @@ function Header(): JSX.Element {
           <div
             className="logo2"
             onClick={() => {
-              Router.push(`/`);
+              Router.push(`/wineindex`);
             }}
           >
             <Image src={WineLogo2} width={250} height={50} alt="image" />
@@ -63,7 +63,7 @@ function Header(): JSX.Element {
             </div>
             <ul className="menu">
               <li>
-                <Link href="/" passHref>
+                <Link href="/wineindex" passHref>
                   <a>My Page</a>
                 </Link>
               </li>
