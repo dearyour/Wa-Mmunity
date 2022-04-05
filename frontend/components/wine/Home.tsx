@@ -77,7 +77,6 @@ const Home = () => {
       // url: "http://j6a101.p.ssafy.io:8080/api/wine",
     })
       .then((res) => {
-        console.log("wineList##" + res);
         setWines(res.data.object);
         return res.data;
       })

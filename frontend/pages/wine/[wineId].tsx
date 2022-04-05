@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { Progress } from "antd";
 import Slider from "../../components/Slider";
 import styled from "@emotion/styled";
-// import Card from "components/card/Card";
 // import { dataList } from "constants";
 import Router, { useRouter } from "next/router";
 import { FaStar } from "react-icons/fa";
@@ -12,7 +11,6 @@ import axios from "axios";
 import StyleDrawer from "components/wine/StyleInfo";
 import Rating from "@mui/material/Rating";
 import WineSlider from "components/WineSlider";
-import Card from "components/card/card";
 import NowPlayingSection from "components/WineSlider";
 import { RootState } from "store/module";
 import TestCarousel from "components/TestCarousel";
@@ -752,22 +750,8 @@ function WineDetail(): any {
                           onChange={(e) => setComment(e.target.value)}
                         ></CommentInput>
                       </CommentInputWrap>
-                      {/* <DefaultInfo
-                title={data.title}
-                year={year}
-                genres={genres}
-                runtime={data.runtime}
-                overview={data.overview}
-              />
-              <Similar id={id} /> */}
                       {/* <NowPlayingSection /> */}
                       <TestCarousel />
-                      {/* <Slider>
-                        {data.slice(0, 20).map((item: any) => {
-                          <Card data={item} />;
-                        })}
-                        <Card data={data} />
-                      </Slider> */}
                     </Inner>
                   </InnerOut>
 
