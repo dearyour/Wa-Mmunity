@@ -10,31 +10,26 @@ import axios from 'axios'
 import Title from 'antd/lib/typography/Title';
 
 const WineCard = (props: any) => {
-  const [winedata, setData] = useState()
+  const [wineid, setWineId] = useState()
+  const [winename, setWinename] = useState()
+  const [winery, setWinery] = useState()
+  const [wineimg, setWineimg] = useState()
+  const BASE_URL = 'https://j6a101.p.ssafy.io:8080/api/wine/' + props.num.wine
+  useEffect(() => {
+    async function fetchData() {
+      axios.get(BASE_URL)
+      .then(res => {
+        setWineId(res.data.object.wineId)
+        setWinename(res.data.object.name)
+        setWinery(res.data.object.winery)
+        setWineimg(res.data.object.img)
+        console.log('res: ', res)
+      })
+      .catch(err => console.log(err))
+    }
+    fetchData()
+  },[])
 
-  const BASE_URL = 'https://j6a101.p.ssafy.io:8080/api/wine/'
-  // axios.get(BASE_URL + props.num)
-  // .then(res => {
-  //   console.log(res.data.object)
-  //   setData(res.data.object)
-  // })
-  // .catch(err => console.log(err))
-  // async function getwine() {
-  //   const res = await axios.get(BASE_URL + props.num)
-  //   setData(res.data.object)
-  // }
-  // useEffect(function(){
-  //   getwine()
-  // }, [])
-  // useEffect(() => {
-  //   axios.get(BASE_URL + props.num)
-  //   .then(res => {
-  //     setData(res.data.object)
-  //   })
-  // }, [])
-
-  console.log(winedata)
-  
   return (
     <Card sx={{ background: '#f7f3f0'}}>
       <CardActionArea>
@@ -42,17 +37,18 @@ const WineCard = (props: any) => {
         <Grid item xs={12} sm={4} md={3} justifyContent={'center'}>
           <CardMedia
             component="img"
-            // image={ props.img }
+            image={ wineimg }
             sx={{ width: 50 }}
             />
         </Grid>
         <Grid item xs={12} sm={8} lg={7} justifyContent={'center'}>
           <CardContent>
+          { winery }
             <Typography gutterBottom variant="h5" component="div">
-              {/* { props.name } */}
+              { winename }
             </Typography>
             <Typography variant="body2" color="text.primary">
-              예상 평점 : 4.5
+              예상 평점 : { props.num.rating.toFixed(3) }
             </Typography>
           </CardContent>
         </Grid>
