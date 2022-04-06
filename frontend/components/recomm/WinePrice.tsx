@@ -1,5 +1,6 @@
 import React from 'react'
-import { Row, Col, Radio, Slider, Typography, Button } from 'antd'
+import { Row, Col, Radio, Typography, Button } from 'antd'
+import Slider from '@mui/material/Slider';
 
 type SurveyProps = {
   // handleBack: Function;
@@ -20,10 +21,6 @@ const WinePrice = ({ handleChangeSlider, values}: SurveyProps) => {
   //   handleNext()
   // }
 
-  const marks = {
-    0: '0',
-    500000: '500000+'
-  }
   return (
     <div>
       <Row justify="center">
@@ -36,18 +33,24 @@ const WinePrice = ({ handleChangeSlider, values}: SurveyProps) => {
       </Row>
       <Row justify="center">
         <Col lg={16} sm={16}>
-          <Slider
+          {/* <Slider
             range={{ draggableTrack: true }}
+            defaultValue={[1000, 5000]}
             min={0}
             max={500000}
             step={1000}
             marks={marks}
-            defaultValue={[1000, 5000]}
             onChange={handleChangeSlider('price')}
             value={values.price}
+          /> */}
+          <Slider
+            min={0}
+            step={1000}
+            max={300000}
+            value={values.price}
+            onChange={handleChangeSlider('price')}
+            valueLabelDisplay="on"
           />
-          {/* <button onClick={Previous}>Back</button> */}
-          {/* <button onClick={Continue}>Next</button> */}
         </Col>
       </Row>
     </div>
