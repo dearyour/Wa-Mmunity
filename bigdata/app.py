@@ -41,6 +41,10 @@ def wine_survey():
         # json -> string
         data = request.get_json()
         survey_data = ' '.join(' '.join(list(data.values())).split())
+        print(request)
+        print(data)
+        print(data.values())
+        print(survey_data)
         # 함수 실행
         result = json.dumps(survey.get_survey(survey=survey_data))
         # 와인 id list(array) 반환
