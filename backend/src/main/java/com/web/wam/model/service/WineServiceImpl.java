@@ -2,9 +2,12 @@ package com.web.wam.model.service;
 
 import java.nio.charset.Charset;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
+import java.util.StringTokenizer;
 
-import com.web.wam.model.dto.wine.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -16,16 +19,31 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.web.wam.model.entity.*;
+import com.web.wam.model.dto.wine.WineFilterRequest;
+import com.web.wam.model.dto.wine.WineResponse;
+import com.web.wam.model.dto.wine.WineReviewFlaskResponse;
+import com.web.wam.model.dto.wine.WineReviewPostRequest;
+import com.web.wam.model.dto.wine.WineReviewPutRequest;
+import com.web.wam.model.dto.wine.WineReviewResponse;
+import com.web.wam.model.dto.wine.WineSurveyRequest;
+import com.web.wam.model.dto.wine.WineWishlistRequest;
+import com.web.wam.model.dto.wine.WineWishlistResponse;
+import com.web.wam.model.entity.Member;
+import com.web.wam.model.entity.ReviewBaseRecomm;
+import com.web.wam.model.entity.Wine;
+import com.web.wam.model.entity.WineReview;
+import com.web.wam.model.entity.WineSurvey;
+import com.web.wam.model.entity.WineWishlist;
+import com.web.wam.model.repository.MemberRepository;
 import com.web.wam.model.repository.wine.ReviewBaseRecommRepository;
 import com.web.wam.model.repository.wine.ReviewBaseRecommRepositorySupport;
 import com.web.wam.model.repository.wine.WineRepository;
 import com.web.wam.model.repository.wine.WineRepositorySupport;
 import com.web.wam.model.repository.wine.WineReviewRepository;
+import com.web.wam.model.repository.wine.WineReviewRepositorySupport;
 import com.web.wam.model.repository.wine.WineSurveyRepository;
 import com.web.wam.model.repository.wine.WineWishlistRepository;
 import com.web.wam.model.repository.wine.WineWishlistRepositorySupport;
-import com.web.wam.model.repository.MemberRepository;
 
 @Service("wineService")
 public class WineServiceImpl implements WineService {
@@ -36,6 +54,8 @@ public class WineServiceImpl implements WineService {
 	WineRepositorySupport wineRepositorySupport;
 	@Autowired
 	WineReviewRepository wineReviewRepository;
+	@Autowired
+	WineReviewRepositorySupport wineReviewRepositorySupport;
 	@Autowired
 	WineWishlistRepository wineWishlistRepository;
 	@Autowired
@@ -121,21 +141,21 @@ public class WineServiceImpl implements WineService {
 		List<WineResponse> wineList = new LinkedList<WineResponse>();
 		List<Wine> wines = new LinkedList<Wine>();
 		switch (sortType) {
-			case 1:
-				wines = wineRepositorySupport.sortByRatingAvg();
-				break;
+		case 1:
+			wines = wineRepositorySupport.sortByRatingAvg();
+			break;
 
-			case 2:
-				wines = wineRepositorySupport.sortByLowPrice();
-				break;
+		case 2:
+			wines = wineRepositorySupport.sortByLowPrice();
+			break;
 
-			case 3:
-				wines = wineRepositorySupport.sortByHighPrice();
-				break;
+		case 3:
+			wines = wineRepositorySupport.sortByHighPrice();
+			break;
 
-			case 4:
-				wines = wineRepositorySupport.sortByRatingNum();
-				break;
+		case 4:
+			wines = wineRepositorySupport.sortByRatingNum();
+			break;
 		}
 
 		for (Wine wine : wines) {
@@ -226,8 +246,7 @@ public class WineServiceImpl implements WineService {
 	public List<WineWishlistResponse> searchWishlistByMemberId(int memberId) {
 		List<WineWishlist> wishlist = wineWishlistRepository.findByMemberId(memberId);
 		List<WineWishlistResponse> responseList = new ArrayList<WineWishlistResponse>();
-		for (WineWishlist wish:
-			 wishlist) {
+		for (WineWishlist wish : wishlist) {
 			WineWishlistResponse res = new WineWishlistResponse();
 			res.setMemberId(wish.getMemberId());
 			res.setWineId(wish.getWineId());
@@ -315,6 +334,19 @@ public class WineServiceImpl implements WineService {
 	}
 
 	@Override
+	public double sumRatingByMemberId(int memberId) {
+		List<WineReviewResponse> reviewList = searchReviewByMemberId(memberId);
+
+		double totalRating = 0;
+
+		for (WineReviewResponse review : reviewList) {
+			totalRating += review.getRating();
+		}
+
+		return totalRating;
+	}
+
+	@Override
 	public List<WineReviewResponse> searchReviewByWineId(int wineId) {
 		List<WineReviewResponse> reviewList = new LinkedList<WineReviewResponse>();
 		List<WineReview> reviews = wineReviewRepository.findByWineId(wineId);
@@ -347,7 +379,7 @@ public class WineServiceImpl implements WineService {
 
 		RestTemplate restTemplate = new RestTemplate();
 
-		String wines = restTemplate.getForObject("http://j6a101.p.ssafy.io:8000/recomm/cb/" + wineId, String.class);
+		String wines = restTemplate.getForObject("http://j6a101.p.ssafy.io:5000/recomm/cb/" + wineId, String.class);
 
 		StringTokenizer st = new StringTokenizer(wines.substring(1, wines.length() - 1), ", ");
 		List<WineResponse> wineList = new LinkedList<WineResponse>();
@@ -389,15 +421,15 @@ public class WineServiceImpl implements WineService {
 
 		RestTemplate restTemplate = new RestTemplate();
 
-		String result = restTemplate.postForObject("http://j6a101.p.ssafy.io:8000/recomm/train-mf", entity,
+		String result = restTemplate.postForObject("http://j6a101.p.ssafy.io:5000/recomm/train-mf", entity,
 				String.class);
-		System.out.println(result.substring(11, result.length() - 2));
+		System.out.println(result.substring(11, result.length() - 1));
 
 		JSONParser parser = new JSONParser();
 		Object obj = null;
 
 		try {
-			obj = parser.parse(result.substring(11, result.length() - 2));
+			obj = parser.parse(result.substring(11, result.length() - 1));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -473,4 +505,28 @@ public class WineServiceImpl implements WineService {
 		return wineList;
 	}
 
+	@Override
+	public Object recommSurvey(org.json.JSONObject survey) {
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+				+ "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36");
+
+		HttpEntity<String> entity = new HttpEntity<String>(survey.toString(), headers);
+
+		System.out.println(entity.toString());
+
+		RestTemplate restTemplate = new RestTemplate();
+
+		String result = restTemplate.postForObject("http://j6a101.p.ssafy.io:5000/recomm/survey", entity,
+				String.class);
+
+		System.out.println(result.substring(11, result.length() - 2));
+		System.out.println("--------------");
+		System.out.println(result);
+
+		return result;
+
+	}
 }

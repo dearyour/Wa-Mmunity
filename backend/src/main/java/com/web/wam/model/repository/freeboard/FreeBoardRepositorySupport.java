@@ -16,21 +16,22 @@ public class FreeBoardRepositorySupport {
 	@Autowired
 	private JPAQueryFactory jpaQueryFactory;
 	QFreeBoard qFreeBoard = QFreeBoard.freeBoard;
-	
+
 	@Autowired
 	FreeArticleLikeRepositorySupport freeArticleLikeRepositorySupport;
-	
+
 	public List<FreeBoardResponse> findByMemberId(int memberId) {
 		List<FreeBoardResponse> articleList = new LinkedList<FreeBoardResponse>();
-		List<FreeBoard> articles = jpaQueryFactory.select(qFreeBoard).from(qFreeBoard).where(qFreeBoard.memberId.eq(memberId)).fetch();
-		for(FreeBoard article :articles) {
+		List<FreeBoard> articles = jpaQueryFactory.select(qFreeBoard).from(qFreeBoard)
+				.where(qFreeBoard.memberId.eq(memberId)).fetch();
+		for (FreeBoard article : articles) {
 			FreeBoardResponse freeBoardResponse = new FreeBoardResponse();
-			setFreeBoardResponse(article, freeBoardResponse);	
+			setFreeBoardResponse(article, freeBoardResponse);
 			articleList.add(freeBoardResponse);
 		}
 		return articleList;
 	}
-	
+
 	private void setFreeBoardResponse(FreeBoard article, FreeBoardResponse freeBoardResponse) {
 		freeBoardResponse.setArticleId(article.getArticleId());
 		freeBoardResponse.setMemberId(article.getMemberId());
@@ -42,19 +43,18 @@ public class FreeBoardRepositorySupport {
 		freeBoardResponse.setLikeCnt(freeArticleLikeRepositorySupport.countByArticleId(article.getArticleId()));
 	}
 
-
 	public List<FreeBoardResponse> getArticleByKeyword(String keyword) {
-		String key = "%"+keyword+"%";
+		String key = "%" + keyword + "%";
 		List<FreeBoardResponse> articleList = new LinkedList<FreeBoardResponse>();
-		
-		List<FreeBoard> articles = jpaQueryFactory.select(qFreeBoard).from(qFreeBoard).where(qFreeBoard.title.like(key)).fetch();
-		for(FreeBoard article :articles) {
+
+		List<FreeBoard> articles = jpaQueryFactory.select(qFreeBoard).from(qFreeBoard).where(qFreeBoard.title.like(key))
+				.fetch();
+		for (FreeBoard article : articles) {
 			FreeBoardResponse freeBoardResponse = new FreeBoardResponse();
-			setFreeBoardResponse(article, freeBoardResponse);	
+			setFreeBoardResponse(article, freeBoardResponse);
 			articleList.add(freeBoardResponse);
 		}
 		return articleList;
 	}
 
 }
-

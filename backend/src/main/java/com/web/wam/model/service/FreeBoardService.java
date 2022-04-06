@@ -42,4 +42,6 @@ public interface FreeBoardService {
 
 	List<FreeBoardResponse> getArticleByKeyword(String keyword);
 
+	List<Integer> getLikeArticleByMemberId(int memberId);
+
 }

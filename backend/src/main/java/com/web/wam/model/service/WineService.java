@@ -2,7 +2,15 @@ package com.web.wam.model.service;
 
 import java.util.List;
 
-import com.web.wam.model.dto.wine.*;
+import com.web.wam.model.dto.wine.WineFilterRequest;
+import com.web.wam.model.dto.wine.WineResponse;
+import com.web.wam.model.dto.wine.WineReviewFlaskResponse;
+import com.web.wam.model.dto.wine.WineReviewPostRequest;
+import com.web.wam.model.dto.wine.WineReviewPutRequest;
+import com.web.wam.model.dto.wine.WineReviewResponse;
+import com.web.wam.model.dto.wine.WineSurveyRequest;
+import com.web.wam.model.dto.wine.WineWishlistRequest;
+import com.web.wam.model.dto.wine.WineWishlistResponse;
 
 public interface WineService {
 
@@ -42,4 +50,7 @@ public interface WineService {
 
 	List<WineReviewFlaskResponse> expectWineRateByMemberId(int memberId);
 
+	double sumRatingByMemberId(int memberId);
+
+	Object recommSurvey(org.json.JSONObject survey);
 }

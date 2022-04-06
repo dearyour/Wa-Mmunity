@@ -11,14 +11,16 @@ from models import related_wine, survey, mf_wine
 
 # flask 객체 인스턴스 생성
 app = Flask(__name__)
-CORS(app, supports_credentials=True)
+CORS(app, resources={r"/*": {"origins": "*"}})
+app.config["CORS_SUPPORTS_CREDENTIALS"] = True
+
 
 # 접속 url 설정
 @app.route('/')
 def index():
     return '<p>Hello, World!</p>'
 
-@app.route('/recomm/train-mf', methods=['POST'])
+@app.route('/recomm/train-mf', methods=['OPTIONS','POST'])
 def mf():
     if request.method == 'POST':
         data = request.get_json()
@@ -33,18 +35,22 @@ def wine_cb(wine_id):
     # result = related_wine.get_recomm(wine_id=wine_id)
     # return result
 
-@app.route('/recomm/survey', methods=['POST'])
+@app.route('/recomm/survey', methods=['OPTIONS','POST'])
 def wine_survey():
-    if request.method == 'POST':
+    # if request.method === 'POST':
         # json -> string
         data = request.get_json()
         survey_data = ' '.join(' '.join(list(data.values())).split())
+        print(request)
+        print(data)
+        print(data.values())
+        print(survey_data)
         # 함수 실행
         result = json.dumps(survey.get_survey(survey=survey_data))
         # 와인 id list(array) 반환
         res = Response(result, mimetype="application/json")
         res.headers["Access-Control-Allow-Origin"] = "*"
-        res.headers["Access-Control-Allow-Methods"] = ["POST, GET, DELETE, PUT"]
+        res.headers["Access-Control-Allow-Methods"] = ["POST, GET, DELETE, PUT, OPTIONS"]
         res.headers["Access-Control-Max-Age"] = "3600"
         res.headers["Access-Control-Allow-Headers"] = ["x-requested-with, origin, content-type, accept"]
         return res

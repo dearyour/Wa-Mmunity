@@ -8,7 +8,13 @@ import com.web.wam.model.entity.QWineReview;
 
 @Repository
 public class WineReviewRepositorySupport {
+
 	@Autowired
 	private JPAQueryFactory jpaQueryFactory;
-	QWineReview wineReview = QWineReview.wineReview;
+	QWineReview qWineReview = QWineReview.wineReview;
+
+	public double sumRatingByMemberId(int memberId) {
+		jpaQueryFactory.select(qWineReview).from(qWineReview).where(qWineReview.memberId.eq(memberId));
+		return 0;
+	}
 }

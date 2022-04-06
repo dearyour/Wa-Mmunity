@@ -1,5 +1,7 @@
 import AppLayout from "../../components/layout/AppLayout";
 import * as React from 'react';
+import { useEffect, useState } from 'react';
+import axios from 'axios'
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -9,6 +11,9 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Router from "next/router";
 import Grid from '@mui/material/Grid';
+import WineCardList from '../../components/recomm/WineCardList'
+import { RootState } from "store/module";
+import { useSelector } from "react-redux";
 
 const theme = createTheme({
   palette: {
@@ -27,6 +32,25 @@ const theme = createTheme({
 
 
 const Recommend = () => {
+  const userId = useSelector((state: RootState) => state.user.users.id);
+  // const res = [55,44,33,22,11]
+
+  const [winedata, setData] = useState()
+  const BASE_URL = 'https://j6a101.p.ssafy.io:8080/api/wine/personal/' + 1
+  // const BASE_URL = process.env.BACK_EC2 + 'api/wine/personal/' + userId
+  useEffect(() => {
+    async function fetchData() {
+      axios.get(BASE_URL)
+      .then(res => {
+        setData(res.data.object)
+      })
+      .catch(err => console.log(err))
+    }
+    fetchData()
+    },[])
+
+  console.log(winedata)
+
   return (
     <AppLayout>
       <ThemeProvider theme={theme}>
@@ -55,7 +79,7 @@ const Recommend = () => {
         </Card>
         </Grid>
         <Grid item xs={8} justifyContent="center">
-          <div>내용</div>
+          <WineCardList res={winedata}></WineCardList>
         </Grid>
       </Grid>
       </ThemeProvider>
