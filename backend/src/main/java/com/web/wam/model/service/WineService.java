@@ -52,5 +52,5 @@ public interface WineService {
 
 	double sumRatingByMemberId(int memberId);
 
-	Object recommSurvey(Object survey);
+	Object recommSurvey(org.json.JSONObject survey);
 }
