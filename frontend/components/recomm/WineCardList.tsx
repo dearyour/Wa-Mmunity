@@ -9,8 +9,8 @@ const WineCardList = (props: any) => {
       <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
         { props.res.map((wine_id: any, i: any) => {
           return (
-            <Grid item sm={6} md={6}>
-              <WineCard num={wine_id} key={i}></WineCard>
+            <Grid item sm={6} md={6} key={i}>
+              <WineCard num={wine_id}></WineCard>
             </Grid>
         )
       })}

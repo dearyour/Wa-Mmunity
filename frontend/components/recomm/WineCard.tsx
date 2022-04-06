@@ -26,12 +26,12 @@ const WineCard = (props: any) => {
   // useEffect(function(){
   //   getwine()
   // }, [])
-  useEffect(() => {
-    axios.get(BASE_URL + props.num)
-    .then(res => {
-      setData(res.data.object)
-    })
-  }, [])
+  // useEffect(() => {
+  //   axios.get(BASE_URL + props.num)
+  //   .then(res => {
+  //     setData(res.data.object)
+  //   })
+  // }, [])
 
   console.log(winedata)
   
@@ -42,14 +42,14 @@ const WineCard = (props: any) => {
         <Grid item xs={12} sm={4} md={3} justifyContent={'center'}>
           <CardMedia
             component="img"
-            image={ props.img }
+            // image={ props.img }
             sx={{ width: 50 }}
             />
         </Grid>
         <Grid item xs={12} sm={8} lg={7} justifyContent={'center'}>
           <CardContent>
             <Typography gutterBottom variant="h5" component="div">
-              { props.name }
+              {/* { props.name } */}
             </Typography>
             <Typography variant="body2" color="text.primary">
               예상 평점 : 4.5
