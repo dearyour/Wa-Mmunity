@@ -583,14 +583,6 @@ function WineDetail(): any {
                     ✨ 평점 : [ {data ? data.ratingAvg.toFixed(1) : null} ]
                   </StarRateText>
                   <StarRateText>최근 리뷰 : [ {data.ratingNum} ]</StarRateText>
-
-                  {/* <CommentCount>
-                    <CommentImg src="/assets/pngwing.com5.png"></CommentImg>
-                    <span>
-                      {" "}
-                      {data && data.comments ? data.comments.length : 0}
-                    </span>
-                  </CommentCount> */}
                 </StarRates>
               </Backdrop>
             </PosterContainer>

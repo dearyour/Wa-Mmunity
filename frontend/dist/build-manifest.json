@@ -15,6 +15,11 @@
     "static/development/_middlewareManifest.js"
   ],
   "pages": {
+    "/": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/index.js"
+    ],
     "/_app": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
@@ -25,15 +30,10 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/wine": [
+    "/feedMain": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/wine.js"
-    ],
-    "/wine/[wineId]": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/wine/[wineId].js"
+      "static/chunks/pages/feedMain.js"
     ]
   },
   "ampFirstPages": []

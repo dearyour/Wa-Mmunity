@@ -73,7 +73,12 @@ function WineMain() {
           </article>
 
           <article>
-            <div className="inner">
+            <div
+              className="inner"
+              onClick={() => {
+                Router.push(`/recommend`);
+              }}
+            >
               <div className="txt">
                 <h2>02</h2>
                 <p>추천 와인</p>
@@ -99,10 +104,15 @@ function WineMain() {
           </article> */}
 
           <article>
-            <div className="inner">
+            <div
+              className="inner"
+              onClick={() => {
+                Router.push(`/feedMain`);
+              }}
+            >
               <div className="txt">
                 <h2>03</h2>
-                <p>리뷰 게시판</p>
+                <p>와인 게시판</p>
               </div>
               <figure>
                 <Image src={WineLogo4} alt="image" />

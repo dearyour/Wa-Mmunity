@@ -13,6 +13,7 @@ export interface FeedParams {
 
 export interface Feed {
   items: any;
+  itemss: any;
   isLoading: boolean;
   error: AxiosError | null;
 }
