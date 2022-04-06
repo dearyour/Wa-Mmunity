@@ -1,4 +1,3 @@
-
 ![Wammunity Logo](./산출물/로고/logo.png)
 
 ---
@@ -334,7 +333,7 @@
 ### 4️⃣  산출물
 
 - 프로젝트 관리 : [Notion](https://www.notion.so/SSAFY-PJT-b02a8015d76d4fe0ab044dd162025893)
-- 기획서
+- [기획서](https://lab.ssafy.com/s06-bigdata-rec-sub2/S06P22A101/-/tree/develop/%EC%82%B0%EC%B6%9C%EB%AC%BC/%EA%B8%B0%ED%9A%8D%EC%84%9C)
 - 와이어프레임
 - ERD
 - 시스템 아키텍처
