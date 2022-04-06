@@ -128,7 +128,9 @@ export default class Survey extends Component {
       console.log(this.state)
       const res = await axios.post('http://j6a101.p.ssafy.io:8000/recomm/survey',
       this.state,
-      { withCredentials: true })
+      { withCredentials: true,
+        headers: {"Access-Control-Allow-Origin": "*"}
+      })
       console.log('res:', res)
     } catch (err) {
       console.error(err)
