@@ -28,4 +28,5 @@ public class ResellBoardCmtResponse {
 
     @ApiModelProperty(name = "ResellBoardCmt regtime", example = "123")
     LocalDateTime regtime;
+
 }
