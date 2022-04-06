@@ -30,7 +30,7 @@ const UpcomingitemSection: React.FC = () => {
       // url: process.env.BACK_EC2 + "wine/recommend/" + wineId,
       // url: "http://j6a101.p.ssafy.io:8080/api/wine",
       // url: "https://localhost:8080/api/wine",
-      url: process.env.BACK_EC2 + "wine",
+      url: process.env.BACK_EC2 + "wine/recommend/" + wineId,
     })
       .then((res) => {
         console.log(res);
