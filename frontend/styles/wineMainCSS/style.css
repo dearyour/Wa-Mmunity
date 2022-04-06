@@ -24,7 +24,7 @@ main {
 main header {
   width: 20%;
   height: 100%;
-  padding: 10vh 5vw;
+  padding: 10vh 3vw;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
