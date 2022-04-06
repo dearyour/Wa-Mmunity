@@ -18,7 +18,7 @@ CORS(app, supports_credentials=True)
 def index():
     return '<p>Hello, World!</p>'
 
-@app.route('/recomm/train-mf', methods=['POST'])
+@app.route('/recomm/train-mf', methods=['OPTIONS','POST'])
 def mf():
     if request.method == 'POST':
         data = request.get_json()
@@ -33,7 +33,7 @@ def wine_cb(wine_id):
     # result = related_wine.get_recomm(wine_id=wine_id)
     # return result
 
-@app.route('/recomm/survey', methods=['POST'])
+@app.route('/recomm/survey', methods=['OPTIONS','POST'])
 def wine_survey():
     if request.method == 'POST':
         # json -> string
