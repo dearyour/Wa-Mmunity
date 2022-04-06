@@ -338,6 +338,7 @@
 - [ERD](https://lab.ssafy.com/s06-bigdata-rec-sub2/S06P22A101/-/tree/develop/%EC%82%B0%EC%B6%9C%EB%AC%BC/erd)
 - [시스템 아키텍처](https://lab.ssafy.com/s06-bigdata-rec-sub2/S06P22A101/-/tree/develop/%EC%82%B0%EC%B6%9C%EB%AC%BC/%EC%8B%9C%EC%8A%A4%ED%85%9C%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98)
 - 화면 정의서
+- 최종 발표물
 
 ---
 
