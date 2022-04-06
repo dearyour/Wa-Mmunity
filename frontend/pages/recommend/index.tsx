@@ -1,5 +1,7 @@
 import AppLayout from "../../components/layout/AppLayout";
 import * as React from 'react';
+import { useEffect, useState } from 'react';
+import axios from 'axios'
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -29,6 +31,18 @@ const theme = createTheme({
 
 const Recommend = () => {
   const res = [55,44,33,22,11]
+
+  // const [winedata, setData] = useState()
+  // const BASE_URL = 'https://j6a101.p.ssafy.io:8080/api/wine/'
+  // useEffect(() => {
+  //   axios.get(BASE_URL + props.num)
+  //   .then(res => {
+  //     setData(res.data.object)
+  //   })
+  // }, [])
+
+  // console.log(winedata)
+
   return (
     <AppLayout>
       <ThemeProvider theme={theme}>
