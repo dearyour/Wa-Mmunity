@@ -50,7 +50,7 @@ function WineMain() {
             <span>DCODELAB</span>
           </h1>
           <Image src={WineLogo5} alt="image" />
-          <p> Wammunity &copy; ALL RIGHTS RESERVED.</p>
+          <p> Wa-Mmunity &copy; </p>
         </header>
 
         <section>
