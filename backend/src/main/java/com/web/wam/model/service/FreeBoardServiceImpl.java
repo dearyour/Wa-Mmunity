@@ -197,4 +197,10 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 		return articles;
 	}
 
+	@Override
+	public List<Integer> getLikeArticleByMemberId(int memberId) {
+		List<Integer> articles = freeArticleLikeRepositorySupport.getLikeArticleByMemberId(memberId);
+		return articles;
+	}
+
 }

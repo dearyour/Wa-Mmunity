@@ -1,5 +1,7 @@
 package com.web.wam.model.repository.freeboard;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +18,21 @@ public class FreeArticleLikeRepositorySupport {
 	QFreeArticleLike qFreeArticleLike = QFreeArticleLike.freeArticleLike;
 
 	public long countByArticleId(int articleId) {
-		long likeCnt = jpaQueryFactory.select(qFreeArticleLike).from(qFreeArticleLike).where(qFreeArticleLike.articleId.eq(articleId)).fetchCount();
+		long likeCnt = jpaQueryFactory.select(qFreeArticleLike).from(qFreeArticleLike)
+				.where(qFreeArticleLike.articleId.eq(articleId)).fetchCount();
 		return likeCnt;
 	}
 
 	@Transactional
 	public void cancelLike(FreeBoardLikePostRequest likeCancelInfo) {
-		jpaQueryFactory.delete(qFreeArticleLike).where(qFreeArticleLike.articleId.eq(likeCancelInfo.getAtricleId())).where(qFreeArticleLike.memberId.eq(likeCancelInfo.getMemberId())).execute();
+		jpaQueryFactory.delete(qFreeArticleLike).where(qFreeArticleLike.articleId.eq(likeCancelInfo.getAtricleId()))
+				.where(qFreeArticleLike.memberId.eq(likeCancelInfo.getMemberId())).execute();
+	}
+
+	public List<Integer> getLikeArticleByMemberId(int memberId) {
+		List<Integer> articles = jpaQueryFactory.select(qFreeArticleLike.articleId).from(qFreeArticleLike)
+				.where(qFreeArticleLike.memberId.eq(memberId)).fetch();
+		return articles;
 	}
 
 }
