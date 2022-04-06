@@ -2,14 +2,7 @@ package com.web.wam.model.service;
 
 import java.util.List;
 
-import com.web.wam.model.dto.wine.WineFilterRequest;
-import com.web.wam.model.dto.wine.WineResponse;
-import com.web.wam.model.dto.wine.WineReviewFlaskResponse;
-import com.web.wam.model.dto.wine.WineReviewPostRequest;
-import com.web.wam.model.dto.wine.WineReviewPutRequest;
-import com.web.wam.model.dto.wine.WineReviewResponse;
-import com.web.wam.model.dto.wine.WineSurveyRequest;
-import com.web.wam.model.dto.wine.WineWishlistRequest;
+import com.web.wam.model.dto.wine.*;
 
 public interface WineService {
 
@@ -31,7 +24,7 @@ public interface WineService {
 
 	void deleteWishlist(int wishlistId);
 
-	List<Integer> searchWishlistByMemberId(int memberId);
+	List<WineWishlistResponse> searchWishlistByMemberId(int memberId);
 
 	void saveWineSurvey(WineSurveyRequest wineSurveyRequest);
 

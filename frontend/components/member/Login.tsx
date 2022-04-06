@@ -131,9 +131,9 @@ const LoginPage = () => {
             <a>회원가입</a>
           </Link>
           <br />
-          <Link href="/wineindex">
+          {/* <Link href="/wineindex">
             <a>메인페이지</a>
-          </Link>
+          </Link> */}
         </Grid>
       </Grid>
     </>

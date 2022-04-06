@@ -463,3 +463,11 @@ header .main-menu .item .item__contents .contents__texture p {
   /* animation: fadein 1.5s; */
   opacity: 1;
 }
+@keyframes box-ani {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(5px, 5px);
+  }
+}

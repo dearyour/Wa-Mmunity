@@ -7,7 +7,7 @@ from scipy.sparse import csr_matrix
 import random
 import pickle
 import json
-from models import related_wine, survey
+from models import related_wine, survey, mf_wine
 
 # flask 객체 인스턴스 생성
 app = Flask(__name__)
@@ -20,42 +20,11 @@ def index():
 
 @app.route('/recomm/train-mf', methods=['POST'])
 def mf():
-   if request.method == 'POST':
-        # 1 데이터 가져오기 : json -> df
+    if request.method == 'POST':
         data = request.get_json()
-        R_train = json_normalize(data['Results'])
-        R_valid = pd.DataFrame(columns=R_train.columns)
-
-        # 2 데이터 분리
-        lst = list(range(len(R_train)))
-        sample_k = int(len(lst) * 0.3)
-        rownums = random.sample(lst, sample_k)
-        ## 전체 데이터의 30% 변형: train의 rating을 0으로, valid의 rating에는 값 추가
-        for rownum in rownums:
-            R_valid = R_valid.append(R_train.iloc[rownum, :])
-            R_train.iat[rownum, 2] = 0
-        
-        # 3. df user * item 형태로 변형
-        R_train = R_train.pivot(index='user', columns='wine', values='rating').fillna(0.0)
-        R_valid = R_valid.pivot(index='user', columns='wine', values='rating').fillna(0.0)
-
-        # 4. sparse matrix로 변형
-        R_train = csr_matrix(R_train.astype(float))
-        R_valid = csr_matrix(R_valid.astype(float))
-        ## 사용데이터 pickle 저장
-        with open('./data/input/R_train.pkl', 'wb') as f:
-            pickle.dump(R_train, f, pickle.HIGHEST_PROTOCOL)
-        with open('./data/input/R_valid.pkl', 'wb') as f:
-            pickle.dump(R_valid, f, pickle.HIGHEST_PROTOCOL)
-        
-        # 5. model 생성 후 실행
-        os.system('python train.py -i data/input -o data/output -a 1 -d 3')
-
-        # 6. json파일 불러오기
-        with open('./data/output/recomm.json', 'r') as rcm_json:
-            recomm = json.load(rcm_json)
-
-        return recomm
+        result = json.dumps(mf_wine.train(data))
+        res = Response(result, mimetype="application/json")
+        return res
 
 @app.route('/recomm/cb/<wine_id>', methods=['GET'])
 def wine_cb(wine_id):

@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { Progress } from "antd";
 import Slider from "../../components/Slider";
 import styled from "@emotion/styled";
-// import Card from "components/card/Card";
 // import { dataList } from "constants";
 import Router, { useRouter } from "next/router";
 import { FaStar } from "react-icons/fa";
@@ -12,7 +11,6 @@ import axios from "axios";
 import StyleDrawer from "components/wine/StyleInfo";
 import Rating from "@mui/material/Rating";
 import WineSlider from "components/WineSlider";
-import Card from "components/card/card";
 import NowPlayingSection from "components/WineSlider";
 import { RootState } from "store/module";
 import TestCarousel from "components/TestCarousel";
@@ -243,8 +241,10 @@ const ContentSectionContainer = styled.div`
   background: #fff;
   border-color: #e3e3e3;
 `;
-const PP = styled.div`
+const WishText = styled.div`
   font-size: 1.2rem;
+  margin-left: 10px;
+  margin-top: 25px;
 `;
 
 const Radio = styled.input`
@@ -269,7 +269,28 @@ function WineDetail(): any {
   const commentRef: any = useRef(null);
   const [comment, setComment] = useState(""); // 평점작성
   const userId = useSelector((state: RootState) => state.user.users.id);
-  console.log(userId);
+  const [likeState, setLikeState] = useState("delete"); //
+  const [wishNumber, setWishNumber] = useState(0);
+  // console.log(userId);
+  const __GetWineDetail = useCallback(() => {
+    return axios({
+      method: "GET",
+      url: process.env.BACK_EC2 + "wine/" + wineId,
+      // url: "https://localhost:8080/api/wine",
+    })
+      .then((res) => {
+        setdata(res.data.object);
+        setRating(res.data.object.ratingAvg);
+        return res.data;
+      })
+      .catch((err) => {
+        return err;
+      });
+  }, [wineId]);
+
+  useEffect(() => {
+    __GetWineDetail();
+  }, [__GetWineDetail]);
 
   const __loadComments = useCallback(() => {
     //평점 업로드 또는 불러올때 계속 새로고침
@@ -280,8 +301,6 @@ function WineDetail(): any {
       // url: "https://localhost:8080/api/" + "wine/wineReview/" + wineId,
     })
       .then((res) => {
-        // console.log(res.data);
-        // setCommentData(makeArray(res.data));
         console.log(res.data.object);
         setCommentData(res.data.object.reverse());
       })
@@ -309,17 +328,26 @@ function WineDetail(): any {
           data: data,
         })
           .then((res) => {
-            // console.log(res);
             commentRef.current.value = "";
             setComment("");
             __loadComments();
+            __GetWineDetail();
           })
           .catch((err) => {
             // console.log(err);
           });
       }
     }
-  }, [comment, commentRef, userId, data, ratings, wineId, __loadComments]);
+  }, [
+    comment,
+    commentRef,
+    userId,
+    data,
+    ratings,
+    wineId,
+    __loadComments,
+    __GetWineDetail,
+  ]);
   const __deleteComment = useCallback(
     (id) => {
       if (commentData) {
@@ -330,92 +358,131 @@ function WineDetail(): any {
         })
           .then((res) => {
             __loadComments(); // 로드 comment 다시 부른다
+            __GetWineDetail();
           })
           .catch((err) => {});
       }
     },
-    [commentData, __loadComments]
+    [commentData, __loadComments, __GetWineDetail]
   );
-  //좋아요
+  ////////////////////////////////////////////위시리스트
+
+  useEffect(() => {
+    axios({
+      method: "GET",
+      url: process.env.BACK_EC2 + "wine/wishlist/" + userId,
+    })
+      .then((res) => {
+        console.log(res.data);
+        let tempss = res.data.object.filter(
+          (item: any) => item.wineId === Number(wineId)
+        );
+        console.log(tempss); // 이부분  []이면 트루 반환
+        console.log(tempss.length); // 이부분 0이면 펄스 반환
+        // 빈배열은 true 반환한다 배열의 길이를 0은 false 반환한다
+        if (tempss.length === 0) {
+          console.log("##위시로드데이터 0개 ");
+          setLikeState("delete");
+        } else {
+          console.log("##위시로드데이터 1개 ");
+          setLikeState("ok");
+        }
+      })
+      .catch((err) => {
+        return err;
+      });
+  }, [userId, wineId]);
+  //순수하게 wishList Id값 추출하기위해 사용
+  const __loadLike = useCallback(() => {
+    return axios({
+      method: "GET",
+      url: process.env.BACK_EC2 + "wine/wishlist/" + userId,
+    })
+      .then((res) => {
+        console.log(res.data);
+        let tempss = res.data.object.filter(
+          (item: any) => item.wineId === Number(wineId)
+        );
+        console.log(tempss);
+        let wishIds = tempss[0].id;
+        setWishNumber(Number(wishIds));
+      })
+      .catch((err) => {
+        return err;
+      });
+  }, [userId, wineId]);
+
+  useEffect(() => {
+    __loadLike();
+  }, [__loadLike]);
+
+  const __deleteLike = useCallback(() => {
+    // if (likeState === "ok") {
+    return axios({
+      method: "delete",
+      url: process.env.BACK_EC2 + "wine/wishlist/" + wishNumber,
+    })
+      .then((res) => {
+        setLikeState("delete");
+        console.log("##delete성공");
+        __loadLike();
+      })
+      .catch((err) => {
+        return err;
+      });
+    // } else {
+    //   __updateLike();
+    // }
+  }, [__loadLike, wishNumber]);
+
   const __updateLike = useCallback(() => {
+    // if (likeState === "delete") {
     const data = {
-      windId: Number(wineId),
+      wineId: Number(wineId),
       memberId: userId,
     };
     return axios({
       method: "post",
       url: process.env.BACK_EC2 + "wine/wishlist",
       data: data,
-      // url: GetFeedurl,
     })
       .then((res) => {
-        console.log(res);
-        // if (res.data === "ok") {
-        //   setLikeCount(likeCount + 1);
-        //   setLikeState(res.data);
-        //   // dispatch(layoutAction.likeList(res.data));
-        // } else {
-        //   setLikeCount(likeCount - 1);
-        //   setLikeState(res.data);
-        //   // dispatch(layoutAction.likeList(res.data));
-        // }
-        // dispatch(feedAction.getFeed());
+        setLikeState("ok");
+        console.log("##ok성공");
+        console.log(likeState); //useState 여기서직접 콘솔안찍힘 463 함수끝나는곳에 찍을것
+        __loadLike();
       })
       .catch((err) => {
         return err;
       });
-  }, [
-    userId,
-    wineId,
-    // likelist, layout, detailData, likeCount
-  ]);
-  const deleteComment: any = (Id: number) => {
-    axios({
-      method: "DELETE",
-      url: process.env.BACK_EC2 + "/comment/delete/" + String(wineId),
-    }).then((res) => {});
-  };
-  // const __GetWineSlider = useCallback(() => {
-  //   return axios({
-  //     method: "GET",
-  //     // url: process.env.BACK_EC2 + "wine/recommend/" + wineId,
-  //     // url: "http://j6a101.p.ssafy.io:8080/api/wine",
-  //     // url: "https://localhost:8080/api/wine",
-  //     url: process.env.BACK_EC2 + "wine",
+    // } else {
+    //   __deleteLike();
+    // }
+  }, [userId, wineId, likeState, __loadLike]);
+
+  console.log("##likeState" + likeState);
+  console.log("##wishnumber" + wishNumber);
+
+  //유즈이펙트로 곧바로 부르기
+  // useEffect(() => {
+  //   console.log(wineId);
+  //   if (!wineId) {
+  //     return;
+  //   }
+  //   axios({
+  //     method: "get",
+  //     url: process.env.BACK_EC2 + "wine/" + wineId,
   //   })
   //     .then((res) => {
-  //       console.log("###Slider" + res);
-  //       setdatas(res.data);
-  //       return res.data;
+  //       console.log(res.data);
+  //       setdata(res.data.object);
+  //       setRating(res.data.object.ratingAvg);
+  //       // router.push("/wine/" + wineId);
   //     })
   //     .catch((err) => {
-  //       return err;
+  //       // Router.push("/404");
   //     });
   // }, [wineId]);
-
-  // useEffect(() => {
-  //   __GetWineSlider();
-  // }, [__GetWineSlider]);
-
-  useEffect(() => {
-    console.log(wineId);
-    if (!wineId) {
-      return;
-    }
-    axios({
-      method: "get",
-      url: process.env.BACK_EC2 + "wine/" + wineId,
-    })
-      .then((res) => {
-        console.log(res.data);
-        setdata(res.data.object);
-        setRating(res.data.object.ratingAvg);
-        // router.push("/wine/" + wineId);
-      })
-      .catch((err) => {
-        // Router.push("/404");
-      });
-  }, [wineId]);
   return (
     <AppLayout>
       <Base>
@@ -451,22 +518,41 @@ function WineDetail(): any {
 
                     <ActionButtonContainer>
                       <ActionButton>
-                        <ImgWrap onClick={__updateLike}>
+                        <ImgWrap
+                          onClick={() => {
+                            likeState === "ok"
+                              ? __deleteLike()
+                              : __updateLike();
+                          }}
+                        >
                           <Like>
-                            <LikeImg src="/assets/pngwing.com2.png"></LikeImg>
-                            {/* <LikeBaseImg className={likeState.like ? "likeanimated" : 'unlikeanimated'} onClick={DoLike} src="/assets/feed/pngwing.com2.png"></LikeBaseImg>
-                    <LikeBase src="/assets/feed/pngwing.com.png" onClick={DoLike}></LikeBase>
+                            {/* <LikeImg src="/assets/pngwing.com2.png"></LikeImg> */}
+                            <LikeBaseImg
+                              className={
+                                likeState === "ok"
+                                  ? "likeanimated"
+                                  : "unlikeanimated"
+                              }
+                              // onClick={
+                              //   // likeState === "ok" ? __deleteLike() :
+                              //   __updateLike()
+                              // }
+                              src="/assets/pngwing.com2.png"
+                            ></LikeBaseImg>
+                            <LikeBase
+                              src="/assets/pngwing.com.png"
+                              // onClick={__updateLike}
+                            ></LikeBase>
 
-                    <span> {data ? likeState.count : 0}</span> */}
-                            {/* <LikeBaseImg className={likeState.like ? "likeanimated" : 'unlikeanimated'} onClick={DoLike} src="/assets/feed/pngwing.com2.png"></LikeBaseImg> */}
+                            {/* <span> {data ? likeCount : 0}</span> */}
                           </Like>
                           {/* <CommentCount>
                     <CommentImg src="/assets/feed/pngwing.com5.png"></CommentImg>
                     <span> {data && data.comments ? data.comments.length : 0}</span>
                   </CommentCount> */}
                         </ImgWrap>
-                        <PP>위시리스트</PP>
                       </ActionButton>
+                      <WishText>위시리스트</WishText>
                     </ActionButtonContainer>
                     <StarRate>
                       <StarRateText>
@@ -752,22 +838,8 @@ function WineDetail(): any {
                           onChange={(e) => setComment(e.target.value)}
                         ></CommentInput>
                       </CommentInputWrap>
-                      {/* <DefaultInfo
-                title={data.title}
-                year={year}
-                genres={genres}
-                runtime={data.runtime}
-                overview={data.overview}
-              />
-              <Similar id={id} /> */}
                       {/* <NowPlayingSection /> */}
                       <TestCarousel />
-                      {/* <Slider>
-                        {data.slice(0, 20).map((item: any) => {
-                          <Card data={item} />;
-                        })}
-                        <Card data={data} />
-                      </Slider> */}
                     </Inner>
                   </InnerOut>
 
@@ -834,6 +906,9 @@ const Like = styled.div`
   padding: 2px;
   margin-right: 5px;
   position: relative;
+  &:active {
+    animation: box-ani 0.05s linear forwards;
+  }
 `;
 
 const LikeImg = styled.img`
@@ -843,16 +918,14 @@ const LikeImg = styled.img`
 `;
 
 const LikeBase = styled.img`
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 2rem;
   position: absolute;
   top: 0;
   left: 0;
 `;
 const LikeBaseImg = styled.img`
   transition: all 1s ease-out;
-  height: 1.5rem;
-  width: 1.5rem;
+  width: 2rem;
   position: absolute;
   top: 0;
   left: 0;
