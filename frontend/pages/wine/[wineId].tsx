@@ -272,6 +272,7 @@ function WineDetail(): any {
   const [likeState, setLikeState] = useState("delete"); //
   const [wishNumber, setWishNumber] = useState(0);
   // console.log(userId);
+
   const __GetWineDetail = useCallback(() => {
     return axios({
       method: "GET",
@@ -377,8 +378,8 @@ function WineDetail(): any {
         let tempss = res.data.object.filter(
           (item: any) => item.wineId === Number(wineId)
         );
-        console.log(tempss); // 이부분  []이면 트루 반환
-        console.log(tempss.length); // 이부분 0이면 펄스 반환
+        // console.log(tempss); // 이부분  []이면 트루 반환
+        // console.log(tempss.length); // 이부분 0이면 펄스 반환
         // 빈배열은 true 반환한다 배열의 길이를 0은 false 반환한다
         if (tempss.length === 0) {
           console.log("##위시로드데이터 0개 ");
@@ -424,7 +425,7 @@ function WineDetail(): any {
     })
       .then((res) => {
         setLikeState("delete");
-        console.log("##delete성공");
+        // console.log("##delete성공");
         __loadLike();
       })
       .catch((err) => {
@@ -448,8 +449,8 @@ function WineDetail(): any {
     })
       .then((res) => {
         setLikeState("ok");
-        console.log("##ok성공");
-        console.log(likeState); //useState 여기서직접 콘솔안찍힘 463 함수끝나는곳에 찍을것
+        // console.log("##ok성공");
+        // console.log(likeState); //useState 여기서직접 콘솔안찍힘 463 함수끝나는곳에 찍을것
         __loadLike();
       })
       .catch((err) => {
@@ -460,8 +461,8 @@ function WineDetail(): any {
     // }
   }, [userId, wineId, likeState, __loadLike]);
 
-  console.log("##likeState" + likeState);
-  console.log("##wishnumber" + wishNumber);
+  // console.log("##likeState" + likeState);
+  // console.log("##wishnumber" + wishNumber);
 
   //유즈이펙트로 곧바로 부르기
   // useEffect(() => {
@@ -768,10 +769,14 @@ function WineDetail(): any {
                                       />
                                     </CommentUsername>
                                     <CommentUsername>
-                                      {now.memberName}
+                                      <span className="태양">
+                                        {now.memberName}
+                                      </span>
                                     </CommentUsername>
                                     <CommentUsernames>
-                                      {now.regtime}
+                                      {now.regtime[0]}년 {now.regtime[1]}월{" "}
+                                      {now.regtime[2]}일 {now.regtime[3]}시{" "}
+                                      {now.regtime[4]}분
                                     </CommentUsernames>
                                   </span>
                                 </CommentFeedUser>

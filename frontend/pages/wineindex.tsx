@@ -5,6 +5,7 @@ import WineLogo from "/public/images/wine4.png";
 import WineLogo2 from "/public/images/wine5.png";
 import WineLogo3 from "/public/images/wine2.png";
 import WineLogo4 from "/public/images/wine1.png";
+import WineLogo5 from "/public/images/bella.png";
 import Router from "next/router";
 import axios from "axios";
 import { userActions } from "store/slice/user";
@@ -24,7 +25,6 @@ function WineMain() {
     })
       .then((res) => {
         console.log(res);
-        // console.log(res.data);
         return res.data;
       })
       .catch((err) => {
@@ -49,7 +49,8 @@ function WineMain() {
             <i className="fab fa-firstdraft"></i>
             <span>DCODELAB</span>
           </h1>
-          <p> Wammunity &copy; ALL RIGHTS RESERVED.</p>
+          <Image src={WineLogo5} alt="image" />
+          <p> Wa-Mmunity &copy; </p>
         </header>
 
         <section>
@@ -103,7 +104,6 @@ function WineMain() {
                 <h2>03</h2>
                 <p>리뷰 게시판</p>
               </div>
-
               <figure>
                 <Image src={WineLogo4} alt="image" />
               </figure>

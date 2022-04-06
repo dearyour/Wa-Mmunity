@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import Carousel from "react-elastic-carousel";
+import Router, { useRouter } from "next/router";
 import Card from "./Card";
 import axios from "axios";
 const DivStyle = styled.div`
@@ -25,14 +26,17 @@ const HStyle = styled.div`
 `;
 
 function TestCarousel() {
+  const router = useRouter();
+  const { wineId } = router.query;
   const [data, setdata] = useState();
+
   const __GetWineSlider = useCallback(() => {
     return axios({
       method: "GET",
       // url: process.env.BACK_EC2 + "wine/recommend/" + wineId,
       // url: "http://j6a101.p.ssafy.io:8080/api/wine",
       // url: "https://localhost:8080/api/wine",
-      url: process.env.BACK_EC2 + "wine",
+      url: process.env.BACK_EC2 + "wine/recommend/" + wineId,
     })
       .then((res) => {
         console.log(res);

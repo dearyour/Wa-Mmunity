@@ -24,7 +24,7 @@ main {
 main header {
   width: 20%;
   height: 100%;
-  padding: 10vh 5vw;
+  padding: 10vh 3vw;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -50,7 +50,7 @@ main header h1 span {
   font: normal 0.8vw/1 "arial";
 }
 main header p {
-  font: normal 11px/1.2 "arial";
+  font: normal 15px/1.2 "arial";
   color: #888;
   text-align: center;
 }
