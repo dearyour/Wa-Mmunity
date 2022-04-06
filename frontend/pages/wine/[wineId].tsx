@@ -270,9 +270,27 @@ function WineDetail(): any {
   const [comment, setComment] = useState(""); // 평점작성
   const userId = useSelector((state: RootState) => state.user.users.id);
   const [likeState, setLikeState] = useState("delete"); //
-  const [likeCount, setLikeCount] = useState(0);
   const [wishNumber, setWishNumber] = useState(0);
   // console.log(userId);
+  const __GetWineDetail = useCallback(() => {
+    return axios({
+      method: "GET",
+      url: process.env.BACK_EC2 + "wine/" + wineId,
+      // url: "https://localhost:8080/api/wine",
+    })
+      .then((res) => {
+        setdata(res.data.object);
+        setRating(res.data.object.ratingAvg);
+        return res.data;
+      })
+      .catch((err) => {
+        return err;
+      });
+  }, [wineId]);
+
+  useEffect(() => {
+    __GetWineDetail();
+  }, [__GetWineDetail]);
 
   const __loadComments = useCallback(() => {
     //평점 업로드 또는 불러올때 계속 새로고침
@@ -283,8 +301,6 @@ function WineDetail(): any {
       // url: "https://localhost:8080/api/" + "wine/wineReview/" + wineId,
     })
       .then((res) => {
-        // console.log(res.data);
-        // setCommentData(makeArray(res.data));
         console.log(res.data.object);
         setCommentData(res.data.object.reverse());
       })
@@ -312,7 +328,6 @@ function WineDetail(): any {
           data: data,
         })
           .then((res) => {
-            // console.log(res);
             commentRef.current.value = "";
             setComment("");
             __loadComments();
@@ -323,7 +338,16 @@ function WineDetail(): any {
           });
       }
     }
-  }, [comment, commentRef, userId, data, ratings, wineId, __loadComments]);
+  }, [
+    comment,
+    commentRef,
+    userId,
+    data,
+    ratings,
+    wineId,
+    __loadComments,
+    __GetWineDetail,
+  ]);
   const __deleteComment = useCallback(
     (id) => {
       if (commentData) {
@@ -339,120 +363,106 @@ function WineDetail(): any {
           .catch((err) => {});
       }
     },
-    [commentData, __loadComments]
+    [commentData, __loadComments, __GetWineDetail]
   );
-  //위시리스트
-  const __deleteLike = useCallback(() => {
-    if (likeState === "ok") {
-      console.log("##delete성공");
-      setLikeState("delete");
-      return axios({
-        method: "delete",
-        url: process.env.BACK_EC2 + "wine/wishlist" + wishNumber,
-        data: data,
-        // url: GetFeedurl,
-      })
-        .then((res) => {
-          setLikeCount(res.data.object.length);
-          setLikeState("delete");
-          // __loadLike();
-        })
-        .catch((err) => {
-          return err;
-        });
-    } else {
-      __updateLike();
-    }
-  }, [
-    userId,
-    wineId,
-    likeState,
-    // likelist, layout, detailData, likeCount
-  ]);
+  ////////////////////////////////////////////위시리스트
 
-  const __updateLike = useCallback(() => {
-    if (likeState === "delete") {
-      const data = {
-        wineId: Number(wineId),
-        memberId: userId,
-      };
-      return axios({
-        method: "post",
-        url: process.env.BACK_EC2 + "wine/wishlist",
-        data: data,
-        // url: GetFeedurl,
-      })
-        .then((res) => {
-          console.log("##ok성공");
-          setLikeCount(res.data.object.length);
-          setLikeState("ok");
-          // __loadLike();
-        })
-        .catch((err) => {
-          return err;
-        });
-    } else {
-      __deleteLike();
-    }
-  }, [
-    userId,
-    wineId,
-    likeState,
-    // likelist, layout, detailData, likeCount
-  ]);
-
-  const __loadLike = useCallback(() => {
-    return axios({
+  useEffect(() => {
+    axios({
       method: "GET",
       url: process.env.BACK_EC2 + "wine/wishlist/" + userId,
-      // url: GetFeedurl,
     })
       .then((res) => {
         console.log(res.data);
-        if (res.data.object.includes(Number(wineId))) {
-          console.log("##여기통과하나");
-          setLikeCount(res.data.object.length);
-          setLikeState("ok");
-          let temp = res.data.object.filter((item: any) => {
-            item.wineId === Number(wineId);
-          });
-          setWishNumber(temp.id);
-        } else {
-          setLikeCount(res.data.object.length);
+        let tempss = res.data.object.filter(
+          (item: any) => item.wineId === Number(wineId)
+        );
+        console.log(tempss); // 이부분  []이면 트루 반환
+        console.log(tempss.length); // 이부분 0이면 펄스 반환
+        // 빈배열은 true 반환한다 배열의 길이를 0은 false 반환한다
+        if (tempss.length === 0) {
+          console.log("##위시로드데이터 0개 ");
           setLikeState("delete");
+        } else {
+          console.log("##위시로드데이터 1개 ");
+          setLikeState("ok");
         }
       })
       .catch((err) => {
         return err;
       });
-  }, [userId]);
-  console.log(likeState);
-  console.log(likeCount);
+  }, [userId, wineId]);
+  //순수하게 wishList Id값 추출하기위해 사용
+  const __loadLike = useCallback(() => {
+    return axios({
+      method: "GET",
+      url: process.env.BACK_EC2 + "wine/wishlist/" + userId,
+    })
+      .then((res) => {
+        console.log(res.data);
+        let tempss = res.data.object.filter(
+          (item: any) => item.wineId === Number(wineId)
+        );
+        console.log(tempss);
+        let wishIds = tempss[0].id;
+        setWishNumber(Number(wishIds));
+      })
+      .catch((err) => {
+        return err;
+      });
+  }, [userId, wineId]);
 
   useEffect(() => {
     __loadLike();
   }, [__loadLike]);
 
-  const __GetWineDetail = useCallback(() => {
+  const __deleteLike = useCallback(() => {
+    // if (likeState === "ok") {
     return axios({
-      method: "GET",
-      url: process.env.BACK_EC2 + "wine/" + wineId,
-      // url: "https://localhost:8080/api/wine",
-      // url: "http://j6a101.p.ssafy.io:8080/api/wine",
+      method: "delete",
+      url: process.env.BACK_EC2 + "wine/wishlist/" + wishNumber,
     })
       .then((res) => {
-        setdata(res.data.object);
-        setRating(res.data.object.ratingAvg);
-        return res.data;
+        setLikeState("delete");
+        console.log("##delete성공");
+        __loadLike();
       })
       .catch((err) => {
         return err;
       });
-  }, [wineId]);
+    // } else {
+    //   __updateLike();
+    // }
+  }, [__loadLike, wishNumber]);
 
-  useEffect(() => {
-    __GetWineDetail();
-  }, [__GetWineDetail]);
+  const __updateLike = useCallback(() => {
+    // if (likeState === "delete") {
+    const data = {
+      wineId: Number(wineId),
+      memberId: userId,
+    };
+    return axios({
+      method: "post",
+      url: process.env.BACK_EC2 + "wine/wishlist",
+      data: data,
+    })
+      .then((res) => {
+        setLikeState("ok");
+        console.log("##ok성공");
+        console.log(likeState); //useState 여기서직접 콘솔안찍힘 463 함수끝나는곳에 찍을것
+        __loadLike();
+      })
+      .catch((err) => {
+        return err;
+      });
+    // } else {
+    //   __deleteLike();
+    // }
+  }, [userId, wineId, likeState, __loadLike]);
+
+  console.log("##likeState" + likeState);
+  console.log("##wishnumber" + wishNumber);
+
   //유즈이펙트로 곧바로 부르기
   // useEffect(() => {
   //   console.log(wineId);
@@ -508,7 +518,13 @@ function WineDetail(): any {
 
                     <ActionButtonContainer>
                       <ActionButton>
-                        <ImgWrap onClick={__updateLike}>
+                        <ImgWrap
+                          onClick={() => {
+                            likeState === "ok"
+                              ? __deleteLike()
+                              : __updateLike();
+                          }}
+                        >
                           <Like>
                             {/* <LikeImg src="/assets/pngwing.com2.png"></LikeImg> */}
                             <LikeBaseImg
@@ -517,15 +533,15 @@ function WineDetail(): any {
                                   ? "likeanimated"
                                   : "unlikeanimated"
                               }
-                              onClick={
-                                // likeState === "ok" ? __deleteLike :
-                                __updateLike
-                              }
+                              // onClick={
+                              //   // likeState === "ok" ? __deleteLike() :
+                              //   __updateLike()
+                              // }
                               src="/assets/pngwing.com2.png"
                             ></LikeBaseImg>
                             <LikeBase
                               src="/assets/pngwing.com.png"
-                              onClick={__updateLike}
+                              // onClick={__updateLike}
                             ></LikeBase>
 
                             {/* <span> {data ? likeCount : 0}</span> */}
