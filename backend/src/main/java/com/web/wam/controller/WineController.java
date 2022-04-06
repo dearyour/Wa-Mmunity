@@ -139,7 +139,13 @@ public class WineController {
 			@ApiParam(value = "검색할 멤버 아이디 정보", required = true) @PathVariable("memberId") int memberId) {
 		List<WineReviewResponse> reviewList = wineService.searchReviewByMemberId(memberId);
 		int reviewCnt = reviewList.size();
-		double avgRating = wineService.sumRatingByMemberId(memberId) / reviewCnt;
+		double avgRating;
+
+		if (reviewCnt == 0) {
+			avgRating = 0.0;
+		} else {
+			avgRating = wineService.sumRatingByMemberId(memberId) / reviewCnt;
+		}
 
 		Map<Object, Object> response = new HashMap<Object, Object>();
 		response.put("reviewCnt", reviewCnt);

@@ -423,13 +423,13 @@ public class WineServiceImpl implements WineService {
 
 		String result = restTemplate.postForObject("http://j6a101.p.ssafy.io:5000/recomm/train-mf", entity,
 				String.class);
-		System.out.println(result.substring(11, result.length() - 2));
+		System.out.println(result.substring(11, result.length() - 1));
 
 		JSONParser parser = new JSONParser();
 		Object obj = null;
 
 		try {
-			obj = parser.parse(result.substring(11, result.length() - 2));
+			obj = parser.parse(result.substring(11, result.length() - 1));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
