@@ -924,12 +924,14 @@ const LikeImg = styled.img`
 
 const LikeBase = styled.img`
   width: 2rem;
+  height: 2rem;
   position: absolute;
   top: 0;
   left: 0;
 `;
 const LikeBaseImg = styled.img`
   transition: all 1s ease-out;
+  height: 2rem;
   width: 2rem;
   position: absolute;
   top: 0;

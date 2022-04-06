@@ -1,0 +1,256 @@
+$yong-white-200: #fafafa;
+$yong-gray200: #454545;
+$yong-gray100: #9d9d9f;
+$yong-gray: #e8e8e8;
+$yong-blue: #5085e8;
+#__next {
+  .mainfeed {
+    padding-top: 5px;
+    background-color: $yong-white-200;
+    min-height: 100vh;
+    .wrapper {
+      width: 1000px;
+      margin: 0 auto;
+      padding-top: 30px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+
+      .feed-list {
+        width: 600px;
+        .write-feed {
+          width: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+          margin-left: 155px;
+          padding: 20px 24px;
+          border: 1px solid #edbaba;
+          border-radius: 20px;
+          cursor: pointer;
+
+          .profile-image {
+            width: 40px;
+            height: 40px;
+            border-radius: 40px;
+            background-color: #edbaba;
+            margin-right: 12px;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+          }
+          .inp {
+            flex: 1;
+            input {
+              cursor: pointer;
+              width: 100%;
+              font-size: 1rem;
+              color: $yong-gray200;
+              border: none;
+              &:hover {
+                color: palevioletred;
+              }
+              &::placeholder {
+                color: gray;
+              }
+            }
+          }
+          .get-image {
+            label {
+              width: 30px;
+              display: flex;
+              align-items: center;
+            }
+            input {
+              display: none;
+            }
+          }
+        }
+
+        .feed {
+          border: 1px solid #edbaba;
+          border-radius: 20px;
+          background-color: white;
+          margin-top: 25px;
+          padding: 20px 24px;
+
+          .top {
+            display: flex;
+            align-items: center;
+            .profile-image {
+              cursor: pointer;
+              width: 80px;
+              height: 80px;
+              border-radius: 80px;
+              background-color: $yong-gray;
+              margin-right: 12px;
+              background-position: center;
+              background-size: cover;
+              background-repeat: no-repeat;
+            }
+            .profile-desc {
+              .nickname {
+                font-size: 20px;
+                color: $yong-gray200;
+                cursor: pointer;
+              }
+              .timestamp {
+                font-size: 15px;
+                color: $yong-blue;
+                opacity: 0.8;
+                margin-top: 2px;
+              }
+              .timestamps {
+                font-size: 15px;
+                color: rgb(180, 47, 174);
+                opacity: 0.8;
+                margin-top: 2px;
+                cursor: pointer;
+              }
+            }
+          }
+          .contents {
+            margin-top: 15px;
+            font-size: 15px;
+            color: $yong-gray200;
+            line-height: 1.8;
+            border-top: 1px solid #edbaba;
+            .image {
+              cursor: pointer;
+              width: 309px;
+              height: 309px;
+              background-color: $yong-gray;
+              background-repeat: no-repeat;
+              background-position: center;
+              background-size: cover;
+              border-radius: 12px;
+              margin-top: 25px;
+              margin-left: 120px;
+            }
+            .body-tag {
+              display: flex;
+              align-items: center;
+              margin-top: 7px;
+              .body-tags {
+                color: blueviolet;
+                cursor: pointer;
+                &:hover {
+                  color: #709edb;
+                }
+              }
+            }
+          }
+          .bottom {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            margin-top: 25px;
+            .like,
+            .comment {
+              cursor: pointer;
+              display: flex;
+              align-items: center;
+              .asset {
+                width: 32px;
+                display: flex;
+                align-items: center;
+                margin-right: 12px;
+              }
+              .count {
+                font-size: 16px;
+                color: gray;
+              }
+            }
+            .like {
+              margin-right: 24px;
+              position: relative;
+              &:active {
+                animation: box-ani 0.05s linear forwards; /* 애니메이션 적용 */
+              }
+              .move {
+                position: absolute;
+                width: 32px;
+              }
+            }
+          }
+        }
+      }
+
+      .friend-list {
+        position: sticky;
+        padding: 20px 16px;
+        width: 290px;
+        border: 1px solid #edbaba;
+        border-radius: 20px;
+        background-color: white;
+        top: 84px;
+        .my-profile {
+          display: flex;
+          align-items: center;
+          cursor: pointer;
+          .profile-image {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background-color: $yong-gray;
+            margin-right: 12px;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+          }
+          .nickname {
+            font-size: 14px;
+            color: $yong-gray200;
+          }
+        }
+        .my-friends {
+          margin-top: 14px;
+          & > .title {
+            font-size: 20px;
+            display: flex;
+            justify-content: center;
+            color: #edbaba;
+            border-top: 3px solid #edbaba;
+            margin-top: 12px;
+            margin-bottom: 10px;
+          }
+          .friend-list-wrapper {
+            margin-top: 14p;
+            display: grid;
+            row-gap: 8px;
+
+            .friend {
+              display: flex;
+              align-items: center;
+              border-bottom: 1px solid #edbaba;
+              margin-bottom: 4px;
+              cursor: pointer;
+              .profile-image {
+                width: 40px;
+                height: 40px;
+                border-radius: 10px;
+                background-color: $yong-gray;
+                margin-right: 12px;
+                background-position: center;
+                background-size: cover;
+                background-repeat: no-repeat;
+              }
+              .nickname {
+                font-size: 12px;
+                color: $yong-gray200;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+@keyframes box-ani {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(5px, 5px);
+  }
+}
