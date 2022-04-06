@@ -42,4 +42,5 @@ public interface WineService {
 
 	List<WineReviewFlaskResponse> expectWineRateByMemberId(int memberId);
 
+	Object recommSurvey(Object survey);
 }
