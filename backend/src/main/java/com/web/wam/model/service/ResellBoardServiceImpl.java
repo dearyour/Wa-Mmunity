@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
+import com.web.wam.model.repository.resellboard.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,12 +19,6 @@ import com.web.wam.model.dto.resellboard.ResellBoardResponse;
 import com.web.wam.model.entity.resellboard.ResellArticleComment;
 import com.web.wam.model.entity.resellboard.ResellArticleLike;
 import com.web.wam.model.entity.resellboard.ResellBoard;
-import com.web.wam.model.repository.resellboard.ResellArticleCommentRepository;
-import com.web.wam.model.repository.resellboard.ResellArticleCommentRepositorySupport;
-import com.web.wam.model.repository.resellboard.ResellArticleLikeRepository;
-import com.web.wam.model.repository.resellboard.ResellArticleLikeRepositorySupport;
-import com.web.wam.model.repository.resellboard.ResellBoardRepository;
-import com.web.wam.model.repository.resellboard.ResellBoardRepositorySupport;
 
 @Service("resellBoardService")
 public class ResellBoardServiceImpl implements ResellBoardService {
@@ -45,6 +40,9 @@ public class ResellBoardServiceImpl implements ResellBoardService {
 
 	@Autowired
 	private ResellArticleCommentRepositorySupport resellArticleCommentRepositorySupport;
+
+	@Autowired
+	private ResellBoardMemberRepositorySupport resellBoardMemberRepositorySupport;
 
 	@Override
 	public List<ResellBoardResponse> getAllArticle() {
@@ -69,6 +67,8 @@ public class ResellBoardServiceImpl implements ResellBoardService {
 		resellBoardResponse.setRegtime(article.getRegtime());
 		resellBoardResponse.setPrice(article.getPrice());
 		resellBoardResponse.setLikeCnt(getLikeCountById(article.getId()));
+		resellBoardResponse.setMemberName(resellBoardMemberRepositorySupport
+				.findMemberNameById(article.getMemberId()));
 	}
 
 	@Override
@@ -156,8 +156,9 @@ public class ResellBoardServiceImpl implements ResellBoardService {
 //        member.ifPresent(selectedMember -> {
 //            response.setNickname(selectedMember.getNickname());
 //        });
-		response.setNickname(resellArticleCommentRepositorySupport.findMemberNicknameByMemberId(comment.getMemberId()));
+		response.setNickname(resellBoardMemberRepositorySupport.findMemberNameById(comment.getMemberId()));
 		response.setArticleId(comment.getArticleId());
+
 	}
 
 	@Override

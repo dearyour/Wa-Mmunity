@@ -3,6 +3,7 @@ package com.web.wam.model.repository.resellboard;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.web.wam.model.entity.QMember;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -17,6 +18,7 @@ public class ResellBoardRepositorySupport {
 	@Autowired
 	private JPAQueryFactory jpaQueryFactory;
 	QResellBoard qResellBoard = QResellBoard.resellBoard;
+	QMember qMember = QMember.member;
 
 	@Autowired
 	ResellArticleLikeRepositorySupport resellArticleLikeRepositorySupport;
@@ -43,6 +45,7 @@ public class ResellBoardRepositorySupport {
 		resellBoardResponse.setRegtime(article.getRegtime());
 		resellBoardResponse.setPrice(article.getPrice());
 		resellBoardResponse.setLikeCnt(resellArticleLikeRepositorySupport.countByArticleId(article.getId()));
+		resellBoardResponse.setMemberName(findMemberNameById(article.getMemberId()));
 	}
 
 	public List<ResellBoardResponse> getArticleByKeyword(String keyword) {
@@ -57,5 +60,12 @@ public class ResellBoardRepositorySupport {
 			articleList.add(resellBoardResponse);
 		}
 		return articleList;
+	}
+
+	public String findMemberNameById(Integer memberId) {
+
+		String name = jpaQueryFactory.select(qMember.nickname).from(qMember)
+				.where(qMember.id.eq(memberId)).fetchOne();
+		return name;
 	}
 }
