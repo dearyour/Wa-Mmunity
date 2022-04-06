@@ -506,14 +506,14 @@ public class WineServiceImpl implements WineService {
 	}
 
 	@Override
-	public Object recommSurvey(Object survey) {
+	public Object recommSurvey(org.json.JSONObject survey) {
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
 				+ "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36");
 
-		HttpEntity<String> entity = new HttpEntity<String>((String) survey, headers);
+		HttpEntity<String> entity = new HttpEntity<String>(survey.toString(), headers);
 
 		System.out.println(entity.toString());
 
