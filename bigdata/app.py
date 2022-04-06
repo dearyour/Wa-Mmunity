@@ -11,7 +11,9 @@ from models import related_wine, survey, mf_wine
 
 # flask 객체 인스턴스 생성
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
+app.config["CORS_SUPPORTS_CREDENTIALS"] = True
+
 
 # 접속 url 설정
 @app.route('/')
