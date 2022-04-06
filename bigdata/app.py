@@ -35,7 +35,7 @@ def wine_cb(wine_id):
 
 @app.route('/recomm/survey', methods=['OPTIONS','POST'])
 def wine_survey():
-    if request.method == 'POST':
+    # if request.method === 'POST':
         # json -> string
         data = request.get_json()
         survey_data = ' '.join(' '.join(list(data.values())).split())
@@ -44,7 +44,7 @@ def wine_survey():
         # 와인 id list(array) 반환
         res = Response(result, mimetype="application/json")
         res.headers["Access-Control-Allow-Origin"] = "*"
-        res.headers["Access-Control-Allow-Methods"] = ["POST, GET, DELETE, PUT"]
+        res.headers["Access-Control-Allow-Methods"] = ["POST, GET, DELETE, PUT, OPTIONS"]
         res.headers["Access-Control-Max-Age"] = "3600"
         res.headers["Access-Control-Allow-Headers"] = ["x-requested-with, origin, content-type, accept"]
         return res
