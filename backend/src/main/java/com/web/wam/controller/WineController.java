@@ -1,13 +1,33 @@
 package com.web.wam.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import com.web.wam.model.dto.wine.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.web.wam.model.dto.BaseResponse;
+import com.web.wam.model.dto.wine.WineFilterRequest;
+import com.web.wam.model.dto.wine.WineResponse;
+import com.web.wam.model.dto.wine.WineReviewFlaskResponse;
+import com.web.wam.model.dto.wine.WineReviewPostRequest;
+import com.web.wam.model.dto.wine.WineReviewPutRequest;
+import com.web.wam.model.dto.wine.WineReviewResponse;
+import com.web.wam.model.dto.wine.WineSurveyRequest;
+import com.web.wam.model.dto.wine.WineWishlistRequest;
+import com.web.wam.model.dto.wine.WineWishlistResponse;
 import com.web.wam.model.service.WineService;
 
 import io.swagger.annotations.Api;
@@ -74,7 +94,7 @@ public class WineController {
 	}
 
 	@GetMapping("/personal/{memberId}")
-	@ApiOperation(value = "나의 와인 예상평점 가져오기", notes = "나의 와인 예상평점 가져오기(내림차순) ")
+	@ApiOperation(value = "나의 와인 예상평점 가져오기", notes = "나의 와인 예상평점 가져오기 ")
 	@ApiResponses({ @ApiResponse(code = 200, message = "성공", response = BaseResponse.class),
 			@ApiResponse(code = 401, message = "인증 실패", response = BaseResponse.class),
 			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponse.class) })
@@ -118,7 +138,15 @@ public class WineController {
 	public ResponseEntity<? extends BaseResponse> searchReviewByMemberId(
 			@ApiParam(value = "검색할 멤버 아이디 정보", required = true) @PathVariable("memberId") int memberId) {
 		List<WineReviewResponse> reviewList = wineService.searchReviewByMemberId(memberId);
-		return ResponseEntity.status(200).body(BaseResponse.of(200, reviewList));
+		int reviewCnt = reviewList.size();
+		double avgRating = wineService.sumRatingByMemberId(memberId) / reviewCnt;
+
+		Map<Object, Object> response = new HashMap<Object, Object>();
+		response.put("reviewCnt", reviewCnt);
+		response.put("avgRating", avgRating);
+		response.put("reviewList", reviewList);
+
+		return ResponseEntity.status(200).body(BaseResponse.of(200, response));
 	}
 
 	@GetMapping("/wineReview/{wineId}")
