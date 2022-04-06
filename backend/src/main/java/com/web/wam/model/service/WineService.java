@@ -52,4 +52,5 @@ public interface WineService {
 
 	double sumRatingByMemberId(int memberId);
 
+	Object recommSurvey(Object survey);
 }

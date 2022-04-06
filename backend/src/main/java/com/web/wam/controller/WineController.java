@@ -290,4 +290,16 @@ public class WineController {
 		List<WineResponse> wineList = wineService.searchWineByFilter(req);
 		return ResponseEntity.status(200).body(BaseResponse.of(200, wineList));
 	}
+
+	@PostMapping("/recomm/survey")
+	@ApiOperation(value = "개인 맞춤 추천 - 설문조사", notes = "설문 조사 결과로 개인 맞춤 와인 추천")
+	@ApiResponses({ @ApiResponse(code = 200, message = "성공", response = BaseResponse.class),
+			@ApiResponse(code = 401, message = "인증 실패", response = BaseResponse.class),
+			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponse.class) })
+	public ResponseEntity<? extends BaseResponse> recommSurvey(
+			@RequestBody @ApiParam(value = "설문 정보", required = true) String survey) {
+		Object result = wineService.recommSurvey(survey);
+		return ResponseEntity.status(200).body(BaseResponse.of(200, result));
+	}
+
 }

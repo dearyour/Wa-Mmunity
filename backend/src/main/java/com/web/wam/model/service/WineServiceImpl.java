@@ -505,4 +505,28 @@ public class WineServiceImpl implements WineService {
 		return wineList;
 	}
 
+	@Override
+	public Object recommSurvey(Object survey) {
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+				+ "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36");
+
+		HttpEntity<String> entity = new HttpEntity<String>((String) survey, headers);
+
+		System.out.println(entity.toString());
+
+		RestTemplate restTemplate = new RestTemplate();
+
+		String result = restTemplate.postForObject("http://j6a101.p.ssafy.io:5000/recomm/survey", entity,
+				String.class);
+
+		System.out.println(result.substring(11, result.length() - 2));
+		System.out.println("--------------");
+		System.out.println(result);
+
+		return result;
+
+	}
 }
