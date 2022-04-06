@@ -334,9 +334,9 @@
 
 - 프로젝트 관리 : [Notion](https://www.notion.so/SSAFY-PJT-b02a8015d76d4fe0ab044dd162025893)
 - [기획서](https://lab.ssafy.com/s06-bigdata-rec-sub2/S06P22A101/-/tree/develop/%EC%82%B0%EC%B6%9C%EB%AC%BC/%EA%B8%B0%ED%9A%8D%EC%84%9C)
-- 와이어프레임
-- ERD
-- 시스템 아키텍처
+- [와이어프레임](https://lab.ssafy.com/s06-bigdata-rec-sub2/S06P22A101/-/tree/develop/%EC%82%B0%EC%B6%9C%EB%AC%BC/%EC%99%80%EC%9D%B4%EC%96%B4%ED%94%84%EB%A0%88%EC%9E%84)
+- [ERD](https://lab.ssafy.com/s06-bigdata-rec-sub2/S06P22A101/-/tree/develop/%EC%82%B0%EC%B6%9C%EB%AC%BC/erd)
+- [시스템 아키텍처](https://lab.ssafy.com/s06-bigdata-rec-sub2/S06P22A101/-/tree/develop/%EC%82%B0%EC%B6%9C%EB%AC%BC/%EC%8B%9C%EC%8A%A4%ED%85%9C%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98)
 - 화면 정의서
 
 ---
