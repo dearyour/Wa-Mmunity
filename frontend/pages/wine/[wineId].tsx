@@ -272,6 +272,7 @@ function WineDetail(): any {
   const [likeState, setLikeState] = useState("delete"); //
   const [wishNumber, setWishNumber] = useState(0);
   // console.log(userId);
+
   const __GetWineDetail = useCallback(() => {
     return axios({
       method: "GET",
@@ -768,10 +769,14 @@ function WineDetail(): any {
                                       />
                                     </CommentUsername>
                                     <CommentUsername>
-                                      {now.memberName}
+                                      <span className="태양">
+                                        {now.memberName}
+                                      </span>
                                     </CommentUsername>
                                     <CommentUsernames>
-                                      {now.regtime}
+                                      {now.regtime[0]}년 {now.regtime[1]}월{" "}
+                                      {now.regtime[2]}일 {now.regtime[3]}시{" "}
+                                      {now.regtime[4]}분
                                     </CommentUsernames>
                                   </span>
                                 </CommentFeedUser>
