@@ -42,7 +42,7 @@ const MyPage = () => {
   // 유저 이메일
   const [email, setEmail] = useState("");
   // 유저 아이디
-  const [id, setId] = useState(-1);
+  const [id, setId] = useState(0);
 
   const getAccount = useCallback(async () => {
     return axios({
@@ -52,8 +52,8 @@ const MyPage = () => {
     })
       .then((response) => {
         console.log(response);
-        setNickname(response.data.object.nickname);
-        setId(response.data.object.id);
+        setNickname(response.data.object.member.nickname);
+        setId(response.data.object.member.id);
       })
       .catch((error) => {
         console.log(error);
