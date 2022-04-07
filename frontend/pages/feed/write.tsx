@@ -217,9 +217,9 @@ const Write_feed = () => {
       //   "data",
       //   new Blob([JSON.stringify(data)], { type: "application/json" })
       // );
-      formdata.append("tag", sortType);
-      formdata.append("content", content);
       formdata.append("title", title);
+      formdata.append("content", content);
+      formdata.append("tag", sortType);
       formdata.append("member_id", loginUserId);
 
       axios({
