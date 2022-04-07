@@ -18,9 +18,10 @@ const Feed = (props: any) => {
   const loginUserId = useSelector((state: RootState) => state.user.users.id);
   const memberId = useSelector((state: RootState) => state.user.users.memberId);
   const ondo = useSelector((state: RootState) => state.user.ondo);
-  const [likeCount, setLikeCount] = useState(props.dto.likeCnt);
+  const [likeCount, setLikeCount] = useState(props.dto.article.likeCnt);
   const [likeState, setLikeState] = useState("delete");
   const [commentData, setCommentData] = useState([]);
+  console.log(props.dto.article.likeCnt);
   // useEffect(() => {
   //   dispatch(commentAction.getComment);
   // }, []);
@@ -46,35 +47,38 @@ const Feed = (props: any) => {
     dispatch(layoutAction.updateCommentData(commentData));
   }, [dispatch, props.dto]);
 
-  const __loadComments = useCallback(() => {
-    //평점 업로드 또는 불러올때 계속 새로고침
-    // const feedsId = detailData.feed.feedId;
-    axios({
-      method: "GET",
-      url: process.env.BACK_EC2 + "resellboard/comment/" + props.dto.articleId,
-      // url: "https://localhost:8080/api/" + "wine/wineReview/" + wineId,
-    })
-      .then((res) => {
-        console.log(res.data.object);
-        setCommentData(res.data.object.comments.reverse());
-      })
-      .catch((err) => {
-        // console.log(err);
-      });
-  }, [props.dto.articleId]);
-  useEffect(() => {
-    __loadComments();
-  }, [__loadComments]);
+  // const __loadComments = useCallback(() => {
+  //   //평점 업로드 또는 불러올때 계속 새로고침
+  //   // const feedsId = detailData.feed.feedId;
+  //   axios({
+  //     method: "GET",
+  //     url:
+  //       process.env.BACK_EC2 +
+  //       "resellboard/comment/" +
+  //       props.dto.article.articleId,
+  //     // url: "https://localhost:8080/api/" + "wine/wineReview/" + wineId,
+  //   })
+  //     .then((res) => {
+  //       console.log(res.data.object);
+  //       setCommentData(res.data.object.comments.reverse());
+  //     })
+  //     .catch((err) => {
+  //       // console.log(err);
+  //     });
+  // }, [props.dto.articleId]);
+  // useEffect(() => {
+  //   __loadComments();
+  // }, [__loadComments]);
   //////////////////////////////////좋아요
   const __loadLike = useCallback(() => {
     return axios({
       method: "GET",
-      url: process.env.BACK_EC2 + "resellboard/like/" + loginUserId,
+      url: process.env.BACK_EC2 + "freeboard/like/" + loginUserId,
     })
       .then((res) => {
         console.log(res.data);
         let tempss = res.data.object.filter(
-          (item: any) => item === Number(props.dto.articleId)
+          (item: any) => item === Number(props.dto.article.articleId)
         );
         // console.log(tempss); // 이부분  []이면 트루 반환
         // console.log(tempss.length); // 이부분 0이면 펄스 반환
@@ -90,16 +94,37 @@ const Feed = (props: any) => {
       .catch((err) => {
         return err;
       });
-  }, [loginUserId, props.dto.articleId]);
+  }, [loginUserId, props.dto.article.articleId]);
+
+  // const __loadLikeCnt = useCallback(() => {
+  //   return axios({
+  //     method: "GET",
+  //     url:
+  //       process.env.BACK_EC2 +
+  //       "freeboard/article/" +
+  //       props.dto.article.articleId,
+  //   })
+  //     .then((res) => {
+  //       console.log(res.data);
+  //       console.log(res.data.object.comments.length);
+  //       setLikeCount(res.data.object.comments.length);
+  //     })
+  //     .catch((err) => {
+  //       return err;
+  //     });
+  // }, [loginUserId, props.dto.article.articleId]);
+  // useEffect(() => {
+  //   __loadLikeCnt();
+  // }, [__loadLikeCnt]);
 
   const __updateLike = useCallback(() => {
     const data = {
-      articleId: Number(props.dto.articleId),
+      atricleId: Number(props.dto.article.articleId),
       memberId: loginUserId,
     };
     return axios({
       method: "post",
-      url: process.env.BACK_EC2 + "resellboard/like",
+      url: process.env.BACK_EC2 + "freeboard/like",
       data: data,
     })
       .then((res) => {
@@ -107,34 +132,35 @@ const Feed = (props: any) => {
         setLikeCount(likeCount + 1);
         // console.log("##ok성공");
         // console.log(likeState); //useState 여기서직접 콘솔안찍힘 463 함수끝나는곳에 찍을것
-        __loadLike();
+        // __loadLike();
+        // __loadLikeCnt();
       })
       .catch((err) => {
         return err;
       });
-  }, [loginUserId, props.dto.articleId, likeState, __loadLike, likeCount]);
+  }, [loginUserId, props.dto.article.articleId, likeState, likeCount]);
 
   const __deleteLike = useCallback(() => {
     const data = {
-      articleId: Number(props.dto.articleId),
+      atricleId: Number(props.dto.article.articleId),
       memberId: loginUserId,
     };
     return axios({
       method: "delete",
-      url: process.env.BACK_EC2 + "resellboard/like",
+      url: process.env.BACK_EC2 + "freeboard/like",
       data: data,
     })
       .then((res) => {
-        setLikeState("ok");
+        setLikeState("delete");
         setLikeCount(likeCount - 1);
         // console.log("##ok성공");
         // console.log(likeState); //useState 여기서직접 콘솔안찍힘 463 함수끝나는곳에 찍을것
-        __loadLike();
+        // __loadLike();
       })
       .catch((err) => {
         return err;
       });
-  }, [loginUserId, props.dto.articleId, likeState, __loadLike, likeCount]);
+  }, [loginUserId, props.dto.article.articleId, likeState, likeCount]);
   useEffect(() => {
     __loadLike();
   }, [__loadLike]);
@@ -147,10 +173,10 @@ const Feed = (props: any) => {
         //   Router.push(`/user/${props.dto.username}`);
         // }}
       >
-        {props.dto.photo && (
+        {props.dto.article.photo && (
           <div
             className="profile-image"
-            style={{ backgroundImage: `url(${props.dto.photo})` }}
+            style={{ backgroundImage: `url(${props.dto.article.photo})` }}
             onClick={() => {
               Router.push(`/user/${props.dto.photo}`);
             }}
@@ -160,24 +186,24 @@ const Feed = (props: any) => {
           <div
             className="nickname txt-bold"
             onClick={() => {
-              Router.push(`/user/${props.dto.memberId}`);
+              Router.push(`/user/${props.dto.article.memberId}`);
             }}
           >
-            <Style className="태양">{props.dto.memberName}</Style>
+            <Style className="태양">{props.dto.article.memberNickName}</Style>
           </div>
           <div className="timestamp">태그 : {props.dto.tag}</div>
           <div className="timestamp">
-            {props.dto.regtime[0]}년 {props.dto.regtime[1]}월{" "}
-            {props.dto.regtime[2]}일 {props.dto.regtime[3]}시{" "}
-            {props.dto.regtime[4]}분
+            {props.dto.article.regtime[0]}년 {props.dto.article.regtime[1]}월{" "}
+            {props.dto.article.regtime[2]}일 {props.dto.article.regtime[3]}시{" "}
+            {props.dto.article.regtime[4]}분
           </div>
           <div
             className="timestamps"
             onClick={() => {
-              Router.push("/search/" + props.dto.title);
+              Router.push("/search/" + props.dto.article.title);
             }}
           >
-            제목 : {props.dto.title}
+            제목 : {props.dto.article.title}
           </div>
         </div>
       </div>
@@ -197,12 +223,12 @@ const Feed = (props: any) => {
             );
           })} */}
         </div>
-        {props.dto.content}
-        {props.dto.photo && (
+        {props.dto.article.content}
+        {props.dto.article.photo && (
           <div
             className="image"
             onClick={__openFeedDetail}
-            style={{ backgroundImage: `url(${props.dto.photo})` }}
+            style={{ backgroundImage: `url(${props.dto.article.photo})` }}
           ></div>
         )}
       </div>
@@ -227,7 +253,7 @@ const Feed = (props: any) => {
           </div>
           <div className="count txt-bold">
             {/* {props.dto.likeCnt ? likeCount : 0} */}
-            {props.dto ? likeCount : 0}
+            {likeCount}
           </div>
         </div>
         <div className="comment" onClick={__openFeedDetail}>
@@ -236,7 +262,7 @@ const Feed = (props: any) => {
             <img src="/assets/pngwing.com5.png" alt="댓글" />
           </div>
           <div className="count txt-bold">
-            {commentData ? commentData.length : 0}
+            {props.dto.comments ? props.dto.comments.length : 0}
           </div>
         </div>
       </div>

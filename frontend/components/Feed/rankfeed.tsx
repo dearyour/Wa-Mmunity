@@ -7,30 +7,36 @@ function Rankfeed(props: any) {
   // console.log(props)
   return (
     <ul className="friend-list-wrapper">
-      {props.num}위 　[ {props.dto.ondo} ˚C ]
+      <div>
+        <span className="태양" style={{ marginRight: "10px" }}>
+          {props.num}위
+        </span>
+        <span className="불타오르는" style={{ marginRight: "10px" }}>
+          국적 : {props.dto.country}
+        </span>
+        {/* 　[ {props.dto.ratingNum} 개의 리뷰 ] */}
+      </div>
       <li
         className="friend"
         onClick={() => {
-          Router.push(`/user/${props.dto.username}`);
+          Router.push(`/wine/${props.dto.wineId}`);
         }}
       >
-        {props.dto.image && (
+        {props.dto.img && (
           <Profile
             className="profile-image"
-            style={{ backgroundImage: `url(${props.dto.image})` }}
+            style={{ backgroundImage: `url(${props.dto.img})` }}
           >
             {" "}
           </Profile>
         )}
         <div className="nickname txt-bold">
-          {props.dto.chooseStyle ? (
-            <div>
-              <Style className={props.dto.chooseStyle}>
-                {props.dto.chooseStyle}
-              </Style>
-            </div>
-          ) : null}
-          {props.dto.username}
+          <div>
+            <Style className="자"> {props.dto.ratingNum} 개의 리뷰</Style>
+            {/* 　[ {props.dto.ratingNum} 개의 리뷰 ] */}
+          </div>
+
+          {props.dto.name}
         </div>
       </li>
     </ul>
@@ -41,7 +47,7 @@ export default Rankfeed;
 
 const Profile = styled.div`
   margin-bottom: 2px;
-`
+`;
 
 const Style = styled.span`
   font-size: 10px;

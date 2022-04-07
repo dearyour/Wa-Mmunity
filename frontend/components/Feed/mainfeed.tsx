@@ -72,33 +72,30 @@ function Mainfeed() {
   //##################################################################################
   //res.data.detailFeedDtos 여기까지가 action임
   //res.data.detailFeedDtos.feed 가 action.payload 임
-  const __GetFeedState = useCallback(
-    (token: string | null) => {
-      return axios({
-        method: "GET",
-        url: process.env.BACK_EC2 + "resellboard",
-        // url: "https://jsonplaceholder.typicode.com/comments",
-        // headers: { Authorization: "Bearer " + token },
-      })
-        .then((res) => {
-          let feedss = res.data.detailFeedDtos;
-          //[{피드1},{피드2},{피드3}] 저장되어있음
-          // console.log(res.data.detailFeedDtos);
+  const __GetTopWine = useCallback(() => {
+    return axios({
+      method: "GET",
+      url: process.env.BACK_EC2 + "wine/sort/review",
+      // url: "https://jsonplaceholder.typicode.com/comments",
+      // headers: { Authorization: "Bearer " + token },
+    })
+      .then((res) => {
+        let feedss = res.data.detailFeedDtos;
+        //[{피드1},{피드2},{피드3}] 저장되어있음
+        console.log(res.data);
 
-          setRankers(res.data.articleList);
-          //객체가들어있는 해당배열을 feeds에 저장, 프롭으로 내려주기위해, 최신순
-          setFeeds(res.data.articleList.reverse());
-          return;
-        })
-        .catch((err) => {
-          return err;
-        });
-    },
-    [feeds]
-  );
+        setRankers(res.data.object);
+        //객체가들어있는 해당배열을 feeds에 저장, 프롭으로 내려주기위해, 최신순
+        // setFeeds(res.data.articleList.reverse());
+        return;
+      })
+      .catch((err) => {
+        return err;
+      });
+  }, []);
   useEffect(() => {
-    const token = localStorage.getItem("Token");
-    __GetFeedState(token);
+    // const token = localStorage.getItem("Token");
+    __GetTopWine();
   }, []);
 
   // console.log(feeds);
@@ -251,11 +248,11 @@ function Mainfeed() {
               >
                 {/* 나의 온도 : [ {userInfo} ˚C ] */}
               </div>
-              <div className="title txt-bold">와인 리뷰수 순위</div>
-              {/* {rankers.map((item: any, idx: number) => {
+              <div className="title txt-bold">와인 리뷰 순위</div>
+              {rankers.slice(0, 7).map((item: any, idx: number) => {
                 // console.log(feeds);
                 return <Rankfeed key={idx} dto={item} num={idx + 1} />;
-              })} */}
+              })}
             </div>
           </div>
         </div>

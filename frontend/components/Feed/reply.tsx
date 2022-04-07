@@ -9,7 +9,7 @@ export default function Reply(props: any) {
   const detailData = useSelector((state: RootState) => state.layout.detailData);
   const loginUserId = useSelector((state: RootState) => state.user.users.id);
   const feedUserId = useSelector(
-    (state: RootState) => state.layout.detailData.memberId
+    (state: RootState) => state.layout.detailData.article.memberId
   );
   const commentId = useSelector((state: RootState) => state.layout.targetId);
   const [temp, setTemp] = useState(commentId);
@@ -26,7 +26,8 @@ export default function Reply(props: any) {
         const token = localStorage.getItem("Token");
         axios({
           method: "DELETE",
-          url: process.env.BACK_EC2 + "resellboard/comment/" + props.reply.id,
+          url:
+            process.env.BACK_EC2 + "freeboard/comment/" + props.reply.commentId,
           headers: {
             Authorization: "Bearer " + token,
           },
@@ -40,7 +41,7 @@ export default function Reply(props: any) {
           });
       }
     },
-    [detailData, useCallback, props.reply]
+    [detailData, useCallback, props.reply.commentId]
   );
 
   return (
@@ -58,14 +59,17 @@ export default function Reply(props: any) {
             ></div>
           )} */}
           <div className="feed-desc">
-            {/* <div className="nickname">{props.item.username}</div> */}
+            {/* <div className="nickname">{props.reply.memberNickName}</div> */}
             <div
-              className="nickname"
-              // onClick={() => {
-              //   Router.push(`/user/${props.reply.username}`);
-              // }}
+            // onClick={() => {
+            //   Router.push(`/user/${props.reply.username}`);
+            // }}
             >
-              {props.reply.memberId}
+              <div>
+                <span className="태양" style={{ marginRight: "10px" }}>
+                  {props.reply.memberNickName}
+                </span>
+              </div>
             </div>
             <div className="timestamp">
               {props.reply.regtime[0]}년 {props.reply.regtime[1]}월{" "}

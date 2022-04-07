@@ -13,24 +13,22 @@ function Detailfeed() {
   const dispatch = useDispatch();
   const loginUserId = useSelector((state: RootState) => state.user.users.id);
   const layout = useSelector((state: RootState) => state.layout);
-  const image = useSelector((state: RootState) => state.user.users.image);
   const detailData = useSelector((state: RootState) => state.layout.detailData);
   const feedstate = useSelector((state: RootState) => state.feed.items);
   const [comment, setComment] = useState(""); // 댓글작성
   const commentRef: any = useRef(null);
   const [commentData, setCommentData] = useState([]);
-  const likelist = useSelector((state: RootState) => state.layout.likelist);
-  const [likeCount, setLikeCount] = useState(likelist);
+  const [likeCount, setLikeCount] = useState(detailData.article.likeCnt);
   const [likeState, setLikeState] = useState("delete"); //이거는 모달 껐다키면 초기값으로 설정됨 사용불가
   useEffect(() => {
-    // if (detailData.likeflag) {
+    // if (detailData.article.likeflag) {
     //   setLikeState("delete");
     // } else {
     //   setLikeState("ok");
     // }
   }, []);
   const [putUser, SetPutUser] = useState([]);
-  // putUser = detailData.comment;
+  // putUser = detailData.article.comment;
 
   // const __getProfileImage = useCallback(() => {}, [userImage]);
   // console.log(startDate + "$$$$$$$$$$");
@@ -38,7 +36,7 @@ function Detailfeed() {
   // const __deleteComment = useCallback(
   //   (e) => {
   //     e.preventDefault();
-  //     if (detailData) {
+  //     if (detailData.article) {
   //       const token = localStorage.getItem("Token");
   //       axios({
   //         method: "DELETE",
@@ -53,24 +51,25 @@ function Detailfeed() {
   //         .then((res) => {
   //           console.log(res);
   //           props.method();
-  //           // dispatch(layoutAction.updateDetailData(commentData));
+  //           // dispatch(layoutAction.updatedetailData.article(commentData));
   //         })
   //         .catch((err) => {
   //           console.log(err);
   //         });
   //     }
   //   },
-  //   [detailData, useCallback, props.reply]
+  //   [detailData.article, useCallback, props.reply]
   // );
 
   const __deleteFeed = useCallback(
     (e) => {
       e.preventDefault();
-      if (detailData) {
+      if (detailData.article) {
         const token = localStorage.getItem("Token");
         axios({
           method: "DELETE",
-          url: process.env.BACK_EC2 + "/feed/delete/" + detailData.articleId,
+          url:
+            process.env.BACK_EC2 + "freeboard/" + detailData.article.articleId,
           headers: {
             Authorization: "Bearer " + token,
           },
@@ -79,22 +78,25 @@ function Detailfeed() {
             // console.log(res.data);
             dispatch(feedAction.getFeeds());
             __closeDetail();
-            // dispatch(layoutAction.updateDetailData(commentData));
+            // dispatch(layoutAction.updatedetailData.article(commentData));
           })
           .catch((err) => {
             // console.log(err);
           });
       }
     },
-    [detailData, useCallback]
+    [detailData.article, useCallback]
   );
 
   const __loadComments = useCallback(() => {
     //평점 업로드 또는 불러올때 계속 새로고침
-    // const feedsId = detailData.feed.feedId;
+    // const feedsId = detailData.article.feed.feedId;
     axios({
       method: "GET",
-      url: process.env.BACK_EC2 + "resellboard/comment/" + detailData.articleId,
+      url:
+        process.env.BACK_EC2 +
+        "freeboard/article/" +
+        detailData.article.articleId,
       // url: "https://localhost:8080/api/" + "wine/wineReview/" + wineId,
     })
       .then((res) => {
@@ -104,7 +106,7 @@ function Detailfeed() {
       .catch((err) => {
         // console.log(err);
       });
-  }, [detailData.articleId]);
+  }, [detailData.article.articleId]);
   useEffect(() => {
     __loadComments();
   }, [__loadComments]);
@@ -114,16 +116,16 @@ function Detailfeed() {
     (e) => {
       e.preventDefault();
       if (comment.length > 0 && comment.trim()) {
-        if (detailData) {
+        if (detailData.article) {
           const data = {
-            articleId: Number(detailData.articleId),
+            atricleId: Number(detailData.article.articleId),
             content: comment,
-            memberId: detailData.memberId,
+            memberId: loginUserId,
           };
           console.log(data);
           axios({
             method: "POST",
-            url: process.env.BACK_EC2 + "resellboard/comment",
+            url: process.env.BACK_EC2 + "freeboard/comment",
             data: data,
           })
             .then((res) => {
@@ -140,10 +142,10 @@ function Detailfeed() {
     [
       comment,
       commentRef,
-      detailData.drticleId,
+      detailData.article.drticleId,
       comment,
-      detailData.memberId,
-      __loadComments,
+      detailData.article.memberId,
+      dispatch,
     ]
   );
   ///////////////
@@ -151,12 +153,12 @@ function Detailfeed() {
   const __loadLike = useCallback(() => {
     return axios({
       method: "GET",
-      url: process.env.BACK_EC2 + "resellboard/like/" + loginUserId,
+      url: process.env.BACK_EC2 + "freeboard/like/" + loginUserId,
     })
       .then((res) => {
         console.log(res.data);
         let tempss = res.data.object.filter(
-          (item: any) => item === Number(detailData.articleId)
+          (item: any) => item === Number(detailData.article.articleId)
         );
         // console.log(tempss); // 이부분  []이면 트루 반환
         // console.log(tempss.length); // 이부분 0이면 펄스 반환
@@ -172,16 +174,16 @@ function Detailfeed() {
       .catch((err) => {
         return err;
       });
-  }, [loginUserId, detailData.articleId]);
+  }, [loginUserId, detailData.article.articleId]);
 
   const __updateLike = useCallback(() => {
     const data = {
-      articleId: Number(detailData.articleId),
+      atricleId: Number(detailData.article.articleId),
       memberId: loginUserId,
     };
     return axios({
       method: "post",
-      url: process.env.BACK_EC2 + "resellboard/like",
+      url: process.env.BACK_EC2 + "freeboard/like",
       data: data,
     })
       .then((res) => {
@@ -189,40 +191,40 @@ function Detailfeed() {
         setLikeCount(likeCount + 1);
         // console.log("##ok성공");
         // console.log(likeState); //useState 여기서직접 콘솔안찍힘 463 함수끝나는곳에 찍을것
-        __loadLike();
+        // __loadLike();
       })
       .catch((err) => {
         return err;
       });
-  }, [loginUserId, detailData.articleId, likeState, __loadLike, likeCount]);
+  }, [loginUserId, detailData.article.articleId, likeState, likeCount]);
 
   const __deleteLike = useCallback(() => {
     const data = {
-      articleId: Number(detailData.articleId),
+      atricleId: Number(detailData.article.articleId),
       memberId: loginUserId,
     };
     return axios({
       method: "delete",
-      url: process.env.BACK_EC2 + "resellboard/like",
+      url: process.env.BACK_EC2 + "freeboard/like",
       data: data,
     })
       .then((res) => {
-        setLikeState("ok");
+        setLikeState("delete");
         setLikeCount(likeCount - 1);
         // console.log("##ok성공");
         // console.log(likeState); //useState 여기서직접 콘솔안찍힘 463 함수끝나는곳에 찍을것
-        __loadLike();
+        // __loadLike();
       })
       .catch((err) => {
         return err;
       });
-  }, [loginUserId, detailData.articleId, likeState, __loadLike, likeCount]);
+  }, [loginUserId, detailData.article.articleId, likeState, likeCount]);
 
   const __closeDetail = useCallback(() => {
     dispatch(layoutAction.updateDetailState(false));
     dispatch(layoutAction.likeList(undefined)); //이거 거의안씀
-    // dispatch(layoutAction.updateDetailData(undefined));
-    // dispatch(layoutAction.updateDetailData(detailData));
+    // dispatch(layoutAction.updatedetailData.article(undefined));
+    // dispatch(layoutAction.updatedetailData.article(detailData.article));
     // dispatch(layoutAction.likeList("ok" ? "delete" : "ok"));
     dispatch(feedAction.getFeeds()); // 모달닫힐때 새로운정보를 최상위부모에 기록 그것을 다시 프롭으로 feed에 넘김
 
@@ -248,12 +250,11 @@ function Detailfeed() {
 
   useEffect(() => {
     __loadLike();
-    return () => {};
   }, [__loadLike]);
-  useEffect(() => {
-    __loadComments();
-    return () => {};
-  }, [__loadComments]);
+  // useEffect(() => {
+  //   __loadComments();
+  //   return () => {};
+  // }, [__loadComments]);
   return (
     <div>
       <div className="feed-detail">
@@ -262,22 +263,24 @@ function Detailfeed() {
           <div className="close" onClick={__closeDetail}>
             <img src="/assets/close.svg" alt="닫기" />
           </div>
-          {/* {detailData.feed.image && <div className="main-image" style={{ backgroundImage: `url(${detailData.feed.image})`></div>} */}
-          {detailData.photo && (
+          {/* {detailData.article.feed.image && <div className="main-image" style={{ backgroundImage: `url(${detailData.article.feed.image})`></div>} */}
+          {detailData.article.photo && (
             <div
               className="main-image"
-              style={{ backgroundImage: `url(${detailData.photo})` }}
+              style={{ backgroundImage: `url(${detailData.article.photo})` }}
             ></div>
           )}
           <div className="contents">
             <div className="feed-content">
               <div className="top">
-                {detailData.photo && (
+                {detailData.article.photo && (
                   <div
                     className="profile-image"
-                    style={{ backgroundImage: `url(${detailData.photo})` }}
+                    style={{
+                      backgroundImage: `url(${detailData.article.photo})`,
+                    }}
                     // onClick={() => {
-                    //   Router.push(`/user/${detailData.user.username}`);
+                    //   Router.push(`/user/${detailData.article.user.username}`);
                     // }}
                   ></div>
                 )}
@@ -285,18 +288,22 @@ function Detailfeed() {
                   <div
                     className="nickname txt-bold"
                     onClick={() => {
-                      Router.push(`/user/${detailData.user.username}`);
+                      Router.push(`/user/${detailData.article.user.username}`);
                     }}
                   >
-                    {detailData.memberName}
+                    {detailData.article.memberName}
                   </div>
-                  <div className="timestamps">제목 : {detailData.title}</div>
+                  <div className="timestamps">
+                    제목 : {detailData.article.title}
+                  </div>
                   <div className="timestamp">
-                    {detailData.regtime[0]}년 {detailData.regtime[1]}월{" "}
-                    {detailData.regtime[2]}일 {detailData.regtime[3]}시{" "}
-                    {detailData.regtime[4]}분
+                    {detailData.article.regtime[0]}년{" "}
+                    {detailData.article.regtime[1]}월{" "}
+                    {detailData.article.regtime[2]}일{" "}
+                    {detailData.article.regtime[3]}시{" "}
+                    {detailData.article.regtime[4]}분
                   </div>
-                  {detailData.memberId === loginUserId ? (
+                  {detailData.article.memberId === loginUserId ? (
                     <Popconfirm
                       placement="bottomRight"
                       title="이 피드를 삭제하시겠습니까?"
@@ -314,7 +321,7 @@ function Detailfeed() {
                 </div>
               </div>
               <div className="body-tag">
-                {/* {detailData.tags.map((item: any, idx: number) => {
+                {/* {detailData.article.tags.map((item: any, idx: number) => {
                   return (
                     <div
                       className="body-tags"
@@ -328,7 +335,7 @@ function Detailfeed() {
                   );
                 })} */}
               </div>
-              <div className="body">{detailData.content}</div>
+              <div className="body">{detailData.article.content}</div>
               <div className="bottom">
                 <div
                   className="like"
@@ -350,7 +357,7 @@ function Detailfeed() {
                   </div>
                   <div className="title txt-bold">
                     {/* {layout.likelist}　 */}
-                    {/* {detailData.feed.feedlike.length} */}
+                    {/* {detailData.article.feed.feedlike.length} */}
                     {likeCount}
                   </div>
                 </div>
@@ -368,10 +375,12 @@ function Detailfeed() {
               })}
             </div>
             <form className="feed-write-comment" onSubmit={__uploadComment}>
-              {detailData.photo && (
+              {detailData.article.photo && (
                 <div
                   className="profile-image"
-                  style={{ backgroundImage: `url(${detailData.photo})` }}
+                  style={{
+                    backgroundImage: `url(${detailData.article.photo})`,
+                  }}
                 ></div>
               )}
               <div className="write-comment">

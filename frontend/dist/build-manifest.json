@@ -30,10 +30,10 @@
       "static/chunks/main.js",
       "static/chunks/pages/feedMain.js"
     ],
-    "/wineindex": [
+    "/wine/[wineId]": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/wineindex.js"
+      "static/chunks/pages/wine/[wineId].js"
     ]
   },
   "ampFirstPages": []

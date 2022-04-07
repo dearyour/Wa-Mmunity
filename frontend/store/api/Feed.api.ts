@@ -23,7 +23,7 @@ export const GetFeedStates = () => {
     // url: "http://j6a101.p.ssafy.io:8080/api/wine",
   })
     .then((res) => {
-      return res.data.articleList;
+      return res.data.object.reverse();
     })
     .catch((err) => {
       return err;
