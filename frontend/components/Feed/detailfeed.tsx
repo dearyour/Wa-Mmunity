@@ -293,7 +293,7 @@ function Detailfeed() {
                     //   Router.push(`/user/${detailData.article.user.username}`);
                     // }}
                   >
-                    [제목] : {detailData.article.title}
+                    [Title] : {detailData.article.title}
                   </div>
                   <div className="timestamp">
                     [태그] : {detailData.article.tag}

@@ -147,19 +147,19 @@ function Mainfeed() {
                 Router.push("/feed/write");
               }}
             >
-              {/* {image && (
-                <div
-                  className="profile-image"
-                  style={{ backgroundImage: `url(${image})` }}
-                ></div>
-              )} */}
+              {/* {image && ( */}
+              <div
+                className="profile-image"
+                style={{ backgroundImage: `url("/images/wine2.png")` }}
+              ></div>
+              {/* )} */}
               {/* <div className="profile-image"></div> */}
               <div className="inp">
                 <input
                   disabled
                   // ref={contextRef}
                   type="text"
-                  placeholder="                  와뮤 피드 작성"
+                  placeholder="          와뮤 피드 작성"
                   // onChange={(e) => setContext(e.target.value)}
                 />
               </div>

@@ -47,10 +47,35 @@ const ImageUploadInputSetting = {
   },
 };
 
+const sortOptionList = [
+  { value: "판매", name: "판매" },
+  { value: "구매", name: "구매" },
+  { value: "리뷰", name: "리뷰" },
+  { value: "일상", name: "일상" },
+];
+
+const ControlMenu = React.memo(({ value, onChange, optionList }: any) => {
+  return (
+    <select
+      className="ControlMenus"
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+    >
+      {optionList.map((it: any, idx: number) => (
+        <option key={idx} value={it.value}>
+          {it.name}
+        </option>
+      ))}
+    </select>
+  );
+});
+ControlMenu.displayName = "ControlMenu";
+
 const Write_feed = () => {
   const loginUserId = useSelector((state: RootState) => state.user.users.id);
   const { file, image, originalImg, setFile, setImage, setOriginalImage } =
     useImg();
+  const [sortType, setSortType] = useState<String>("ratingDesc");
   const [loading, setLoading] = useState<boolean>(false);
   const [imageUrl, setImageUrl] = useState<string | "">("");
   const [hashtag, setHashtag] = useState<string | "">("");
@@ -112,9 +137,15 @@ const Write_feed = () => {
     setTitle(e.target.value);
     setTitleErr("");
   };
+  console.log(content);
+  console.log(title);
+  console.log(loginUserId);
+  console.log(file);
+  console.log(hashtag);
+  console.log(sortType);
 
   const CheckBeforeCreate = () => {
-    let i = 0;
+    // let i = 0;
     // if (!file) {
     //   setImageErr("이미지는 필수입니다.");
     //   i++;
@@ -173,10 +204,10 @@ const Write_feed = () => {
     setLoading(true);
     if (CheckBeforeCreate()) {
       const data = {
-        tag: 1,
+        tag: "판매",
         content: content,
         title: title,
-        memberId: loginUserId,
+        member_id: loginUserId,
       };
       // console.log(data);
       const formdata = new FormData();
@@ -188,6 +219,7 @@ const Write_feed = () => {
       axios({
         method: "post",
         url: process.env.BACK_EC2 + "freeboard",
+        // url: process.env.BACK_EC2 + "resellboard",
         // url: "https://localhost:8080/api/freeboard",
         headers: {
           "Content-Type": "multipart/form-data",
@@ -282,7 +314,7 @@ const Write_feed = () => {
   `;
 
   return (
-    <AppLayout title="도전 인증 피드 작성하기 | 온도">
+    <AppLayout title="와뮤니티">
       <Write>
         {loading && (
           <Loading size="large" tip={<div>로딩 중...</div>}></Loading>
@@ -290,7 +322,7 @@ const Write_feed = () => {
         {/* <Writetitle>피드 작성하기</Writetitle> */}
         <Space direction="horizontal" style={{ justifyContent: "center" }}>
           {/* <Image src={FightingDogye} width={100} height={100} /> */}
-          <SpeechBubble>와-뮤니티에서 소통해요!</SpeechBubble>
+          <SpeechBubble>Wa-Mmunity</SpeechBubble>
         </Space>
         {originalImg ? <CropImg></CropImg> : null}
         <MyImage>
@@ -349,6 +381,7 @@ const Write_feed = () => {
         <WriteDiv>
           <div className="HashWrapOuter"></div>
         </WriteDiv>
+
         <WriteDiv className="">
           <Label>태그</Label>
           <TagInput
@@ -368,9 +401,17 @@ const Write_feed = () => {
           <WriteTA rows={4} onChange={onChangeContent}></WriteTA>
         </WriteDiv>
         <ErrDiv>{contentErr}</ErrDiv>
+
         <div
           className={`${styles.d_flex} ${styles.justify_content_end} ${styles.w_60}`}
         >
+          <SelectTag>
+            <ControlMenu
+              value={sortType}
+              onChange={setSortType}
+              optionList={sortOptionList}
+            />
+          </SelectTag>
           <WriteButton onClick={WriteRequest}>작성</WriteButton>
           <WriteButton
             onClick={() => {
@@ -385,7 +426,12 @@ const Write_feed = () => {
     </AppLayout>
   );
 };
-
+const SelectTag = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  margin-top: 15px;
+`;
 const ErrDiv = styled.div`
   text-align: center;
   color: #ee3434;
