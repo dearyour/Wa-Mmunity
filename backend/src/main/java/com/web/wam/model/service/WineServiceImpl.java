@@ -508,6 +508,12 @@ public class WineServiceImpl implements WineService {
 	@Override
 	public Object recommSurvey(org.json.JSONObject survey) {
 
+		System.out.println("---------");
+
+		System.out.println(survey);
+
+		System.out.println("----------");
+
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
