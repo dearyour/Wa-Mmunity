@@ -183,11 +183,11 @@ const Write_feed = () => {
   };
 
   const handleChange = (info: any) => {
-    setLoading(true);
+    // setLoading(true);
     setImageErr("");
-    // setFile(info.file)
+    setFile(info.file);
     if (info.file.status === "uploading") {
-      setLoading(true);
+      // setLoading(true);
       return;
     }
     if (info.file.status === "done") {
