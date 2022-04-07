@@ -10,11 +10,11 @@ import com.web.wam.model.dto.freeboard.FreeBoardPostRequest;
 import com.web.wam.model.dto.freeboard.FreeBoardPutRequest;
 import com.web.wam.model.dto.freeboard.FreeBoardResponse;
 import com.web.wam.model.dto.freeboard.FreeaBoardCmtResponse;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface FreeBoardService {
 
 	List<FreeBoardArticleGetResponse> getAllArticle();
-
 	void createArticle(FreeBoardPostRequest articleCreateInfo);
 
 	void updateArticle(FreeBoardPutRequest articleUpdateInfo);
