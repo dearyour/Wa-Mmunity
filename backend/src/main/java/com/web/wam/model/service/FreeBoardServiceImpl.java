@@ -140,6 +140,7 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 	}
 
 	private void setFreeBoardCmtResponse(FreeArticleComment comment, FreeaBoardCmtResponse freeaBoardCmtResponse) {
+		freeaBoardCmtResponse.setCommentId(comment.getId());
 		freeaBoardCmtResponse.setMemberId(comment.getMemberId());
 		freeaBoardCmtResponse.setContent(comment.getContent());
 		freeaBoardCmtResponse.setRegtime(comment.getRegtime());
