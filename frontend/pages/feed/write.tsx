@@ -203,19 +203,25 @@ const Write_feed = () => {
   const WriteRequest = () => {
     setLoading(true);
     if (CheckBeforeCreate()) {
-      const data = {
-        tag: "판매",
-        content: content,
-        title: title,
-        member_id: loginUserId,
-      };
+      // const data = {
+      //   tag: "판매",
+      //   content: content,
+      //   title: title,
+      //   member_id: loginUserId,
+      // };
       // console.log(data);
+
       const formdata = new FormData();
-      formdata.append("photo", file);
-      formdata.append(
-        "data",
-        new Blob([JSON.stringify(data)], { type: "application/json" })
-      );
+      formdata.append("photoFile", file);
+      // formdata.append(
+      //   "data",
+      //   new Blob([JSON.stringify(data)], { type: "application/json" })
+      // );
+      formdata.append("tag", "판매");
+      formdata.append("content", content);
+      formdata.append("title", title);
+      formdata.append("member_id", loginUserId);
+
       axios({
         method: "post",
         url: process.env.BACK_EC2 + "freeboard",
