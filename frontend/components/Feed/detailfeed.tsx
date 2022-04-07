@@ -7,7 +7,7 @@ import Router from "next/router";
 import axios from "axios";
 import { feedAction } from "store/slice/feed";
 import { Popconfirm } from "antd";
-
+import styled from "styled-components";
 function Detailfeed() {
   //layout 은 해당 피드 1 ,2 ,3 각각 에 대한 정보만 저장됨
   const dispatch = useDispatch();
@@ -284,18 +284,21 @@ function Detailfeed() {
                   ></div>
                 )}
                 <div className="feed-desc">
+                  <Style className="태양">
+                    {detailData.article.memberNickName}
+                  </Style>
                   <div
-                  // className="nickname txt-bold"
-                  // onClick={() => {
-                  //   Router.push(`/user/${detailData.article.user.username}`);
-                  // }}
+                    className="nickname txt-bold"
+                    // onClick={() => {
+                    //   Router.push(`/user/${detailData.article.user.username}`);
+                    // }}
                   >
-                    {detailData.article.memberName}
-                  </div>
-                  <div className="timestamps">
                     [제목] : {detailData.article.title}
                   </div>
-                  [태그] : {detailData.article.tag}
+                  <div className="timestamp">
+                    [태그] : {detailData.article.tag}
+                  </div>
+
                   <div className="timestamp">
                     {detailData.article.regtime[0]}년{" "}
                     {detailData.article.regtime[1]}월{" "}
@@ -400,3 +403,6 @@ function Detailfeed() {
 }
 
 export default Detailfeed;
+const Style = styled.span`
+  font-size: 14px;
+`;

@@ -178,17 +178,17 @@ const Feed = (props: any) => {
           <div
             className="profile-image"
             style={{ backgroundImage: `url(${props.dto.article.photo})` }}
-            onClick={() => {
-              Router.push(`/user/${props.dto.photo}`);
-            }}
+            // onClick={() => {
+            //   Router.push(`/user/${props.dto.photo}`);
+            // }}
           ></div>
         )}
         <div className="profile-desc">
           <div
             className="nickname txt-bold"
-            onClick={() => {
-              Router.push(`/user/${props.dto.article.memberId}`);
-            }}
+            // onClick={() => {
+            //   Router.push(`/user/${props.dto.article.memberId}`);
+            // }}
           >
             <Style className="태양">{props.dto.article.memberNickName}</Style>
           </div>
@@ -200,11 +200,11 @@ const Feed = (props: any) => {
           </div>
           <div
             className="timestamps"
-            onClick={() => {
-              Router.push("/search/" + props.dto.article.title);
-            }}
+            // onClick={() => {
+            //   Router.push("/search/" + props.dto.article.title);
+            // }}
           >
-            [제목] : {props.dto.article.title}
+            Title : {props.dto.article.title}
           </div>
         </div>
       </div>

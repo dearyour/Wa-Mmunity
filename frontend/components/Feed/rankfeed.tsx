@@ -12,7 +12,7 @@ function Rankfeed(props: any) {
           {props.num}위
         </span>
         <span className="불타오르는" style={{ marginRight: "10px" }}>
-          원산지 : {props.dto.country}
+          {props.dto.ratingNum} 개의 리뷰
         </span>
         {/* 　[ {props.dto.ratingNum} 개의 리뷰 ] */}
       </div>
@@ -32,7 +32,7 @@ function Rankfeed(props: any) {
         )}
         <div className="nickname txt-bold">
           <div>
-            <Style className="자"> {props.dto.ratingNum} 개의 리뷰</Style>
+            <Style className="자"> 원산지 : {props.dto.country} </Style>
             {/* 　[ {props.dto.ratingNum} 개의 리뷰 ] */}
           </div>
 

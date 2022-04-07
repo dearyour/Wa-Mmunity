@@ -41,10 +41,12 @@ const makeFeedTime = (startDate: any) => {
   // console.log(hour + "hour");
   // console.log(minutes);
 
-  return ` ${hour > 12 ? "오후" : "오전"} ${hour > 12 ? makeTwoDigits(hour - 12) : makeTwoDigits(hour)
-    }:${makeTwoDigits(minutes)},  ${date === 0 ? "오늘" : date === 1 ? "어제" : ``
+  return ` ${hour > 12 ? "오후" : "오전"} ${
+    hour > 12 ? makeTwoDigits(hour - 12) : makeTwoDigits(hour)
+  }:${makeTwoDigits(minutes)},  ${
+    date === 0 ? "오늘" : date === 1 ? "어제" : ``
     // `${date} 일전`
-    }`;
+  }`;
 };
 
 export default function ReplyData(props: any) {

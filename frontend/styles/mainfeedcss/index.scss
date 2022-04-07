@@ -78,7 +78,7 @@ $yong-blue: #5085e8;
             display: flex;
             align-items: center;
             .profile-image {
-              cursor: pointer;
+              // cursor: pointer;
               width: 80px;
               height: 80px;
               border-radius: 80px;
@@ -92,7 +92,7 @@ $yong-blue: #5085e8;
               .nickname {
                 font-size: 20px;
                 color: $yong-gray200;
-                cursor: pointer;
+                // cursor: pointer;
               }
               .timestamp {
                 font-size: 15px;
@@ -105,7 +105,7 @@ $yong-blue: #5085e8;
                 color: rgb(180, 47, 174);
                 opacity: 0.8;
                 margin-top: 2px;
-                cursor: pointer;
+                // cursor: pointer;
               }
             }
           }
@@ -133,7 +133,7 @@ $yong-blue: #5085e8;
               margin-top: 7px;
               .body-tags {
                 color: blueviolet;
-                cursor: pointer;
+                // cursor: pointer;
                 &:hover {
                   color: #709edb;
                 }

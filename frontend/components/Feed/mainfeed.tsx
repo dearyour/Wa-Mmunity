@@ -1,26 +1,15 @@
-import React, {
-  useState,
-  useCallback,
-  useRef,
-  useEffect,
-  useMemo,
-} from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Image from "next/image";
 import axios from "axios";
 import { userActions } from "store/slice/user";
 import { RootState } from "../../store/module";
 import Feed from "components/Feed/Feed";
-import { Feed as Feedtype, FeedParams } from "store/interfaces/Feed.interface";
 import Router from "next/router";
 import { feedAction } from "store/slice/feed";
-import { arrayBuffer } from "stream/consumers";
-import { actionChannel } from "redux-saga/effects";
 import Rankfeed from "components/Feed/rankfeed";
 import happy from "public/images/dogye/happy.png";
 import styled from "styled-components";
-import { UpCircleOutlined } from "@ant-design/icons";
-import useUser from "store/hooks/userHooks";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 function Mainfeed() {
@@ -170,7 +159,7 @@ function Mainfeed() {
                   disabled
                   // ref={contextRef}
                   type="text"
-                  placeholder="     오늘의 도전 인증하기"
+                  placeholder="                  와뮤 피드 작성"
                   // onChange={(e) => setContext(e.target.value)}
                 />
               </div>

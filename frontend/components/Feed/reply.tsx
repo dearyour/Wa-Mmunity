@@ -65,11 +65,9 @@ export default function Reply(props: any) {
             //   Router.push(`/user/${props.reply.username}`);
             // }}
             >
-              <div>
-                <span className="태양" style={{ marginRight: "10px" }}>
-                  {props.reply.memberNickName}
-                </span>
-              </div>
+              <span className="태양" style={{ marginRight: "10px" }}>
+                {props.reply.memberNickName}
+              </span>
             </div>
             <div className="timestamp">
               {props.reply.regtime[0]}년 {props.reply.regtime[1]}월{" "}
