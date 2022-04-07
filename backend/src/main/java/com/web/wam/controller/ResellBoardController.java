@@ -44,18 +44,18 @@ public class ResellBoardController {
 	private final String SUCCESS = "success";
 	private final String MSG = "message";
 
-	@PostMapping()
+	@PostMapping(value = "", consumes = { "multipart/form-data" })
 	@ApiOperation(value = "게시글 작성", notes = "리셀 게시판 게시글 작성 API")
 	@ApiResponses({ @ApiResponse(code = 200, message = MESSAGE_200, response = BaseResponse.class),
 			@ApiResponse(code = 401, message = MESSAGE_401, response = BaseResponse.class),
 			@ApiResponse(code = 500, message = MESSAGE_500, response = BaseResponse.class) })
 	public ResponseEntity<? extends BaseResponse> post(
 			@RequestPart @ApiParam(value = "와인 사진 파일.", required = false) MultipartFile photo,
-			@RequestPart @ApiParam(value = "게시글 제목", required = true) String title,
-			@RequestPart @ApiParam(value = "게시글 내용") String content,
-			@RequestPart @ApiParam(value = "게시글 태그") String tag,
-			@RequestPart @ApiParam(value = "와인 가격", required = true) String price,
-			@RequestPart @ApiParam(value = "멤버 id", required = true) String member_id ) {
+			@RequestParam @ApiParam(value = "게시글 제목", required = true) String title,
+			@RequestParam @ApiParam(value = "게시글 내용") String content,
+			@RequestParam @ApiParam(value = "게시글 태그") String tag,
+			@RequestParam @ApiParam(value = "와인 가격", required = true) String price,
+			@RequestParam @ApiParam(value = "멤버 id", required = true) String member_id ) {
 
 		ResellBoardPostRequest request = new ResellBoardPostRequest();
 		request.setContent(content);
@@ -85,19 +85,19 @@ public class ResellBoardController {
 		return ResponseEntity.status(200).body(BaseResponse.of(200, resultMap));
 	}
 
-	@PutMapping()
+	@PutMapping(value = "", consumes = { "multipart/form-data" })
 	@ApiOperation(value = "게시글 수정", notes = "리셀 게시판 게시물 수정 API")
 	@ApiResponses({ @ApiResponse(code = 200, message = MESSAGE_200, response = BaseResponse.class),
 			@ApiResponse(code = 401, message = MESSAGE_401, response = BaseResponse.class),
 			@ApiResponse(code = 500, message = MESSAGE_500, response = BaseResponse.class) })
 	public ResponseEntity<? extends BaseResponse> updateArticle(
 			@RequestPart @ApiParam(value = "수정할 사진 파일.", required = false) MultipartFile photo,
-			@RequestPart @ApiParam(value = "게시글 제목", required = true) String title,
-			@RequestPart @ApiParam(value = "게시글 내용") String content,
-			@RequestPart @ApiParam(value = "게시글 태그") String tag,
-			@RequestPart @ApiParam(value = "와인 가격", required = true) String price,
-			@RequestPart @ApiParam(value = "멤버 id", required = true) String member_id,
-			@RequestPart @ApiParam(value = "수정할 리셀 글 id", required = true) String article_id) {
+			@RequestParam @ApiParam(value = "게시글 제목", required = true) String title,
+			@RequestParam @ApiParam(value = "게시글 내용") String content,
+			@RequestParam @ApiParam(value = "게시글 태그") String tag,
+			@RequestParam @ApiParam(value = "와인 가격", required = true) String price,
+			@RequestParam @ApiParam(value = "멤버 id", required = true) String member_id,
+			@RequestParam @ApiParam(value = "수정할 리셀 글 id", required = true) String article_id) {
 		ResellBoardPutRequest request = new ResellBoardPutRequest();
 		request.setContent(content);
 		request.setMemberId(Integer.parseInt(member_id));

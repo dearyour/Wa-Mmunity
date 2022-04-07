@@ -18,7 +18,7 @@ public class FreeBoardPutRequest {
 	@ApiModelProperty(name = "내용", example = "자유글 내용")
 	String content;
 	
-	@ApiModelProperty(name = "사진", example = "자유글 사진첨부")
+	@ApiModelProperty(name = "사진", example = "자유글 사진첨부(값 입력 x)")
 	String photo;
 	
 	@ApiModelProperty(name = "태그", example = "자유글 카테고리")
