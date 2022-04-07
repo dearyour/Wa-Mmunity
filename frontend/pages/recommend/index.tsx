@@ -36,8 +36,8 @@ const Recommend = () => {
   // const res = [55,44,33,22,11]
 
   const [winedata, setData] = useState()
-  const BASE_URL = 'https://j6a101.p.ssafy.io:8080/api/wine/personal/' + 1
-  // const BASE_URL = process.env.BACK_EC2 + 'api/wine/personal/' + userId
+  // const BASE_URL = 'https://j6a101.p.ssafy.io:8080/api/wine/personal/' + 1
+  const BASE_URL = process.env.BACK_EC2 + 'api/wine/personal/' + userId
   useEffect(() => {
     async function fetchData() {
       axios.get(BASE_URL)

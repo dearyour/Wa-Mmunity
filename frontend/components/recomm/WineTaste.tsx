@@ -1,7 +1,8 @@
 import React from 'react'
-import { Row, Col, Radio, Typography, Button, Card, Space } from 'antd'
-
-const { Title, Paragraph, Text, Link } = Typography;
+import { Row, Col, Radio, Space } from 'antd'
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
 
 type SurveyProps = {
   handleChange: Function;
@@ -13,7 +14,7 @@ const WineTaste = ({ handleChange, values}: SurveyProps) => {
   return (
     <div className='App'>
       <Row justify="center">
-        <Typography><Paragraph><Title>맛</Title></Paragraph></Typography>
+        <Typography gutterBottom variant="h3" component="div">맛</Typography>
       </Row>
       
       <Row>
@@ -80,6 +81,18 @@ const WineTaste = ({ handleChange, values}: SurveyProps) => {
             <Radio value={''}>2</Radio>
             <Radio value={'tannic'}>3</Radio>
           </Radio.Group>
+        </Col>
+      </Row>
+
+      <Row justify='center'>
+        <Col span={20}>
+        <Card sx={{ background: '#f7f3f0'}} variant="outlined">
+          <CardContent>
+            <Typography variant="body2" component="div">
+              가나다라마바사
+            </Typography>
+          </CardContent>
+        </Card>
         </Col>
       </Row>
       </Space>
