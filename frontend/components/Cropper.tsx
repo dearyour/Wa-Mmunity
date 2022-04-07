@@ -1,21 +1,21 @@
 import React, { useRef } from "react";
-import { Button, Modal } from 'antd';
+import { Button, Modal } from "antd";
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import styled from "styled-components";
 import useImg from "store/hooks/imgHooks";
 
-
 const CropImg: React.FC = () => {
-  const { file, image, originalImg, setFile, setImage, setOriginalImage } = useImg();
-  const cropperRef = useRef<HTMLImageElement | null>(null);
+  const { file, image, originalImg, setFile, setImage, setOriginalImage } =
+    useImg();
+  const cropperRef = useRef<HTMLImageElement | any>(null);
   const onCrop = () => {
     const imageElement: any = cropperRef?.current;
     const cropper: any = imageElement?.cropper;
     cropper.getCroppedCanvas().toBlob((blob: any) => {
-      const now = new File([blob], 'profileimage');
+      const now = new File([blob], "profileimage");
       setFile(now);
-    })
+    });
     setImage(cropper.getCroppedCanvas().toDataURL());
     // console.log(cropper.getCroppedCanvas().toDataURL());
   };
@@ -23,8 +23,9 @@ const CropImg: React.FC = () => {
   return (
     <Modal
       visible={originalImg}
-      cancelButtonProps={{ style: { display: 'none' } }}
-      okButtonProps={{ style: { display: 'none' } }}>
+      cancelButtonProps={{ style: { display: "none" } }}
+      okButtonProps={{ style: { display: "none" } }}
+    >
       <Cropper
         src={originalImg}
         style={{ height: 400, width: "100%" }}
@@ -35,9 +36,17 @@ const CropImg: React.FC = () => {
       />
       <BtnDiv>
         <CropBtn onClick={onCrop}>적용</CropBtn>
-        <CropBtn onClick={() => { setOriginalImage(null) }}>종료</CropBtn>
+        <CropBtn
+          onClick={() => {
+            setOriginalImage(null);
+          }}
+        >
+          종료
+        </CropBtn>
       </BtnDiv>
-      <Description><h1>미리보기</h1></Description>
+      <Description>
+        <h1>미리보기</h1>
+      </Description>
       <MyImage>{image ? <CropImage src={image}></CropImage> : null}</MyImage>
     </Modal>
   );
@@ -45,8 +54,8 @@ const CropImg: React.FC = () => {
 
 const Description = styled.div`
   text-align: center;
-  margin-top:10px;
-`
+  margin-top: 10px;
+`;
 const MyImage = styled.div`
   display: flex;
   justify-content: center;
@@ -54,20 +63,18 @@ const MyImage = styled.div`
   margin-left: auto;
   margin-right: auto;
   margin-top: 10px;
-`
-const CropImage = styled.img`
-
-`
+`;
+const CropImage = styled.img``;
 
 const BtnDiv = styled.div`
   display: flex;
   justify-content: center;
-`
+`;
 const CropBtn = styled(Button)`
   margin-left: 10px;
   margin-right: 10px;
   margin-top: 10px;
   border-radius: 5px;
-`
+`;
 
 export default CropImg;
