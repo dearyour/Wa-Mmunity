@@ -1,0 +1,125 @@
+.container{
+  position:relative;
+  margin-left:auto;
+  margin-right:auto;
+  padding-right:15px;
+  padding-left:15px
+}
+@media (min-width: 476px){
+  .container{
+    padding-right:15px;
+    padding-left:15px
+  }
+}
+@media (min-width: 768px){
+  .container{
+    padding-right:15px;
+    padding-left:15px
+  }
+}
+@media (min-width: 992px){
+  .container{
+    padding-right:15px;
+    padding-left:15px
+  }
+}
+@media (min-width: 1200px){
+  .container{
+    padding-right:15px;
+    padding-left:15px
+  }
+}
+@media (min-width: 476px){
+  .container{
+    width:100%
+  }
+}
+@media (min-width: 768px){
+  .container{
+    width:720px;
+    max-width:100%
+  }
+}
+@media (min-width: 992px){
+  .container{
+    width:960px;
+    max-width:100%
+  }
+}
+@media (min-width: 1200px){
+  .container{
+    width:1140px;
+    max-width:100%
+  }
+}
+@media (min-width: 1400px){
+  .container{
+    width:1340px;
+    max-width:100%
+  }
+}
+
+.justify_content_center{
+  justify-content: center;
+}
+
+.justify_content_end{
+  justify-content: end;
+}
+
+.d_flex {
+  display: flex;
+}
+
+.d_flex_column {
+  display: flex;
+  flex-direction: column;
+}
+
+.d_grid {
+  display: grid;
+}
+
+.d_none {
+  display: none;
+}
+
+.w_60 {
+  width: 80%;
+}
+
+.border_right {
+  border-right: 1px solid #EDBABA;
+}
+
+.mx_auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mx_20 {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.mt_30 {
+  margin-top: 30px;;
+}
+
+.transform {
+  transform: scale(1.1);
+  transition: all 0.3s ease-in-out;
+  overflow: hidden;
+}
+
+.asd {
+  font-weight: 500;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-family: 'Courier New', Courier, monospace;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-family: 'Times New Roman', Times, serif;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}

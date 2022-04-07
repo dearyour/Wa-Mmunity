@@ -285,16 +285,17 @@ function Detailfeed() {
                 )}
                 <div className="feed-desc">
                   <div
-                    className="nickname txt-bold"
-                    onClick={() => {
-                      Router.push(`/user/${detailData.article.user.username}`);
-                    }}
+                  // className="nickname txt-bold"
+                  // onClick={() => {
+                  //   Router.push(`/user/${detailData.article.user.username}`);
+                  // }}
                   >
                     {detailData.article.memberName}
                   </div>
                   <div className="timestamps">
-                    제목 : {detailData.article.title}
+                    [제목] : {detailData.article.title}
                   </div>
+                  [태그] : {detailData.article.tag}
                   <div className="timestamp">
                     {detailData.article.regtime[0]}년{" "}
                     {detailData.article.regtime[1]}월{" "}

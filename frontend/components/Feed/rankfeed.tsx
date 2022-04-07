@@ -12,7 +12,7 @@ function Rankfeed(props: any) {
           {props.num}위
         </span>
         <span className="불타오르는" style={{ marginRight: "10px" }}>
-          국적 : {props.dto.country}
+          원산지 : {props.dto.country}
         </span>
         {/* 　[ {props.dto.ratingNum} 개의 리뷰 ] */}
       </div>

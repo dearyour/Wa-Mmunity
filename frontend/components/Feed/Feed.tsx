@@ -192,7 +192,7 @@ const Feed = (props: any) => {
           >
             <Style className="태양">{props.dto.article.memberNickName}</Style>
           </div>
-          <div className="timestamp">태그 : {props.dto.tag}</div>
+          <div className="timestamp">태그 : {props.dto.article.tag}</div>
           <div className="timestamp">
             {props.dto.article.regtime[0]}년 {props.dto.article.regtime[1]}월{" "}
             {props.dto.article.regtime[2]}일 {props.dto.article.regtime[3]}시{" "}
@@ -204,7 +204,7 @@ const Feed = (props: any) => {
               Router.push("/search/" + props.dto.article.title);
             }}
           >
-            제목 : {props.dto.article.title}
+            [제목] : {props.dto.article.title}
           </div>
         </div>
       </div>
