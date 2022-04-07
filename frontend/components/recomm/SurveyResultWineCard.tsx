@@ -7,14 +7,16 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea, Grid, Paper } from '@mui/material';
 import axios from 'axios'
-import Title from 'antd/lib/typography/Title';
+import Router from 'next/router';
 
-const WineCard = (props: any) => {
+
+const SurveyResultWineCard = (props: any) => {
   const [wineid, setWineId] = useState()
   const [winename, setWinename] = useState()
   const [winery, setWinery] = useState()
   const [wineimg, setWineimg] = useState()
-  const BASE_URL = 'https://j6a101.p.ssafy.io:8080/api/wine/' + props.num.wine
+  const [winestyle, setWinestyle] = useState()
+  const BASE_URL = 'https://j6a101.p.ssafy.io:8080/api/wine/' + props.num
   useEffect(() => {
     async function fetchData() {
       axios.get(BASE_URL)
@@ -23,6 +25,7 @@ const WineCard = (props: any) => {
         setWinename(res.data.object.name)
         setWinery(res.data.object.winery)
         setWineimg(res.data.object.img)
+        setWinestyle(res.data.object.wineStyle)
         console.log('res: ', res)
       })
       .catch(err => console.log(err))
@@ -31,8 +34,11 @@ const WineCard = (props: any) => {
   },[])
 
   return (
-    <Card sx={{ background: '#f7f3f0'}}>
-      <CardActionArea>
+    <Card sx={{ background: '#f7f3f0' }}>
+      <CardActionArea
+       onClick={() => {
+        Router.push(`/wine/${wineid}`);
+      }}>
       <Grid container rowSpacing={4} justifyContent={'center'}>
         <Grid item xs={12} sm={4} md={3} justifyContent={'center'}>
           <CardMedia
@@ -49,9 +55,8 @@ const WineCard = (props: any) => {
             <Typography gutterBottom variant="h6" component="div">
               <strong>{ winename }</strong>
             </Typography>
-            예상 평점 : 
-            <Typography variant="h4" color="text.primary" align="right">
-              <strong>{ props.num.rating.toFixed(1) }</strong>
+            <Typography variant="subtitle2" color="text.primary">
+              { winestyle }
             </Typography>
           </CardContent>
         </Grid>
@@ -61,4 +66,4 @@ const WineCard = (props: any) => {
   );
 }
 
-export default WineCard
+export default SurveyResultWineCard

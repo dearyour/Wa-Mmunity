@@ -6,16 +6,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.web.wam.model.dto.BaseResponse;
@@ -59,8 +50,12 @@ public class ResellBoardController {
 			@ApiResponse(code = 401, message = MESSAGE_401, response = BaseResponse.class),
 			@ApiResponse(code = 500, message = MESSAGE_500, response = BaseResponse.class) })
 	public ResponseEntity<? extends BaseResponse> post(
-			@RequestBody @ApiParam(value = "수정할 회원 사진 파일.", required = true) MultipartFile photo, String title,
-			String content, String tag, String price, String member_id) {
+			@RequestParam @ApiParam(value = "와인 사진 파일.", required = true) MultipartFile photo,
+			@RequestParam @ApiParam(value = "게시글 제목", required = true) String title,
+			@RequestParam @ApiParam(value = "게시글 내용") String content,
+			@RequestParam @ApiParam(value = "게시글 태그") String tag,
+			@RequestParam @ApiParam(value = "와인 가격", required = true) String price,
+			@RequestParam @ApiParam(value = "멤버 id", required = true) String member_id ) {
 
 		ResellBoardPostRequest request = new ResellBoardPostRequest();
 		request.setContent(content);
@@ -96,8 +91,13 @@ public class ResellBoardController {
 			@ApiResponse(code = 401, message = MESSAGE_401, response = BaseResponse.class),
 			@ApiResponse(code = 500, message = MESSAGE_500, response = BaseResponse.class) })
 	public ResponseEntity<? extends BaseResponse> updateArticle(
-			@RequestBody @ApiParam(value = "수정할 회원 사진 파일.", required = true) MultipartFile photo, String title,
-			String content, String tag, String price, String member_id, String article_id) {
+			@RequestParam @ApiParam(value = "수정할 사진 파일.", required = true) MultipartFile photo,
+			@RequestParam @ApiParam(value = "게시글 제목", required = true) String title,
+			@RequestParam @ApiParam(value = "게시글 내용") String content,
+			@RequestParam @ApiParam(value = "게시글 태그") String tag,
+			@RequestParam @ApiParam(value = "와인 가격", required = true) String price,
+			@RequestParam @ApiParam(value = "멤버 id", required = true) String member_id,
+			@RequestParam @ApiParam(value = "수정할 리셀 글 id", required = true) String article_id) {
 		ResellBoardPutRequest request = new ResellBoardPutRequest();
 		request.setContent(content);
 		request.setMemberId(Integer.parseInt(member_id));
@@ -168,7 +168,7 @@ public class ResellBoardController {
 	}
 
 	@PutMapping("/comment")
-	@ApiOperation(value = "댓글 수정", notes = "자유게시판 댓글 수정")
+	@ApiOperation(value = "댓글 수정", notes = "리셀게시판 댓글 수정")
 	@ApiResponses({ @ApiResponse(code = 200, message = MESSAGE_200, response = BaseResponse.class),
 			@ApiResponse(code = 401, message = "게시글 없음", response = BaseResponse.class),
 			@ApiResponse(code = 500, message = MESSAGE_500, response = BaseResponse.class) })
@@ -181,7 +181,7 @@ public class ResellBoardController {
 	}
 
 	@DeleteMapping("/comment/{commentId}")
-	@ApiOperation(value = "댓글 삭제", notes = "자유게시판 댓글 삭제")
+	@ApiOperation(value = "댓글 삭제", notes = "리셀게시판 댓글 삭제")
 	@ApiResponses({ @ApiResponse(code = 200, message = "성공", response = BaseResponse.class),
 			@ApiResponse(code = 401, message = MESSAGE_200, response = BaseResponse.class),
 			@ApiResponse(code = 404, message = "게시글 없음", response = BaseResponse.class),

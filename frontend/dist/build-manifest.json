@@ -101,6 +101,11 @@
       "static/chunks/865-98190bd290a48a9c.js",
       "static/chunks/pages/recommend/result-85ddc4eeba1528a5.js"
     ],
+    "/recommend": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/recommend.js"
+    ],
     "/recommend/survey": [
       "static/chunks/webpack-6c3c87aace4563b0.js",
       "static/chunks/framework-91d7f78b5b4003c8.js",
