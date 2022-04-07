@@ -21,7 +21,7 @@ const { Dragger } = Upload;
 const { TextArea } = Input;
 const { Option } = Select;
 
-function getBase64(img: Blob, callback: any) {
+function getBase64(img: any, callback: any) {
   const reader = new FileReader();
   reader.addEventListener("load", () => callback(reader.result));
   reader.readAsDataURL(img);
@@ -223,7 +223,7 @@ const Write_feed = () => {
       formdata.append("member_id", loginUserId);
 
       axios({
-        method: "PUT",
+        method: "POST",
         url: process.env.BACK_EC2 + "freeboard",
         // url: process.env.BACK_EC2 + "resellboard",
         // url: "https://localhost:8080/api/freeboard",
