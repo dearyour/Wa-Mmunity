@@ -1,6 +1,6 @@
 import React from 'react'
-import { Row, Col, Checkbox, Typography, Button, Space } from 'antd'
-const { Title, Paragraph, Text, Link } = Typography;
+import { Row, Col, Checkbox, Button, Space } from 'antd'
+import Typography from '@mui/material/Typography';
 
 type SurveyProps = {
   handleChangeCheckbox: Function;
@@ -32,7 +32,7 @@ const WineFoods = ({ handleChangeCheckbox, values}: SurveyProps) => {
   return (
     <div>
       <Row justify="center">
-        <Typography><Paragraph><Title>음식 조합</Title></Paragraph></Typography>
+        <Typography gutterBottom variant="h3" component="div"><strong>음식 조합</strong></Typography>
       </Row>
       <Row>
         <Space direction="horizontal" style={{width: '100%', justifyContent: 'center'}}>
