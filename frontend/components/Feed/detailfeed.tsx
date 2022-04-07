@@ -15,13 +15,13 @@ function Detailfeed() {
   const layout = useSelector((state: RootState) => state.layout);
   const image = useSelector((state: RootState) => state.user.users.image);
   const detailData = useSelector((state: RootState) => state.layout.detailData);
-  const likelist = useSelector((state: RootState) => state.layout.likelist);
   const feedstate = useSelector((state: RootState) => state.feed.items);
   const [comment, setComment] = useState(""); // 댓글작성
   const commentRef: any = useRef(null);
   const [commentData, setCommentData] = useState([]);
-  // const [likeCount, setLikeCount] = useState(detailData.feed.feedlike.length);
-  const [likeState, setLikeState] = useState(""); //이거는 모달 껐다키면 초기값으로 설정됨 사용불가
+  const likelist = useSelector((state: RootState) => state.layout.likelist);
+  const [likeCount, setLikeCount] = useState(likelist);
+  const [likeState, setLikeState] = useState("delete"); //이거는 모달 껐다키면 초기값으로 설정됨 사용불가
   useEffect(() => {
     // if (detailData.likeflag) {
     //   setLikeState("delete");
@@ -62,6 +62,7 @@ function Detailfeed() {
   //   },
   //   [detailData, useCallback, props.reply]
   // );
+
   const __deleteFeed = useCallback(
     (e) => {
       e.preventDefault();
@@ -69,14 +70,14 @@ function Detailfeed() {
         const token = localStorage.getItem("Token");
         axios({
           method: "DELETE",
-          url: process.env.BACK_EC2 + "/feed/delete/" + feedssId,
+          url: process.env.BACK_EC2 + "/feed/delete/" + detailData.articleId,
           headers: {
             Authorization: "Bearer " + token,
           },
         })
           .then((res) => {
             // console.log(res.data);
-            dispatch(feedAction.getFeed());
+            dispatch(feedAction.getFeeds());
             __closeDetail();
             // dispatch(layoutAction.updateDetailData(commentData));
           })
@@ -107,8 +108,8 @@ function Detailfeed() {
   useEffect(() => {
     __loadComments();
   }, [__loadComments]);
-  // 댓글 작성
 
+  // 댓글 작성
   const __uploadComment = useCallback(
     (e) => {
       e.preventDefault();
@@ -145,32 +146,77 @@ function Detailfeed() {
       __loadComments,
     ]
   );
+  ///////////////
   //좋아요
-  const __updateLike = useCallback(() => {
-    const token = localStorage.getItem("Token");
+  const __loadLike = useCallback(() => {
     return axios({
-      method: "get",
-      url: process.env.BACK_EC2 + "/feed/like/" + feedssId,
-      // url: GetFeedurl,
-      headers: { Authorization: "Bearer " + token },
+      method: "GET",
+      url: process.env.BACK_EC2 + "resellboard/like/" + loginUserId,
     })
       .then((res) => {
-        // console.log(res.data + "### 라이크!!");
-        if (res.data === "ok") {
-          setLikeCount(likeCount + 1);
-          setLikeState(res.data);
-          // dispatch(layoutAction.likeList(res.data));
+        console.log(res.data);
+        let tempss = res.data.object.filter(
+          (item: any) => item === Number(detailData.articleId)
+        );
+        // console.log(tempss); // 이부분  []이면 트루 반환
+        // console.log(tempss.length); // 이부분 0이면 펄스 반환
+        // 빈배열은 true 반환한다 배열의 길이를 0은 false 반환한다
+        if (tempss.length === 0) {
+          console.log("##위시로드데이터 0개 ");
+          setLikeState("delete");
         } else {
-          setLikeCount(likeCount - 1);
-          setLikeState(res.data);
-          // dispatch(layoutAction.likeList(res.data));
+          console.log("##위시로드데이터 1개 ");
+          setLikeState("ok");
         }
-        dispatch(feedAction.getFeed());
       })
       .catch((err) => {
         return err;
       });
-  }, [likelist, layout, detailData]);
+  }, [loginUserId, detailData.articleId]);
+
+  const __updateLike = useCallback(() => {
+    const data = {
+      articleId: Number(detailData.articleId),
+      memberId: loginUserId,
+    };
+    return axios({
+      method: "post",
+      url: process.env.BACK_EC2 + "resellboard/like",
+      data: data,
+    })
+      .then((res) => {
+        setLikeState("ok");
+        setLikeCount(likeCount + 1);
+        // console.log("##ok성공");
+        // console.log(likeState); //useState 여기서직접 콘솔안찍힘 463 함수끝나는곳에 찍을것
+        __loadLike();
+      })
+      .catch((err) => {
+        return err;
+      });
+  }, [loginUserId, detailData.articleId, likeState, __loadLike, likeCount]);
+
+  const __deleteLike = useCallback(() => {
+    const data = {
+      articleId: Number(detailData.articleId),
+      memberId: loginUserId,
+    };
+    return axios({
+      method: "delete",
+      url: process.env.BACK_EC2 + "resellboard/like",
+      data: data,
+    })
+      .then((res) => {
+        setLikeState("ok");
+        setLikeCount(likeCount - 1);
+        // console.log("##ok성공");
+        // console.log(likeState); //useState 여기서직접 콘솔안찍힘 463 함수끝나는곳에 찍을것
+        __loadLike();
+      })
+      .catch((err) => {
+        return err;
+      });
+  }, [loginUserId, detailData.articleId, likeState, __loadLike, likeCount]);
 
   const __closeDetail = useCallback(() => {
     dispatch(layoutAction.updateDetailState(false));
@@ -178,7 +224,8 @@ function Detailfeed() {
     // dispatch(layoutAction.updateDetailData(undefined));
     // dispatch(layoutAction.updateDetailData(detailData));
     // dispatch(layoutAction.likeList("ok" ? "delete" : "ok"));
-    dispatch(feedAction.getFeed()); // 모달닫힐때 새로운정보를 최상위부모에 기록 그것을 다시 프롭으로 feed에 넘김
+    dispatch(feedAction.getFeeds()); // 모달닫힐때 새로운정보를 최상위부모에 기록 그것을 다시 프롭으로 feed에 넘김
+
     // 넘긴 feed는 다시 모달 열릴떄 그정보를 props.detail인  개별정보저장인 detailFeed로 넘긴다
   }, [dispatch]);
 
@@ -199,6 +246,10 @@ function Detailfeed() {
     };
   }, [__whenKeyDown]);
 
+  useEffect(() => {
+    __loadLike();
+    return () => {};
+  }, [__loadLike]);
   useEffect(() => {
     __loadComments();
     return () => {};
@@ -237,7 +288,7 @@ function Detailfeed() {
                       Router.push(`/user/${detailData.user.username}`);
                     }}
                   >
-                    {detailData.memberId}
+                    {detailData.memberName}
                   </div>
                   <div className="timestamps">제목 : {detailData.title}</div>
                   <div className="timestamp">
@@ -279,7 +330,12 @@ function Detailfeed() {
               </div>
               <div className="body">{detailData.content}</div>
               <div className="bottom">
-                <div className="like" onClick={__updateLike}>
+                <div
+                  className="like"
+                  onClick={() => {
+                    likeState === "ok" ? __deleteLike() : __updateLike();
+                  }}
+                >
                   <div className="asset">
                     <img
                       className={
@@ -295,7 +351,7 @@ function Detailfeed() {
                   <div className="title txt-bold">
                     {/* {layout.likelist}　 */}
                     {/* {detailData.feed.feedlike.length} */}
-                    {detailData.likeCnt}
+                    {likeCount}
                   </div>
                 </div>
                 <div className="comment">

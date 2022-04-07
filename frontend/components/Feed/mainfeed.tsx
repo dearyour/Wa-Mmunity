@@ -51,15 +51,8 @@ function Mainfeed() {
   const [feeds, setFeeds] = useState([]); //프롭으로내려주자
   const [rankers, setRankers] = useState([]); //프롭으로내려주자
   const dataId = useRef(0);
-  // useEffect(() => {
-  //   setUserProfileImage(image);
-  // });
 
   ////////////////////////
-  // useEffect(() => {
-  // dispatch(userActions.getUser());
-  // dispatch(feedAction.getFeed());
-  // }, []);
   // const __GetUserState = (token: string | null) => {
   //   return axios({
   //     method: "GET",
@@ -76,18 +69,9 @@ function Mainfeed() {
   //     });
   // };
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem("Token");
-  //   __GetUserState(token);
-  //   // console.log(userstate.Object.email);
-  //   // dispatch(userActions.setnickname(userstate));
-  // }, []);
-  //////////////////////////////////////////
-
   //##################################################################################
   //res.data.detailFeedDtos 여기까지가 action임
   //res.data.detailFeedDtos.feed 가 action.payload 임
-  let eml: any = [];
   const __GetFeedState = useCallback(
     (token: string | null) => {
       return axios({
@@ -97,7 +81,6 @@ function Mainfeed() {
         // headers: { Authorization: "Bearer " + token },
       })
         .then((res) => {
-          // console.log(res.data.detailFeedDtos);
           let feedss = res.data.detailFeedDtos;
           //[{피드1},{피드2},{피드3}] 저장되어있음
           // console.log(res.data.detailFeedDtos);
@@ -118,7 +101,7 @@ function Mainfeed() {
     __GetFeedState(token);
   }, []);
 
-  console.log(feeds);
+  // console.log(feeds);
   useEffect(() => {
     // const token = localStorage.getItem("Token");
     const email = localStorage.getItem("email");
@@ -268,7 +251,7 @@ function Mainfeed() {
               >
                 {/* 나의 온도 : [ {userInfo} ˚C ] */}
               </div>
-              <div className="title txt-bold">Ondo 순위</div>
+              <div className="title txt-bold">와인 리뷰수 순위</div>
               {/* {rankers.map((item: any, idx: number) => {
                 // console.log(feeds);
                 return <Rankfeed key={idx} dto={item} num={idx + 1} />;

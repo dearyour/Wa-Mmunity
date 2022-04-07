@@ -94,7 +94,8 @@ function Header(): JSX.Element {
               <div
                 className="item__name"
                 onClick={() => {
-                  Router.push(`/recommend`)}}
+                  Router.push(`/recommend`);
+                }}
               >
                 와인 추천
               </div>
@@ -104,13 +105,15 @@ function Header(): JSX.Element {
                     <li>
                       <h4
                         onClick={() => {
-                          Router.push(`/recommend`)
+                          Router.push(`/recommend`);
                         }}
-                      >와인 추천</h4>
+                      >
+                        와인 추천
+                      </h4>
                       <ul>
                         <li
                           onClick={() => {
-                            Router.push(`/recommend/survey`)
+                            Router.push(`/recommend/survey`);
                           }}
                         >
                           취향분석하러가기
@@ -122,11 +125,18 @@ function Header(): JSX.Element {
               </div>
             </li>
             <li className="item">
-              <div className="item__name">와뮤니티 게시판</div>
+              <div
+                className="item__name"
+                onClick={() => {
+                  Router.push(`/feedMain`);
+                }}
+              >
+                와뮤니티 게시판
+              </div>
               <div className="item__contents">
                 <div className="contents__menu">
                   <ul className="inner">
-                    <li>
+                    {/* <li>
                       <h4>와인 자유 게시판</h4>
                       <ul>
                         <li>와인 맛 리뷰</li>
@@ -140,7 +150,7 @@ function Header(): JSX.Element {
                         <li>팝니다</li>
                         <li>삽니다</li>
                       </ul>
-                    </li>
+                    </li> */}
                   </ul>
                 </div>
               </div>

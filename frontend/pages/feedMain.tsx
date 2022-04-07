@@ -15,29 +15,6 @@ const Home: NextPage = () => {
   const isDetailOpen = useSelector(
     (state: RootState) => state.layout.isDetailOpen
   );
-  const dispatch = useDispatch();
-
-  // const feedssssId = 2;
-  // const __getLikeList = useCallback(() => {
-  //   const token = localStorage.getItem("Token");
-  //   return axios({
-  //     method: "get",
-  //     url: process.env.BACK_EC2+"/feed/like/" + feedssssId,
-  //     // url: GetFeedurl,
-  //     headers: { Authorization: "Bearer " + token },
-  //   })
-  //     .then((res) => {
-  //       console.log(res);
-  //       dispatch(layoutAction.likeList(res.data));
-  //     })
-  //     .catch((err) => {
-  //       return err;
-  //     });
-  // }, []);
-
-  // useEffect(() => {
-  //   const likelistRef = __getLikeList();
-  // }, [__getLikeList]);
   return (
     <AppLayout title="메인 | 온도">
       <Mainfeed />

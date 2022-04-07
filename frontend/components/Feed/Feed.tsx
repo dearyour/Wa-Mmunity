@@ -15,18 +15,12 @@ interface Propss {
 }
 const Feed = (props: any) => {
   const dispatch = useDispatch();
-  const user = useSelector((state: RootState) => state.user.users);
+  const loginUserId = useSelector((state: RootState) => state.user.users.id);
   const memberId = useSelector((state: RootState) => state.user.users.memberId);
   const ondo = useSelector((state: RootState) => state.user.ondo);
-  const [likeCount, setLikeCount] = useState(0);
-  const [likeState, setLikeState] = useState("");
-  useEffect(() => {
-    if (props.dto.likeflag) {
-      setLikeState("delete");
-    } else {
-      setLikeState("ok");
-    }
-  }, []);
+  const [likeCount, setLikeCount] = useState(props.dto.likeCnt);
+  const [likeState, setLikeState] = useState("delete");
+  const [commentData, setCommentData] = useState([]);
   // useEffect(() => {
   //   dispatch(commentAction.getComment);
   // }, []);
@@ -45,35 +39,106 @@ const Feed = (props: any) => {
 
   const __openFeedDetail = useCallback(() => {
     // console.log(props.dto.feed);
-    dispatch(feedAction.getFeed()); //전체 피드정보 다시 업데이트(자식컴포넌트에서 변경된값 부모에저장)
+    dispatch(feedAction.getFeeds()); //전체 피드정보 다시 업데이트(자식컴포넌트에서 변경된값 부모에저장)
     dispatch(layoutAction.updateDetailData(props.dto)); //부모로부터 새로운 개별 피드 정보 저장
     dispatch(layoutAction.updateDetailState(true));
+    dispatch(layoutAction.likeList(likeCount));
+    dispatch(layoutAction.updateCommentData(commentData));
   }, [dispatch, props.dto]);
 
-  const __updateLike = useCallback(() => {
-    const token = localStorage.getItem("Token");
-    return axios({
-      method: "get",
-      url: process.env.BACK_EC2 + "/feed/like/" + props.dto.feed.feedId,
-      // headers: { Authorization: "Bearer " + token },
+  const __loadComments = useCallback(() => {
+    //평점 업로드 또는 불러올때 계속 새로고침
+    // const feedsId = detailData.feed.feedId;
+    axios({
+      method: "GET",
+      url: process.env.BACK_EC2 + "resellboard/comment/" + props.dto.articleId,
+      // url: "https://localhost:8080/api/" + "wine/wineReview/" + wineId,
     })
       .then((res) => {
-        // console.log(res.data + "### 라이크!!");
-        if (res.data === "ok") {
-          setLikeCount(likeCount + 1);
-          setLikeState(res.data);
-          // dispatch(layoutAction.likeList(res.data));
+        console.log(res.data.object);
+        setCommentData(res.data.object.comments.reverse());
+      })
+      .catch((err) => {
+        // console.log(err);
+      });
+  }, [props.dto.articleId]);
+  useEffect(() => {
+    __loadComments();
+  }, [__loadComments]);
+  //////////////////////////////////좋아요
+  const __loadLike = useCallback(() => {
+    return axios({
+      method: "GET",
+      url: process.env.BACK_EC2 + "resellboard/like/" + loginUserId,
+    })
+      .then((res) => {
+        console.log(res.data);
+        let tempss = res.data.object.filter(
+          (item: any) => item === Number(props.dto.articleId)
+        );
+        // console.log(tempss); // 이부분  []이면 트루 반환
+        // console.log(tempss.length); // 이부분 0이면 펄스 반환
+        // 빈배열은 true 반환한다 배열의 길이를 0은 false 반환한다
+        if (tempss.length === 0) {
+          console.log("##위시로드데이터 0개 ");
+          setLikeState("delete");
         } else {
-          setLikeCount(likeCount - 1);
-          setLikeState(res.data);
-          // dispatch(layoutAction.likeList(res.data));
+          console.log("##위시로드데이터 1개 ");
+          setLikeState("ok");
         }
-        dispatch(feedAction.getFeed());
       })
       .catch((err) => {
         return err;
       });
-  }, [props.dto, likeCount]);
+  }, [loginUserId, props.dto.articleId]);
+
+  const __updateLike = useCallback(() => {
+    const data = {
+      articleId: Number(props.dto.articleId),
+      memberId: loginUserId,
+    };
+    return axios({
+      method: "post",
+      url: process.env.BACK_EC2 + "resellboard/like",
+      data: data,
+    })
+      .then((res) => {
+        setLikeState("ok");
+        setLikeCount(likeCount + 1);
+        // console.log("##ok성공");
+        // console.log(likeState); //useState 여기서직접 콘솔안찍힘 463 함수끝나는곳에 찍을것
+        __loadLike();
+      })
+      .catch((err) => {
+        return err;
+      });
+  }, [loginUserId, props.dto.articleId, likeState, __loadLike, likeCount]);
+
+  const __deleteLike = useCallback(() => {
+    const data = {
+      articleId: Number(props.dto.articleId),
+      memberId: loginUserId,
+    };
+    return axios({
+      method: "delete",
+      url: process.env.BACK_EC2 + "resellboard/like",
+      data: data,
+    })
+      .then((res) => {
+        setLikeState("ok");
+        setLikeCount(likeCount - 1);
+        // console.log("##ok성공");
+        // console.log(likeState); //useState 여기서직접 콘솔안찍힘 463 함수끝나는곳에 찍을것
+        __loadLike();
+      })
+      .catch((err) => {
+        return err;
+      });
+  }, [loginUserId, props.dto.articleId, likeState, __loadLike, likeCount]);
+  useEffect(() => {
+    __loadLike();
+  }, [__loadLike]);
+
   return (
     <div className="feed">
       <div
@@ -98,7 +163,7 @@ const Feed = (props: any) => {
               Router.push(`/user/${props.dto.memberId}`);
             }}
           >
-            <Style className="태양">{props.dto.memberId}</Style>
+            <Style className="태양">{props.dto.memberName}</Style>
           </div>
           <div className="timestamp">태그 : {props.dto.tag}</div>
           <div className="timestamp">
@@ -142,12 +207,17 @@ const Feed = (props: any) => {
         )}
       </div>
       <div className="bottom">
-        <div className="like" onClick={__updateLike}>
+        <div
+          className="like"
+          onClick={() => {
+            likeState === "ok" ? __deleteLike() : __updateLike();
+          }}
+        >
           <div className="asset">
             {/* <img src="/assets/pngwing.com2.png" alt="좋아요" /> */}
             <img
               className={
-                props.dto.memberId === false
+                likeState === "ok"
                   ? "move likeanimated unlikeanimated"
                   : "move unlikeanimated"
               }
@@ -156,7 +226,8 @@ const Feed = (props: any) => {
             <img src="/assets/pngwing.com.png" alt="좋아요"></img>
           </div>
           <div className="count txt-bold">
-            {props.dto.likeCnt ? props.dto.likeCnt : 0}
+            {/* {props.dto.likeCnt ? likeCount : 0} */}
+            {props.dto ? likeCount : 0}
           </div>
         </div>
         <div className="comment" onClick={__openFeedDetail}>
@@ -165,9 +236,7 @@ const Feed = (props: any) => {
             <img src="/assets/pngwing.com5.png" alt="댓글" />
           </div>
           <div className="count txt-bold">
-            {/* {props.dto.feed.comment
-              ? Object.keys(props.dto.feed.comment).length
-              : 0} */}
+            {commentData ? commentData.length : 0}
           </div>
         </div>
       </div>
