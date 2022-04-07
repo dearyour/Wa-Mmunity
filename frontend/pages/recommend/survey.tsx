@@ -14,6 +14,7 @@ import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector
 import { styled } from '@mui/material/styles'
 import { StepIconProps } from '@mui/material/StepIcon'
 import WineBarIcon from '@mui/icons-material/WineBar';
+import Spinner from '../../components/recomm/Spinner'
 
 axios.defaults.withCredentials = true
 const { Title, Paragraph, Text, Link } = Typography;
@@ -92,6 +93,7 @@ export default class Survey extends Component {
   state = {
     step: 0,
     visible: false,
+    loading: false,
     res: '',
     data: {
       type: '',
@@ -119,6 +121,7 @@ export default class Survey extends Component {
     this.setState({
       step: 0,
       visible: false,
+      loading: true,
       res: "",
       data: {
         type: "",
@@ -133,6 +136,7 @@ export default class Survey extends Component {
   }
   // submit
   handleSubmit = async () => {
+    this.setState({ loading: true })
     try {
       const result = await axios.post('https://j6a101.p.ssafy.io:8080/api/wine/recomm/survey',
       JSON.stringify(this.state.data),
@@ -142,6 +146,7 @@ export default class Survey extends Component {
           'accept':'application/json'
         }
       })
+      this.setState({ loading: false })
       this.setState({ res: result.data.object})
       this.setState({ visible: true })
     } catch (err) {
@@ -199,7 +204,7 @@ export default class Survey extends Component {
 
   render() {
     const { step } = this.state;
-    const { visible, res } = this.state;
+    const { visible, res, loading } = this.state;
     const { type, winebody, tannin, sweetness, acidity, flavour, foods, } = this.state.data;
     const steplabels = getSteps()
     const values = { type, winebody, tannin, sweetness, acidity, flavour, foods, }
@@ -225,8 +230,12 @@ export default class Survey extends Component {
                 <Typography><Title>버튼을 눌러 결과를 확인해주세요.</Title></Typography>
               </Row>
 
-              <Row style={{ marginBottom: 50 }}></Row>
+              <Row justify='center' style={{ marginTop: 50 }}>
+                {loading && <Spinner/>}
+              </Row>
+
               {visible && <SurveyResult res={res}/>}
+
               <Row style={{ marginBottom: 50 }}></Row>
 
               <Row justify="center">

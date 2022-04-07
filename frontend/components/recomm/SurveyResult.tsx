@@ -28,37 +28,20 @@ const theme = createTheme({
 })
 
 const SurveyResult = (props: any) => {
-  // const winedata = [5,34,33,32,31]
-  // const [winedata, setData] = useState()
-  // const BASE_URL = 'https://j6a101.p.ssafy.io:8080/api/wine/sur/' + 1
-  // // const BASE_URL = process.env.BACK_EC2 + 'api/wine/personal/' + userId
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     axios.get(BASE_URL)
-  //     .then(res => {
-  //       setData(res.data.object)
-  //     })
-  //     .catch(err => console.log(err))
-  //   }
-  //   fetchData()
-  //   },[])
   console.log('props1: ', props.res)
 
   return (
       <ThemeProvider theme={theme}>
       <Grid container spacing={2} justifyContent="center">
-        <Grid item xs={8}>
-        <Card sx={{ minWidth: 275, mt: 5, background: "#f7f3f0", }}>
-          <CardContent>
-            <Typography sx={{ mt: 1.5 }} variant="h4" component="div">
-              <strong>
-                이런 와인은 어떠세요?
-              </strong>
-            </Typography>
-          </CardContent>
-        </Card>
+        <Grid item xs={8} sx={{ marginBottom: 3 }}>
+          <Typography sx={{ mt: 1.5 }} variant="h4" component="div" align='center'>
+            <strong>
+              이런 와인은 어떠세요?
+            </strong>
+          </Typography>
         </Grid>
-        <Grid item xs={8} justifyContent="center">
+
+        <Grid item xs={10} justifyContent="center">
           <WineCardList res={props.res}></WineCardList>
         </Grid>
       </Grid>
