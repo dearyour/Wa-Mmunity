@@ -8,6 +8,7 @@ import axios from "axios";
 import { feedAction } from "store/slice/feed";
 import { Popconfirm } from "antd";
 import styled from "styled-components";
+import Image from "next/image";
 function Detailfeed() {
   //layout 은 해당 피드 1 ,2 ,3 각각 에 대한 정보만 저장됨
   const dispatch = useDispatch();
@@ -139,14 +140,7 @@ function Detailfeed() {
         }
       }
     },
-    [
-      comment,
-      commentRef,
-      detailData.article.drticleId,
-      comment,
-      detailData.article.memberId,
-      dispatch,
-    ]
+    [comment, commentRef, detailData.article, comment, dispatch, loginUserId]
   );
   ///////////////
   //좋아요
@@ -196,7 +190,7 @@ function Detailfeed() {
       .catch((err) => {
         return err;
       });
-  }, [loginUserId, detailData.article.articleId, likeState, likeCount]);
+  }, [loginUserId, detailData.article.articleId, likeCount]);
 
   const __deleteLike = useCallback(() => {
     const data = {
@@ -218,7 +212,7 @@ function Detailfeed() {
       .catch((err) => {
         return err;
       });
-  }, [loginUserId, detailData.article.articleId, likeState, likeCount]);
+  }, [loginUserId, detailData.article.articleId, likeCount]);
 
   const __closeDetail = useCallback(() => {
     dispatch(layoutAction.updateDetailState(false));

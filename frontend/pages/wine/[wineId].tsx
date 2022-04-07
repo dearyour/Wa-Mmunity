@@ -459,7 +459,7 @@ function WineDetail(): any {
     // } else {
     //   __deleteLike();
     // }
-  }, [userId, wineId, likeState, __loadLike]);
+  }, [userId, wineId, __loadLike]);
 
   // console.log("##likeState" + likeState);
   // console.log("##wishnumber" + wishNumber);
