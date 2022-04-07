@@ -73,7 +73,11 @@ function WineMain() {
           </article>
 
           <article>
-            <div className="inner">
+            <div className="inner"
+              onClick={() => {
+                Router.push(`/recommend`);
+              }}
+            >
               <div className="txt">
                 <h2>02</h2>
                 <p>추천 와인</p>
