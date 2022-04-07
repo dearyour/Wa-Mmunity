@@ -50,7 +50,7 @@ public class FreeBoardController {
 		return ResponseEntity.status(200).body(FreeBoardGetResponse.of(200, articles));
 	}
 
-	@PostMapping
+	@PostMapping(value = "", consumes = { "multipart/form-data" })
 	@ApiOperation(value = "게시글 작성", notes = "자유게시판 게시글 작성")
 	@ApiResponses({ @ApiResponse(code = 200, message = "성공", response = BaseResponse.class),
 			@ApiResponse(code = 401, message = "인증 실패", response = BaseResponse.class),
@@ -58,11 +58,11 @@ public class FreeBoardController {
 			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponse.class) })
 
 	public ResponseEntity<? extends BaseResponse> createArticle(
-			@RequestPart @ApiParam(value = "사진 파일", required = false) MultipartFile photo,
-			@RequestPart @ApiParam(value = "게시글 제목", required = true) String title,
-			@RequestPart @ApiParam(value = "게시글 내용") String content,
-			@RequestPart @ApiParam(value = "게시글 태그") String tag,
-			@RequestPart @ApiParam(value = "작성자 id", required = true) Integer member_id
+			@RequestPart @ApiParam(value = "사진 파일", required = false) MultipartFile photoFile,
+			@RequestParam @ApiParam(value = "게시글 제목", required = true) String title,
+			@RequestParam @ApiParam(value = "게시글 내용", required = false) String content,
+			@RequestParam @ApiParam(value = "게시글 태그", required = false) String tag,
+			@RequestParam @ApiParam(value = "작성자 id", required = true) Integer member_id
 	) {
 		FreeBoardPostRequest articleCreateInfo = new FreeBoardPostRequest();
 		articleCreateInfo.setMemberId(member_id);
@@ -70,15 +70,15 @@ public class FreeBoardController {
 		articleCreateInfo.setContent(content);
 		articleCreateInfo.setTag(tag);
 		String photoPath = "";
-		if (photo != null) {
-			photoPath = s3Service.uploadToFreeboard(photo);
+		if (photoFile != null) {
+			photoPath = s3Service.uploadToFreeboard(photoFile);
 			articleCreateInfo.setPhoto(photoPath);
 		}
 		freeBoardService.createArticle(articleCreateInfo);
 		return ResponseEntity.status(200).body(BaseResponse.of(200, "Success"));
 	}
 
-	@PutMapping
+	@PutMapping(value = "", consumes = { "multipart/form-data" })
 	@ApiOperation(value = "게시글 수정", notes = "자유게시판 게시글 수정")
 	@ApiResponses({ @ApiResponse(code = 200, message = "성공", response = BaseResponse.class),
 			@ApiResponse(code = 401, message = "인증 실패", response = BaseResponse.class),
@@ -86,11 +86,11 @@ public class FreeBoardController {
 			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponse.class) })
 
 	public ResponseEntity<? extends BaseResponse> updateArticle(
-			@RequestPart @ApiParam(value = "사진 파일", required = false) MultipartFile photo,
-			@RequestPart @ApiParam(value = "게시글 제목", required = true) String title,
-			@RequestPart @ApiParam(value = "게시글 내용") String content,
-			@RequestPart @ApiParam(value = "게시글 태그") String tag,
-			@RequestPart @ApiParam(value = "수정할 글의 id", required = true) Integer article_id
+			@RequestPart @ApiParam(value = "사진 파일", required = false) MultipartFile photoFile,
+			@RequestParam @ApiParam(value = "게시글 제목", required = true) String title,
+			@RequestParam @ApiParam(value = "게시글 내용", required = false) String content,
+			@RequestParam @ApiParam(value = "게시글 태그", required = false) String tag,
+			@RequestParam @ApiParam(value = "수정할 글의 id", required = true) Integer article_id
 	) {
 		FreeBoardPutRequest articleUpdateInfo = new FreeBoardPutRequest();
 		articleUpdateInfo.setArticleId(article_id);
@@ -98,8 +98,8 @@ public class FreeBoardController {
 		articleUpdateInfo.setContent(content);
 		articleUpdateInfo.setTag(tag);
 		String photoPath = "";
-		if (!photo.isEmpty()) {
-			photoPath = s3Service.uploadToFreeboard(photo);
+		if (!photoFile.isEmpty()) {
+			photoPath = s3Service.uploadToFreeboard(photoFile);
 			articleUpdateInfo.setPhoto(photoPath);
 		}
 		freeBoardService.updateArticle(articleUpdateInfo);
