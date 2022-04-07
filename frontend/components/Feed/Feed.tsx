@@ -204,7 +204,7 @@ const Feed = (props: any) => {
             //   Router.push("/search/" + props.dto.article.title);
             // }}
           >
-            Title : {props.dto.article.title}
+            [ {props.dto.article.title} ]
           </div>
         </div>
       </div>
