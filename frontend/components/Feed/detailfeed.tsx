@@ -101,7 +101,7 @@ function Detailfeed() {
       // url: "https://localhost:8080/api/" + "wine/wineReview/" + wineId,
     })
       .then((res) => {
-        console.log(res.data.object);
+        // console.log(res.data.object);
         setCommentData(res.data.object.comments.reverse());
       })
       .catch((err) => {
@@ -123,7 +123,7 @@ function Detailfeed() {
             content: comment,
             memberId: loginUserId,
           };
-          console.log(data);
+          // console.log(data);
           axios({
             method: "POST",
             url: process.env.BACK_EC2 + "freeboard/comment",
@@ -150,7 +150,7 @@ function Detailfeed() {
       url: process.env.BACK_EC2 + "freeboard/like/" + loginUserId,
     })
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         let tempss = res.data.object.filter(
           (item: any) => item === Number(detailData.article.articleId)
         );
@@ -158,10 +158,10 @@ function Detailfeed() {
         // console.log(tempss.length); // 이부분 0이면 펄스 반환
         // 빈배열은 true 반환한다 배열의 길이를 0은 false 반환한다
         if (tempss.length === 0) {
-          console.log("##위시로드데이터 0개 ");
+          // console.log("##위시로드데이터 0개 ");
           setLikeState("delete");
         } else {
-          console.log("##위시로드데이터 1개 ");
+          // console.log("##위시로드데이터 1개 ");
           setLikeState("ok");
         }
       })

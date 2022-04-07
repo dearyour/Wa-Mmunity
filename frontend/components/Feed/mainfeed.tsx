@@ -71,7 +71,7 @@ function Mainfeed() {
       .then((res) => {
         let feedss = res.data.detailFeedDtos;
         //[{피드1},{피드2},{피드3}] 저장되어있음
-        console.log(res.data);
+        // console.log(res.data);
 
         setRankers(res.data.object);
         //객체가들어있는 해당배열을 feeds에 저장, 프롭으로 내려주기위해, 최신순

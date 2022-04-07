@@ -177,7 +177,7 @@ const Home = () => {
   const applyFilters = useCallback(() => {
     if (feedstate) {
       let updatedList = feedstate;
-      console.log(updatedList);
+      // console.log(updatedList);
 
       // Rating Filter
       if (selectedRating) {
@@ -247,8 +247,7 @@ const Home = () => {
       updatedList = updatedList.sort(compare);
       // setList(updatedList);
       setWines(updatedList);
-      // setWines(updatedListr);
-      console.log(updatedList);
+      // console.log(updatedList);
 
       !updatedList.length ? setResultsFound(false) : setResultsFound(true);
     }
