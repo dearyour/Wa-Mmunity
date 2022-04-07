@@ -1,5 +1,15 @@
 {
+  "/[APItest]": "pages/[APItest].html",
   "/_app": "pages/_app.js",
   "/_document": "pages/_document.js",
-  "/_error": "pages/_error.js"
+  "/": "pages/index.html",
+  "/login": "pages/login.html",
+  "/recommend": "pages/recommend.html",
+  "/recommend/survey": "pages/recommend/survey.html",
+  "/signup": "pages/signup.html",
+  "/wine": "pages/wine.html",
+  "/wine/[wineId]": "pages/wine/[wineId].html",
+  "/wineindex": "pages/wineindex.html",
+  "/_error": "pages/_error.js",
+  "/404": "pages/404.html"
 }
