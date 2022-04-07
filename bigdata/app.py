@@ -40,11 +40,15 @@ def wine_survey():
     # if request.method === 'POST':
         # json -> string
         data = request.get_json()
-        survey_data = ' '.join(' '.join(list(data.values())).split())
-        print(request)
-        print(data)
-        print(data.values())
+        # survey_data = ' '.join(' '.join(list(data.values())).split())
+        survey_data = ''
+        for d in data.values():
+            if type(d) != list:
+                survey_data += ' ' + d
+            else:
+                survey_data += ' ' + ' '.join(d)
         print(survey_data)
+        
         # 함수 실행
         result = json.dumps(survey.get_survey(survey=survey_data))
         # 와인 id list(array) 반환

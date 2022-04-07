@@ -2,6 +2,7 @@ package com.web.wam.model.service;
 
 import java.util.List;
 
+import com.web.wam.model.dto.freeboard.FreeBoardArticleGetResponse;
 import com.web.wam.model.dto.freeboard.FreeBoardCmtPostRequest;
 import com.web.wam.model.dto.freeboard.FreeBoardCmtPutRequest;
 import com.web.wam.model.dto.freeboard.FreeBoardLikePostRequest;
@@ -12,7 +13,7 @@ import com.web.wam.model.dto.freeboard.FreeaBoardCmtResponse;
 
 public interface FreeBoardService {
 
-	List<FreeBoardResponse> getAllArticle();
+	List<FreeBoardArticleGetResponse> getAllArticle();
 
 	void createArticle(FreeBoardPostRequest articleCreateInfo);
 

@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.web.wam.model.dto.freeboard.FreeBoardArticleGetResponse;
 import com.web.wam.model.dto.freeboard.FreeBoardCmtPostRequest;
 import com.web.wam.model.dto.freeboard.FreeBoardCmtPutRequest;
 import com.web.wam.model.dto.freeboard.FreeBoardLikePostRequest;
@@ -41,16 +42,34 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 	@Autowired
 	FreeArticleLikeRepositorySupport freeArticleLikeRepositorySupport;
 
-	@Override
-	public List<FreeBoardResponse> getAllArticle() {
+	@Autowired
+	MemberService memberService;
 
-		List<FreeBoardResponse> articleList = new LinkedList<FreeBoardResponse>();
+	@Override
+	public List<FreeBoardArticleGetResponse> getAllArticle() {
+
+		List<FreeBoardArticleGetResponse> articleList = new LinkedList<FreeBoardArticleGetResponse>();
 		List<FreeBoard> articles = freeBoardRepository.findAll();
 		for (FreeBoard article : articles) {
+			// article
 			FreeBoardResponse freeBoardResponse = new FreeBoardResponse();
 			setFreeBoardResponse(article, freeBoardResponse);
-			articleList.add(freeBoardResponse);
+			String nickname = memberService.getNickNameByMemberId(article.getMemberId());
+			freeBoardResponse.setMemberNickName(nickname);
+			// comment
+			List<FreeaBoardCmtResponse> commentList = new LinkedList<FreeaBoardCmtResponse>();
+			List<FreeArticleComment> comments = freeArticleCommentRepositorySupport
+					.findByArticleId(article.getArticleId());
+			for (FreeArticleComment comment : comments) {
+				FreeaBoardCmtResponse freeaBoardCmtResponse = new FreeaBoardCmtResponse();
+				setFreeBoardCmtResponse(comment, freeaBoardCmtResponse);
+				commentList.add(freeaBoardCmtResponse);
+				String commentNickname = memberService.getNickNameByMemberId(comment.getMemberId());
+				freeaBoardCmtResponse.setMemberNickName(commentNickname);
+			}
+			articleList.add(new FreeBoardArticleGetResponse(freeBoardResponse, commentList));
 		}
+
 		return articleList;
 	}
 
