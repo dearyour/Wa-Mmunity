@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 const WordCloudPage = () => {
   return (
     <>
-      <Typography variant="h3" align="center">워드클라우드</Typography>
+      <Typography variant="h3" align="center" m={10}>워드클라우드</Typography>
     </>
   );
 };

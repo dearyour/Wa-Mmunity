@@ -1,4 +1,7 @@
-import React, { useState, useRef } from "react";
+import React, { useCallback, useState, useRef, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import axios from "axios";
+import Router, { useRouter } from "next/router";
 import Link from "next/link";
 import { styled } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
@@ -9,6 +12,7 @@ import LinearProgress, {
 } from "@mui/material/LinearProgress";
 import Box from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
+
 const MyPage = () => {
   const fileInput = useRef<HTMLInputElement>(null);
   const [myProfile, setMyProfile] = useState<string[]>([]);
@@ -37,11 +41,47 @@ const MyPage = () => {
   const [nickname, setNickname] = useState("");
   // 유저 이메일
   const [email, setEmail] = useState("");
-  // 작성한 후기 개수
-  const [myReview, setMyReview] = useState(0);
-  // 작성한 후기 평균 점수
-  const [rating, setRating] = useState(0.0);
+  // 유저 아이디
+  const [id, setId] = useState(-1);
 
+  const getAccount = useCallback(async () => {
+    return axios({
+      method: "GET",
+      // url: process.env.BACK_EC2 + "wine/myReview/" + memberId,
+      url: process.env.BACK_EC2 + "member/" + email,
+    })
+      .then((response) => {
+        console.log(response);
+        setNickname(response.data.object.nickname);
+        setId(response.data.object.id);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
+  useEffect(() => {
+    setEmail((localStorage.getItem("email") || ""));
+    getAccount();
+  }, []);
+
+  // 작성한 후기 개수
+  const [myReviewCnt, setMyReviewCnt] = useState(0);
+  // 작성한 후기 평균 점수
+  const [myRating, setMyRating] = useState(0);
+  // 작성한 후기 내용
+  const [reviews, setReviews] = useState([]);
+  // 리뷰 1점 개수
+  const [oneCnt, setOneCnt] = useState(0);
+  // 리뷰 2점 개수
+  const [twoCnt, setTwoCnt] = useState(0);
+  // 리뷰 3점 개수
+  const [threeCnt, setThreeCnt] = useState(0);
+  // 리뷰 4점 개수
+  const [fourCnt, setFourCnt] = useState(0);
+  // 리뷰 5점 개수
+  const [fiveCnt, setFiveCnt] = useState(0);
+  
   const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
     height: 15,
     width: 500,
@@ -56,12 +96,34 @@ const MyPage = () => {
     },
   }));
 
+  // dispatch를 사용하기 위한 준비
+  const dispatch = useDispatch();
+
+  const getMyReview = useCallback(async () => {
+    return axios({
+      method: "GET",
+      url: process.env.BACK_EC2 + "wine/myRview/" + id,
+    })
+      .then((response) => {
+        console.log(response);
+        setMyReviewCnt(response.data.object.reviewCnt);
+        setMyRating(response.data.object.avgRating);
+        setReviews(response.data.object.reviewList);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
+  useEffect(() => {
+    getMyReview();
+  }, []);
+
   return (
     <>
       <Grid container>
         <Grid item xs={6}>
-          <Box m={5}>
-            <Typography align="center" variant="h3">MyProfile</Typography>
+          <Box m={10}>
             <input
               type="file"
               style={{ display: "none" }}
@@ -77,47 +139,47 @@ const MyPage = () => {
                 fileInput.current?.click();
               }}
             ></Avatar>
-            <Typography>닉네임 {nickname}</Typography>
-            <Typography>이메일 {email}</Typography>
-            <Link href="">
+            <Typography variant="h4" align="center" m={5}>닉네임 {nickname}</Typography>
+            <Typography variant="h4" align="center" m={5}>이메일 {email}</Typography>
+            {/* <Link href="">
               <a>비밀번호 변경</a>
-            </Link>
+            </Link> */}
           </Box>
         </Grid>
         <Grid item xs={6}>
           <Box m={10}>
-            <Typography>{myReview}개의 후기</Typography>
-            <Typography>평균점수 {rating}</Typography>
+            <Typography variant="h3" m={5}>{myReviewCnt}개의 후기</Typography>
+            <Typography variant="h3" m={5}>평균점수 {Math.round((myRating + Number.EPSILON) * 100) / 100}</Typography>
             <Rating value={5} readOnly />
             <BorderLinearProgress
               variant="determinate"
-              value={100}
+              value={(oneCnt/myReviewCnt) * 100}
             ></BorderLinearProgress>
             <Rating value={4} readOnly />
             <BorderLinearProgress
               variant="determinate"
-              value={80}
+              value={(twoCnt/myReviewCnt) * 100}
             ></BorderLinearProgress>
             <Rating value={3} readOnly />
             <BorderLinearProgress
               variant="determinate"
-              value={60}
+              value={(threeCnt/myReviewCnt) * 100}
             ></BorderLinearProgress>
             <Rating value={2} readOnly />
             <BorderLinearProgress
               variant="determinate"
-              value={40}
+              value={(fourCnt/myReviewCnt) * 100}
             ></BorderLinearProgress>
             <Rating value={1} readOnly />
             <BorderLinearProgress
               variant="determinate"
-              value={20}
+              value={(fiveCnt/myReviewCnt) * 100}
             ></BorderLinearProgress>
           </Box>
         </Grid>
       </Grid>
 
-      <Typography variant="h3">취향분석</Typography>
+      <Typography variant="h3" align="center" m={10}>취향분석</Typography>
       <Grid container>
         <Grid item xs={6}>
           <Typography>당도</Typography>
