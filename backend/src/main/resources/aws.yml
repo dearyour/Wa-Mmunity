@@ -5,7 +5,7 @@ cloud:
       secretKey: fjH/D7ctjUvsDskSAmSbmssH6NKiJbMyJ5Odpx2F
     s3:
       bucket: wamunity-01-s3
-      hosting: http://wamunity-01-s3.s3-website.ap-northeast-2.amazonaws.com
+      hosting: https://wamunity-01-s3.s3.ap-northeast-2.amazonaws.com
       dirFreeboard: freeboard
       dirResellboard: resellboard
       dirMember: member
