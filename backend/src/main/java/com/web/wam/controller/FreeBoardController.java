@@ -50,7 +50,7 @@ public class FreeBoardController {
 			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponse.class) })
 
 	public ResponseEntity<? extends BaseResponse> getAllArticle() {
-		List<FreeBoardResponse> articles = freeBoardService.getAllArticle();
+		List<FreeBoardArticleGetResponse> articles = freeBoardService.getAllArticle();
 		return ResponseEntity.status(200).body(FreeBoardGetResponse.of(200, articles));
 	}
 

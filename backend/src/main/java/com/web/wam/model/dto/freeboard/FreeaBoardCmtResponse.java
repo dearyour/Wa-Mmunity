@@ -13,6 +13,9 @@ public class FreeaBoardCmtResponse implements Serializable {
 	@ApiModelProperty(name = "FreeBoardCmt memberId", example = "123")
 	private Integer memberId;
 
+	@ApiModelProperty(name = "FreeBoardCmt memberNickName", example = "123")
+	private String memberNickName;
+
 	@ApiModelProperty(name = "FreeBoardCmt content", example = "내용입니다.")
 	private String content;
 
