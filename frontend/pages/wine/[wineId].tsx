@@ -459,7 +459,7 @@ function WineDetail(): any {
     // } else {
     //   __deleteLike();
     // }
-  }, [userId, wineId, likeState, __loadLike]);
+  }, [userId, wineId, __loadLike]);
 
   // console.log("##likeState" + likeState);
   // console.log("##wishnumber" + wishNumber);
@@ -583,14 +583,6 @@ function WineDetail(): any {
                     ✨ 평점 : [ {data ? data.ratingAvg.toFixed(1) : null} ]
                   </StarRateText>
                   <StarRateText>최근 리뷰 : [ {data.ratingNum} ]</StarRateText>
-
-                  {/* <CommentCount>
-                    <CommentImg src="/assets/pngwing.com5.png"></CommentImg>
-                    <span>
-                      {" "}
-                      {data && data.comments ? data.comments.length : 0}
-                    </span>
-                  </CommentCount> */}
                 </StarRates>
               </Backdrop>
             </PosterContainer>
@@ -924,12 +916,14 @@ const LikeImg = styled.img`
 
 const LikeBase = styled.img`
   width: 2rem;
+  height: 2rem;
   position: absolute;
   top: 0;
   left: 0;
 `;
 const LikeBaseImg = styled.img`
   transition: all 1s ease-out;
+  height: 2rem;
   width: 2rem;
   position: absolute;
   top: 0;

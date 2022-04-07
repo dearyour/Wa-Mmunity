@@ -168,3 +168,19 @@ body {
   font-family: "Raleway", sans-serif;
   font-size: 15px;
 }
+.ControlMenus {
+  /* margin-top: -10px; */
+  margin-right: 18px;
+  border: none;
+  border-radius: 5px;
+  background-color: #f5ebeb;
+  height: 45px;
+  /* padding-top: 10px;
+  padding-bottom: 10px; */
+  padding-left: 50px;
+  padding-right: 50px;
+
+  cursor: pointer;
+  font-family: "Raleway", sans-serif;
+  font-size: 15px;
+}
