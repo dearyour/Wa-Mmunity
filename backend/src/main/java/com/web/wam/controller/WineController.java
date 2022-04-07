@@ -119,6 +119,16 @@ public class WineController {
 		return ResponseEntity.status(200).body(BaseResponse.of(200, wineList));
 	}
 
+	@GetMapping("/sort/review")
+	@ApiOperation(value = "리뷰 많은 와인 상위 10개", notes = "리뷰 많은 와인 상위 10개")
+	@ApiResponses({ @ApiResponse(code = 200, message = "성공", response = BaseResponse.class),
+			@ApiResponse(code = 401, message = "인증 실패", response = BaseResponse.class),
+			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponse.class) })
+	public ResponseEntity<? extends BaseResponse> listSortReview() {
+		List<WineResponse> wineList = wineService.sortWine(5);
+		return ResponseEntity.status(200).body(BaseResponse.of(200, wineList));
+	}
+
 	@GetMapping("/search/{keyword}")
 	@ApiOperation(value = "와인 검색", notes = "와인 이름으로 검색하기")
 	@ApiResponses({ @ApiResponse(code = 200, message = "성공", response = BaseResponse.class),
@@ -303,5 +313,6 @@ public class WineController {
 		Object result = wineService.recommSurvey(new JSONObject(survey));
 		return ResponseEntity.status(200).body(BaseResponse.of(200, result));
 	}
+
 
 }

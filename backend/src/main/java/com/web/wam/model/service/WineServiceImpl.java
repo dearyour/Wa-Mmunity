@@ -135,7 +135,7 @@ public class WineServiceImpl implements WineService {
 	@Override
 	public List<WineResponse> sortWine(int sortType) {
 		/**
-		 * 1 : 인기순 정렬 2 : 낮은 가격순 정렬 3 : 높은 가격순 정렬 4 : 리뷰 많은순 정렬
+		 * 1 : 인기순 정렬 2 : 낮은 가격순 정렬 3 : 높은 가격순 정렬 4 : 리뷰 많은순 정렬 5: sort by riview 10
 		 **/
 
 		List<WineResponse> wineList = new LinkedList<WineResponse>();
@@ -155,6 +155,10 @@ public class WineServiceImpl implements WineService {
 
 		case 4:
 			wines = wineRepositorySupport.sortByRatingNum();
+			break;
+
+		case 5:
+			wines = wineRepositorySupport.sortByReview10();
 			break;
 		}
 
