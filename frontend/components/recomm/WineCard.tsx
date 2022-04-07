@@ -32,7 +32,11 @@ const WineCard = (props: any) => {
 
   return (
     <Card sx={{ background: '#f7f3f0'}}>
-      <CardActionArea>
+      <CardActionArea
+        onClick={() => {
+          Router.push(`/wine/${wineid}`);
+        }}
+      >
       <Grid container rowSpacing={4} justifyContent={'center'}>
         <Grid item xs={12} sm={4} md={3} justifyContent={'center'}>
           <CardMedia
