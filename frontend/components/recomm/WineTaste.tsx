@@ -14,7 +14,7 @@ const WineTaste = ({ handleChange, values}: SurveyProps) => {
   return (
     <div className='App'>
       <Row justify="center">
-        <Typography gutterBottom variant="h3" component="div">맛</Typography>
+        <Typography gutterBottom variant="h3" component="div"><strong>맛</strong></Typography>
       </Row>
       
       <Row>
@@ -84,18 +84,37 @@ const WineTaste = ({ handleChange, values}: SurveyProps) => {
         </Col>
       </Row>
 
+      <Row style={{ marginBottom: 10 }}></Row>
+
       <Row justify='center'>
         <Col span={20}>
         <Card sx={{ background: '#f7f3f0'}} variant="outlined">
           <CardContent>
             <Typography variant="body2" component="div">
-              가나다라마바사
+              <strong>산도 </strong>
+              : 신맛의 정도
+            </Typography>
+
+            <Typography variant="body2" component="div">
+              <strong>바디 </strong>
+              : 입안에서 느껴지는 질감 혹은 무게감. 바디가 높을수록 알코올 함량이 높고 맛이 오래 남습니다.
+            </Typography>
+
+            <Typography variant="body2" component="div">
+            <strong>당도 </strong>
+              : 단맛의 정도
+            </Typography>
+
+            <Typography variant="body2" component="div">
+              <strong>타닌 </strong>
+              : 씁쓸한 맛. 타닌이 강할수록 떫고 쌉싸름한 맛이 납니다.
             </Typography>
           </CardContent>
         </Card>
         </Col>
       </Row>
       </Space>
+      
     </div>
   )
 }
