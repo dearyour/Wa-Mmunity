@@ -37,4 +37,7 @@ public class ResellBoardResponse {
 
     @ApiModelProperty(name = "ResellBoard likeCnt", example = "22")
     Long likeCnt;
+
+    @ApiModelProperty(name = "member name", example = "membername")
+    String memberName;
 }
