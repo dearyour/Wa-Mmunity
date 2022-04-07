@@ -34,13 +34,13 @@ const SurveyResultWineCard = (props: any) => {
   },[])
 
   return (
-    <Card sx={{ background: '#f7f3f0', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+    <Card sx={{ background: '#f7f3f0' }}>
       <CardActionArea
        onClick={() => {
         Router.push(`/wine/${wineid}`);
       }}>
       <Grid container rowSpacing={4} justifyContent={'center'}>
-        <Grid item xs={12} sm={4} md={3} justifyContent={'space-between'} style={{display: 'grid'}}>
+        <Grid item xs={12} sm={4} md={3} justifyContent={'center'}>
           <CardMedia
             component="img"
             image={ wineimg }
