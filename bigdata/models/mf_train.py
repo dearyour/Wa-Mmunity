@@ -25,7 +25,7 @@ def recommend(R_train, R_predicted, output_path):
     with open(output_path + '/recommend_ratings.txt', 'w') as f:
         for i in range(R_predicted.shape[0]):
             for j in range(R_predicted.shape[1]):
-                if R_predicted[i, j] > 1:
+                if R_predicted[i, j] > 3:
                     f.write('%d::%s""%.3f\n' % (i, j, R_predicted[i, j]))
                     tmp_dict = {
                         'user': idx_user[int(i)],

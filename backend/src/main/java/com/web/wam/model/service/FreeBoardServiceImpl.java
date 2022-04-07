@@ -123,6 +123,8 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 		Optional<FreeBoard> article = freeBoardRepository.findById(articleId);
 		article.ifPresent(selectArticle -> {
 			setFreeBoardResponse(selectArticle, freeBoardResponse);
+			String nickname = memberService.getNickNameByMemberId(selectArticle.getMemberId());
+			freeBoardResponse.setMemberNickName(nickname);
 		});
 		return freeBoardResponse;
 	}
@@ -134,12 +136,15 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 		for (FreeArticleComment comment : comments) {
 			FreeaBoardCmtResponse freeaBoardCmtResponse = new FreeaBoardCmtResponse();
 			setFreeBoardCmtResponse(comment, freeaBoardCmtResponse);
+			String commentNickname = memberService.getNickNameByMemberId(comment.getMemberId());
+			freeaBoardCmtResponse.setMemberNickName(commentNickname);
 			commentList.add(freeaBoardCmtResponse);
 		}
 		return commentList;
 	}
 
 	private void setFreeBoardCmtResponse(FreeArticleComment comment, FreeaBoardCmtResponse freeaBoardCmtResponse) {
+		freeaBoardCmtResponse.setCommentId(comment.getId());
 		freeaBoardCmtResponse.setMemberId(comment.getMemberId());
 		freeaBoardCmtResponse.setContent(comment.getContent());
 		freeaBoardCmtResponse.setRegtime(comment.getRegtime());

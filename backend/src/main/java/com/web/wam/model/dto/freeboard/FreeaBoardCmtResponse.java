@@ -10,6 +10,9 @@ import lombok.Data;
 @Data
 @ApiModel("FreeaBoardCmtResponse")
 public class FreeaBoardCmtResponse implements Serializable {
+	@ApiModelProperty(name = "FreeBoardCmt commentId", example = "123")
+	private Integer commentId;
+
 	@ApiModelProperty(name = "FreeBoardCmt memberId", example = "123")
 	private Integer memberId;
 

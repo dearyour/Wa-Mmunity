@@ -46,7 +46,7 @@ def train(data):
     save('./data/input/R_valid.pkl', R_valid)
     
     # 5. model 생성 후 실행
-    os.system('python ./models/mf_train.py -i ./data/input -o ./data/output -a 1 -d 3')
+    os.system('sudo python3 ./models/mf_train.py -i ./data/input -o ./data/output -a 1 -d 3')
 
     # 6. json파일 불러오기
     with open('./data/output/recomm.json', 'r') as rcm_json:

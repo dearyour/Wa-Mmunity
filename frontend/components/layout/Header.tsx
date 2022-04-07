@@ -63,7 +63,7 @@ function Header(): JSX.Element {
             </div>
             <ul className="menu">
               <li>
-                <Link href="/wineindex" passHref>
+                <Link href="/mypage" passHref>
                   <a>My Page</a>
                 </Link>
               </li>

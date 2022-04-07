@@ -2,18 +2,10 @@ package com.web.wam.controller;
 
 import java.util.List;
 
+import com.web.wam.model.service.S3Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.web.wam.model.dto.BaseResponse;
 import com.web.wam.model.dto.freeboard.FreeBoardArticleGetResponse;
@@ -33,6 +25,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.springframework.web.multipart.MultipartFile;
 
 @CrossOrigin(origins = { "*" }, methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT,
 		RequestMethod.DELETE, RequestMethod.OPTIONS }, maxAge = 6000)
@@ -42,6 +35,9 @@ import io.swagger.annotations.ApiResponses;
 public class FreeBoardController {
 	@Autowired
 	FreeBoardService freeBoardService;
+
+	@Autowired
+	S3Service s3Service;
 
 	@GetMapping
 	@ApiOperation(value = "게시글 리스트", notes = "자유게시판 전체 글 불러오기")
@@ -62,7 +58,22 @@ public class FreeBoardController {
 			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponse.class) })
 
 	public ResponseEntity<? extends BaseResponse> createArticle(
-			@RequestBody @ApiParam(value = "게시글 생성 정보", required = true) FreeBoardPostRequest articleCreateInfo) {
+			@RequestPart @ApiParam(value = "사진 파일", required = false) MultipartFile photo,
+			@RequestPart @ApiParam(value = "게시글 제목", required = true) String title,
+			@RequestPart @ApiParam(value = "게시글 내용") String content,
+			@RequestPart @ApiParam(value = "게시글 태그") String tag,
+			@RequestPart @ApiParam(value = "작성자 id", required = true) Integer member_id
+	) {
+		FreeBoardPostRequest articleCreateInfo = new FreeBoardPostRequest();
+		articleCreateInfo.setMemberId(member_id);
+		articleCreateInfo.setTitle(title);
+		articleCreateInfo.setContent(content);
+		articleCreateInfo.setTag(tag);
+		String photoPath = "";
+		if (photo != null) {
+			photoPath = s3Service.uploadToFreeboard(photo);
+			articleCreateInfo.setPhoto(photoPath);
+		}
 		freeBoardService.createArticle(articleCreateInfo);
 		return ResponseEntity.status(200).body(BaseResponse.of(200, "Success"));
 	}
@@ -75,7 +86,22 @@ public class FreeBoardController {
 			@ApiResponse(code = 500, message = "서버 오류", response = BaseResponse.class) })
 
 	public ResponseEntity<? extends BaseResponse> updateArticle(
-			@RequestBody @ApiParam(value = "게시글 수정 정보", required = true) FreeBoardPutRequest articleUpdateInfo) {
+			@RequestPart @ApiParam(value = "사진 파일", required = false) MultipartFile photo,
+			@RequestPart @ApiParam(value = "게시글 제목", required = true) String title,
+			@RequestPart @ApiParam(value = "게시글 내용") String content,
+			@RequestPart @ApiParam(value = "게시글 태그") String tag,
+			@RequestPart @ApiParam(value = "수정할 글의 id", required = true) Integer article_id
+	) {
+		FreeBoardPutRequest articleUpdateInfo = new FreeBoardPutRequest();
+		articleUpdateInfo.setArticleId(article_id);
+		articleUpdateInfo.setTitle(title);
+		articleUpdateInfo.setContent(content);
+		articleUpdateInfo.setTag(tag);
+		String photoPath = "";
+		if (!photo.isEmpty()) {
+			photoPath = s3Service.uploadToFreeboard(photo);
+			articleUpdateInfo.setPhoto(photoPath);
+		}
 		freeBoardService.updateArticle(articleUpdateInfo);
 		return ResponseEntity.status(200).body(BaseResponse.of(200, "Success"));
 	}

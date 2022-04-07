@@ -43,12 +43,15 @@ const WineCard = (props: any) => {
         </Grid>
         <Grid item xs={12} sm={8} lg={7} justifyContent={'center'}>
           <CardContent>
-          { winery }
-            <Typography gutterBottom variant="h5" component="div">
-              { winename }
+            <Typography gutterBottom variant="subtitle1" component="div">
+              { winery }
             </Typography>
-            <Typography variant="body2" color="text.primary">
-              예상 평점 : { props.num.rating.toFixed(3) }
+            <Typography gutterBottom variant="h6" component="div">
+              <strong>{ winename }</strong>
+            </Typography>
+            예상 평점 : 
+            <Typography variant="h4" color="text.primary" align="right">
+              <strong>{ props.num.rating.toFixed(1) }</strong>
             </Typography>
           </CardContent>
         </Grid>
