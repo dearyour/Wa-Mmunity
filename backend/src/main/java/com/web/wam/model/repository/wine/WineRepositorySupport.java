@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import com.web.wam.model.entity.QWineReview;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -19,6 +20,7 @@ public class WineRepositorySupport {
 	@Autowired
 	private JPAQueryFactory jpaQueryFactory;
 	QWine qWine = QWine.wine;
+	QWineReview qWineReview = QWineReview.wineReview;
 
 	public List<Wine> sortByRatingAvg() {
 		List<Wine> wines = jpaQueryFactory.select(qWine).from(qWine).orderBy(qWine.ratingAvg.desc()).fetch();
@@ -37,6 +39,11 @@ public class WineRepositorySupport {
 
 	public List<Wine> sortByRatingNum() {
 		List<Wine> wines = jpaQueryFactory.select(qWine).from(qWine).orderBy(qWine.ratingNum.desc()).fetch();
+		return wines;
+	}
+
+	public List<Wine> sortByReview10() {
+		List<Wine> wines = jpaQueryFactory.select(qWine).from(qWine).orderBy(qWine.ratingNum.desc()).limit(10).fetch();
 		return wines;
 	}
 
@@ -108,5 +115,7 @@ public class WineRepositorySupport {
 	public Wine findByWineId(int wineId) {
 		return jpaQueryFactory.select(qWine).from(qWine).where(qWine.wineId.eq(wineId)).fetchFirst();
 	}
+
+
 
 }
