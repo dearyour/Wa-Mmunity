@@ -75,7 +75,7 @@ const Write_feed = () => {
   const loginUserId = useSelector((state: RootState) => state.user.users.id);
   const { file, image, originalImg, setFile, setImage, setOriginalImage } =
     useImg();
-  const [sortType, setSortType] = useState<String>("ratingDesc");
+  const [sortType, setSortType] = useState<any>("판매");
   const [loading, setLoading] = useState<boolean>(false);
   const [imageUrl, setImageUrl] = useState<string | "">("");
   const [hashtag, setHashtag] = useState<string | "">("");
@@ -217,7 +217,7 @@ const Write_feed = () => {
       //   "data",
       //   new Blob([JSON.stringify(data)], { type: "application/json" })
       // );
-      formdata.append("tag", "판매");
+      formdata.append("tag", sortType);
       formdata.append("content", content);
       formdata.append("title", title);
       formdata.append("member_id", loginUserId);
@@ -274,43 +274,43 @@ const Write_feed = () => {
     align-items: center;
   `;
 
-  const onKeyUp = (e: any) => {
-    if (process.browser) {
-      /* 요소 불러오기, 만들기*/
-      const $HashWrapOuter: Element | null =
-        document.querySelector(".HashWrapOuter");
-      const $HashWrapInner: HTMLDivElement = document.createElement("div");
-      const nowClass = "HashWrapInner" + String(num);
-      $HashWrapInner.className = nowClass;
-      /* 태그를 클릭 이벤트 관련 로직 */
-      $HashWrapInner.addEventListener("click", () => {
-        $HashWrapOuter?.removeChild($HashWrapInner);
-        // console.log($HashWrapInner.innerHTML);
-        setHashArr(hashArr.filter((hashtag) => hashtag));
-      });
+  // const onKeyUp = (e: any) => {
+  //   if (process.browser) {
+  //     /* 요소 불러오기, 만들기*/
+  //     const $HashWrapOuter: Element | null =
+  //       document.querySelector(".HashWrapOuter");
+  //     const $HashWrapInner: HTMLDivElement = document.createElement("div");
+  //     const nowClass = "HashWrapInner" + String(num);
+  //     $HashWrapInner.className = nowClass;
+  //     /* 태그를 클릭 이벤트 관련 로직 */
+  //     $HashWrapInner.addEventListener("click", () => {
+  //       $HashWrapOuter?.removeChild($HashWrapInner);
+  //       // console.log($HashWrapInner.innerHTML);
+  //       setHashArr(hashArr.filter((hashtag) => hashtag));
+  //     });
 
-      /* enter 키 코드 :13 */
-      if (e.keyCode === 13 && e.target.value.trim() !== "") {
-        if (hashArr.length > 1) {
-          if (
-            hashArr.some((now) => {
-              return now === e.target.value;
-            })
-          ) {
-            setTagErr("중복된 태그는 입력할 수 없습니다.");
-            return;
-          }
-        }
-        // console.log('Enter Key 입력됨!', e.target.value)
-        $HashWrapInner.innerHTML = e.target.value;
-        $HashWrapOuter?.appendChild($HashWrapInner);
-        setHashArr((hashArr) => [...hashArr, hashtag]);
-        setHashtag("");
-        setTagErr("");
-        setNum((num + 1) % 3);
-      }
-    }
-  };
+  //     /* enter 키 코드 :13 */
+  //     if (e.keyCode === 13 && e.target.value.trim() !== "") {
+  //       if (hashArr.length > 1) {
+  //         if (
+  //           hashArr.some((now) => {
+  //             return now === e.target.value;
+  //           })
+  //         ) {
+  //           setTagErr("중복된 태그는 입력할 수 없습니다.");
+  //           return;
+  //         }
+  //       }
+  //       // console.log('Enter Key 입력됨!', e.target.value)
+  //       $HashWrapInner.innerHTML = e.target.value;
+  //       $HashWrapOuter?.appendChild($HashWrapInner);
+  //       setHashArr((hashArr) => [...hashArr, hashtag]);
+  //       setHashtag("");
+  //       setTagErr("");
+  //       setNum((num + 1) % 3);
+  //     }
+  //   }
+  // };
 
   const Loading = styled(Spin)`
     position: absolute;
@@ -356,7 +356,7 @@ const Write_feed = () => {
           </UpImage>
         </WriteDiv>
         <ErrDiv>{imageErr}</ErrDiv>
-        <WriteDiv>
+        {/* <WriteDiv>
           <Label>도전</Label>
           <WriteInput
             placeholder="현재 진행중인 도전 목록"
@@ -382,13 +382,13 @@ const Write_feed = () => {
                 })
               : null}
           </WriteInput>
-        </WriteDiv>
+        </WriteDiv> */}
         <ErrDiv>{challengeErr}</ErrDiv>
         <WriteDiv>
           <div className="HashWrapOuter"></div>
         </WriteDiv>
 
-        <WriteDiv className="">
+        {/* <WriteDiv className="">
           <Label>태그</Label>
           <TagInput
             placeholder="태그 입력 후 Enter를 눌러주세요"
@@ -396,7 +396,7 @@ const Write_feed = () => {
             onChange={onChangeHashtag}
             onKeyUp={onKeyUp}
           ></TagInput>
-        </WriteDiv>
+        </WriteDiv> */}
         <ErrDiv>{tagErr}</ErrDiv>
         <WriteDiv>
           <Label>제목</Label>

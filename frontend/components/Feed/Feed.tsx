@@ -192,12 +192,12 @@ const Feed = (props: any) => {
           >
             <Style className="태양">{props.dto.article.memberNickName}</Style>
           </div>
-          <div className="timestamp">태그 : {props.dto.article.tag}</div>
           <div className="timestamp">
             {props.dto.article.regtime[0]}년 {props.dto.article.regtime[1]}월{" "}
             {props.dto.article.regtime[2]}일 {props.dto.article.regtime[3]}시{" "}
             {props.dto.article.regtime[4]}분
           </div>
+          <div className="timestamp">분류 : {props.dto.article.tag}</div>
           <div
             className="timestamps"
             // onClick={() => {
