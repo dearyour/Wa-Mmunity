@@ -227,7 +227,6 @@ function Detailfeed() {
     // dispatch(layoutAction.updatedetailData.article(detailData.article));
     // dispatch(layoutAction.likeList("ok" ? "delete" : "ok"));
     dispatch(feedAction.getFeeds()); // 모달닫힐때 새로운정보를 최상위부모에 기록 그것을 다시 프롭으로 feed에 넘김
-
     // 넘긴 feed는 다시 모달 열릴떄 그정보를 props.detail인  개별정보저장인 detailFeed로 넘긴다
   }, [dispatch]);
 

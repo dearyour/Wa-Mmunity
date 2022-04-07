@@ -248,7 +248,7 @@ function Mainfeed() {
               >
                 {/* 나의 온도 : [ {userInfo} ˚C ] */}
               </div>
-              <div className="title txt-bold">와인 리뷰 순위</div>
+              <div className="title txt-bold">와인 최다 리뷰 순위</div>
               {rankers.slice(0, 7).map((item: any, idx: number) => {
                 // console.log(feeds);
                 return <Rankfeed key={idx} dto={item} num={idx + 1} />;

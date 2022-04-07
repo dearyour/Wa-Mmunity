@@ -94,7 +94,7 @@ const Feed = (props: any) => {
       .catch((err) => {
         return err;
       });
-  }, [loginUserId, props.dto.article.articleId]);
+  }, [props.dto]);
 
   // const __loadLikeCnt = useCallback(() => {
   //   return axios({
@@ -132,13 +132,13 @@ const Feed = (props: any) => {
         setLikeCount(likeCount + 1);
         // console.log("##ok성공");
         // console.log(likeState); //useState 여기서직접 콘솔안찍힘 463 함수끝나는곳에 찍을것
-        // __loadLike();
+        dispatch(feedAction.getFeeds());
         // __loadLikeCnt();
       })
       .catch((err) => {
         return err;
       });
-  }, [loginUserId, props.dto.article.articleId, likeState, likeCount]);
+  }, [likeCount]);
 
   const __deleteLike = useCallback(() => {
     const data = {
@@ -156,6 +156,7 @@ const Feed = (props: any) => {
         // console.log("##ok성공");
         // console.log(likeState); //useState 여기서직접 콘솔안찍힘 463 함수끝나는곳에 찍을것
         // __loadLike();
+        dispatch(feedAction.getFeeds());
       })
       .catch((err) => {
         return err;
@@ -253,7 +254,7 @@ const Feed = (props: any) => {
           </div>
           <div className="count txt-bold">
             {/* {props.dto.likeCnt ? likeCount : 0} */}
-            {likeCount}
+            {props.dto.article.likeCnt}
           </div>
         </div>
         <div className="comment" onClick={__openFeedDetail}>
