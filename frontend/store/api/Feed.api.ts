@@ -19,7 +19,7 @@ export const GetFeedState = () => {
 export const GetFeedStates = () => {
   return axios({
     method: "GET",
-    url: process.env.BACK_EC2 + "resellboard",
+    url: process.env.BACK_EC2 + "freeboard",
     // url: "http://j6a101.p.ssafy.io:8080/api/wine",
   })
     .then((res) => {
