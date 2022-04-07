@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 const WishListPage = () => {
   return (
     <>
-      <Typography variant="h3" align="center">위시리스트</Typography>
+      <Typography variant="h3" align="center" m={10}>위시리스트</Typography>
     </>
   );
 };
