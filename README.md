@@ -338,7 +338,7 @@
 - [ERD](https://lab.ssafy.com/s06-bigdata-rec-sub2/S06P22A101/-/tree/develop/%EC%82%B0%EC%B6%9C%EB%AC%BC/erd)
 - [시스템 아키텍처](https://lab.ssafy.com/s06-bigdata-rec-sub2/S06P22A101/-/tree/develop/%EC%82%B0%EC%B6%9C%EB%AC%BC/%EC%8B%9C%EC%8A%A4%ED%85%9C%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98)
 - [화면 정의서](https://lab.ssafy.com/s06-bigdata-rec-sub2/S06P22A101/-/tree/develop/%EC%82%B0%EC%B6%9C%EB%AC%BC/%ED%99%94%EB%A9%B4%EC%A0%95%EC%9D%98%EC%84%9C)
-- 최종 발표물
+- [최종 발표물](https://lab.ssafy.com/s06-bigdata-rec-sub2/S06P22A101/-/tree/develop/%EC%82%B0%EC%B6%9C%EB%AC%BC/%EC%B5%9C%EC%A2%85%EB%B0%9C%ED%91%9C)
 - [UCC](https://www.youtube.com/watch?v=FYG7bUlMIC8)
 
 ---
