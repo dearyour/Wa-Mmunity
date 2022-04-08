@@ -2,3 +2,7 @@
 Servers/
 frontend/dist
 frontend/package-lock.json
+
+bigdata/data/related_wine/tfidf_cos_sim.npy
+bigdata/data/related_wine/tfidf_cos_mat.npy
+bigdata/data/related_wine/wines_db.csv
