@@ -41,7 +41,7 @@ function beforeUpload(file: any) {
 
 const ImageUploadInputSetting = {
   name: "file",
-  // action: "",
+  action: "",
   headers: {
     authorization: "authorization-text",
   },
@@ -223,7 +223,7 @@ const Write_feed = () => {
       formdata.append("member_id", loginUserId);
 
       axios({
-        method: "GET",
+        method: "PUT",
         url: process.env.BACK_EC2 + "freeboard",
         // url: process.env.BACK_EC2 + "resellboard",
         // url: "https://localhost:8080/api/freeboard",
