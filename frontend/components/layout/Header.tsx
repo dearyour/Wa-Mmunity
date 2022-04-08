@@ -128,7 +128,7 @@ function Header(): JSX.Element {
               <div
                 className="item__name"
                 onClick={() => {
-                  Router.push(`/challenge/write`);
+                  Router.push(`/feedMain`);
                 }}
               >
                 와뮤니티 게시판
