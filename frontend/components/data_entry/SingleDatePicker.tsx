@@ -1,12 +1,11 @@
 import React, { Component } from "react";
 import "react-dates/initialize";
-import { SingleDatePicker } from "react-dates";
 import moment from "moment";
 import styled from "styled-components";
 import "react-dates/lib/css/_datepicker.css";
 import { Button, Space, Tooltip } from "antd";
-import { InfoCircleTwoTone } from '@ant-design/icons';
-import 'antd/dist/antd.css';
+import { InfoCircleTwoTone } from "@ant-design/icons";
+import "antd/dist/antd.css";
 
 /* https://github.com/airbnb/react-dates/issues/1030
  * In-order to extend styling, wrapper div around date picker is needed.
@@ -54,30 +53,22 @@ const StyledDatePickerWrapper = styled.div`
 export default class StartDatePicker extends Component {
   state = {
     focused: false,
-    date: moment()
+    date: moment(),
   };
 
   render() {
     return (
-
       <Space direction="horizontal">
         <StyledDatePickerWrapper>
-          <label htmlFor="start-date" style={{ verticalAlign: 'center' }}>시작일</label>
-          <SingleDatePicker
-            numberOfMonths={1}
-            onDateChange={(date: moment.Moment | null) => this.setState({ date })}
-            onFocusChange={({ focused }: any) => this.setState({ focused })}
-            focused={this.state.focused}
-            date={this.state.date}
-            id='start-date'
-          />
+          <label htmlFor="start-date" style={{ verticalAlign: "center" }}>
+            시작일
+          </label>
         </StyledDatePickerWrapper>
-        <Tooltip title='시작일 포함 3일동안 도전합니다.'>
+        <Tooltip title="시작일 포함 3일동안 도전합니다.">
           {/* <Button shape="circle" icon={<InfoCircleOutlined />} size="large" /> */}
-          <InfoCircleTwoTone twoToneColor='#edbaba' />
+          <InfoCircleTwoTone twoToneColor="#edbaba" />
         </Tooltip>
       </Space>
-
     );
   }
 }
