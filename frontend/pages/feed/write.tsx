@@ -41,7 +41,7 @@ function beforeUpload(file: any) {
 
 const ImageUploadInputSetting = {
   name: "file",
-  action: "",
+  // action: "",
   headers: {
     authorization: "authorization-text",
   },
