@@ -223,7 +223,7 @@ const Write_feed = () => {
       formdata.append("member_id", loginUserId);
 
       axios({
-        method: "POST",
+        method: "GET",
         url: process.env.BACK_EC2 + "freeboard",
         // url: process.env.BACK_EC2 + "resellboard",
         // url: "https://localhost:8080/api/freeboard",
