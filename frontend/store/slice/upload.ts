@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { FileUpload } from 'store/interfaces/Upload.interface'
+import { FileUpload } from "store/interfaces/Upload.interface";
 
 const initialState: FileUpload = {
   file: null,
-  image: '',
-  originalImg: '',
+  image: "",
+  originalImg: "",
 };
 
 export const uploadSlice = createSlice({
@@ -12,14 +12,14 @@ export const uploadSlice = createSlice({
   initialState,
   reducers: {
     setFile: (state, { payload }) => {
-      state.file = payload
+      state.file = payload;
     },
     setImage: (state, { payload }) => {
-      state.image = payload
+      state.image = payload;
     },
     setOriginalImg: (state, { payload }) => {
-      state.originalImg = payload
-    }
+      state.originalImg = payload;
+    },
   },
 });
 
