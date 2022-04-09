@@ -1,6 +1,7 @@
 ![Wammunity Logo](./산출물/로고/logo.png)
 
 -----
+!
 
 # 🍷  와인 추천 서비스 WAMMUNITY 🍷
 
